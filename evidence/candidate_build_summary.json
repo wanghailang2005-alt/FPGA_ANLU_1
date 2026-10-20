@@ -1,0 +1,27 @@
+{
+  "baseline_source_files": 136,
+  "original_source_unchanged": true,
+  "modified_copied_files": [
+    "src/td_project/HDMI1.4b_Transmitter_v1.0.al",
+    "src/user_source/hdl_source/top_tf_hdmi_audio.v",
+    "src/user_source/hdl_source/video_rgb_to_axis_640x480.v"
+  ],
+  "new_synthesis_warning_codes_vs_historical_baseline": [],
+  "candidate_bit_sha256": "b8256206e55ecf75b58fdbff28b803c9b01dae8abd82e4f16e46d0389212b545",
+  "candidate_bit_bytes": 629624,
+  "setup_wns_ns": -6.699,
+  "setup_tns_ns": -295.425,
+  "setup_failing_endpoints": 66,
+  "hold_wns_ns": 0.003,
+  "hold_tns_ns": 0,
+  "sta_coverage_percent": 95.62,
+  "video_clk_mhz": 25,
+  "video_clk_setup_wns_ns": 4.139,
+  "lut": 4542,
+  "registers": 4077,
+  "bram9k": 20,
+  "dsp": 0,
+  "pll": 3,
+  "overall_timing_pass": false,
+  "board_test": "UNVERIFIED"
+}

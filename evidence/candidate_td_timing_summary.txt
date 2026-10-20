@@ -1,0 +1,75 @@
+Created by          : Tang Dynasty v6.2.168116
+                    : Copyright (c) 2012-2025 Anlogic Inc.
+Generated           : Tue Oct 20 17:11:24 2026
+
+Top Model           : top
+Device              : EG4S20BG256
+Speed               : NA
+STA coverage        : 95.62%
+Constraint File     : D:/2026FPGA_1/HX4S20_Contest_202606/7_lab_ex_2026_nosoft/lab_ex5_i2s_osd/src/user_source/constraints_source/timing.sdc;
+Confidence          : Routed
+Check Corner        : Both (Slow and Fast)
+CRPR Enabled        : Yes
+Report Scheme       : 10 end point(s) per path group, 1 path(s) per end point
+
+
+Check Status
+-------------
+
+Corner   | Max      Min     
+------------------------------------
+Slow     | yes      yes     
+Fast     | yes      yes     
+
+
+Timing Status
+--------------------
+	SWNS: -6.699ns, STNS: -295.425ns
+	HWNS: 0.003ns, HTNS: 0.000ns
+	Period Check WNS: 0.000ns
+
+
+Clock Summary
+--------------------
+
+       Clock-Id:       C-Freq       Fanout   Clock-Name
+--------------------------------------------------------------------------------
+           clk0:       25.000         1332   video_clk
+           clk1:      100.000          588   sd_card_clk
+           clk2:      125.000          466   ext_mem_clk
+           clk3:       12.295           46   audio_mclk
+           clk4:      125.000           33   hdmi_5x_clk
+           clk5:       50.000           31   clk
+           clk6:      125.000            1   sys_pll_m0/pll_inst.clkc[2]
+           clk7:       75.002            0   u_audio_pll/pll_inst.clkc[0]
+--------------------------------------------------------------------------------
+
+       Name            Type         Rise(ns)   Fall(ns)          C-Period(ns)     C-Freq(MHz)          R-Period(ns)     R-Freq(MHz)         SWNS(ns)   STNS(ns)         HWNS(ns)   HTNS(ns)         Skew(ns)           Fanout        Max-Level        CC-From    CC-To
+       clk0           local            0.000     20.000                40.000          25.000                21.636          46.219            4.139      0.000            0.003      0.000            0.326             1332               12             no       no
+       clk1           local            0.000      5.000                10.000         100.000                13.060          76.570           -0.612     -0.712            0.025      0.000            0.254              588                9             no       no
+       clk2           local            0.000      4.000                 8.000         125.000                21.398          46.733           -6.699   -214.368            0.094      0.000            0.480              466                8             no       no
+       clk3           local            0.000     40.667                81.334          12.295                 6.556         152.532           74.778      0.000            0.246      0.000            0.138               46                6             no       no
+       clk4           local            0.000      4.000                 8.000         125.000                 3.238         308.833            4.762      0.000            0.438      0.000            0.326               33                1             no       no
+       clk5           local            0.000     10.000                20.000          50.000                19.872          50.322            0.064      0.000            0.434      0.000            0.326               31                8             no       no
+       clk6           local            4.000      0.000                 8.000         125.000                13.598          73.540           -2.799    -80.345            3.740      0.000            0.000                1                1             no       no
+       clk7           local            0.000      6.666                13.333          75.002                13.333          75.002            0.000      0.000            0.000      0.000            0.000                0                0             no       no
+
+Notes
+----------
+C-Period  :  constraint period
+C-Freq    :  constraint freq
+R-Period  :  report min period
+R-Freq    :  report fmax
+CC-From   :  has path(s) from cross-domain clock
+CC-To     :  has path(s) to cross-domain clock
+
+
+*   Clock R-Period data only takes intra-clock timing. SWNS/STNS/HWNS/HTNS take both intra-clock and inter-clock timing.
+*   If there is mismatch between R-Period and SWNS, check inter-clock timing of this clock as capture clock.
+*   SWNS/STNS/HWNS/HTNS of timing exception (SMCP/SMD) only counted in global Timing Status, not counted in Clock Summary.
+
+Intra clock domain timing
+--------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
+Path Group     :     video_clk -> video_clk

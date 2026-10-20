@@ -3,4 +3,8 @@
 *.sv text eol=lf
 *.do text eol=lf
 *.md text eol=lf
+*.vh text eol=lf
+*.py text eol=lf
+*.tcl text eol=lf
+*.patch text eol=lf -whitespace
 evidence/* -whitespace
