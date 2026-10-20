@@ -190,6 +190,10 @@ $LASTEXITCODE
 - 视频时钟 25 MHz，该域报告 setup WNS=+4.139 ns。这不能替代整机时序验收。
 - BOARD PASS 尚无证据。需要对存储相关时序单独诊断，再做实际下载与回归。
 
+## 上板字幕未显示的后续验证
+
+用户反馈候选图片正常但没有 HELLO FPGA。新增 [真实视频时序验证](evidence/verification_real_video_timing.md)，直接串联原 color_bar/video_timing_data/video_delay 和候选 OSD/AXIS；四帧仿真通过，导出的第三帧有正确文字。关闭字幕的负向测试能检出失败。本步没有修改候选 RTL 或生成新 bit，板上缺字的原因仍待定位；这不代表 BOARD PASS。
+
 ## Git 与 GitHub
 
 本目录作为独立 Git 仓库，使用 `main` 分支。初始化提交包括模块、测试、使用说明、来源和验证证据。源码所在的上层参考工程没有被改成 Git 上传范围。

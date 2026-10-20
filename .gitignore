@@ -4,3 +4,5 @@ sim/vsim.wlf
 sim/transcript
 *.wlf
 *.vstf
+evidence/real_timing_osd.ppm
+sim/real_timing_negative.ppm

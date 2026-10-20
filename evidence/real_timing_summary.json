@@ -1,0 +1,38 @@
+{
+  "status": "SIM PASS",
+  "clock_mhz": 25,
+  "cycles_checked": 1679202,
+  "valid_pixels": 1228800,
+  "last_count": 1920,
+  "sof_count": 4,
+  "frame_ticks": 3,
+  "position_valid_active_pixels": 921600,
+  "white_foreground_pixels_total": 1302,
+  "preview_white_pixels": 434,
+  "preview_frame_size": [
+    640,
+    480
+  ],
+  "negative_control_exit": 1,
+  "candidate_snippet_matches_top": true,
+  "candidate_osd_matches_repo": true,
+  "candidate_rtl_modified": false,
+  "memory_model": "constant 0x183048 instead of SDRAM; display_valid test-driven",
+  "hdmi_encrypted_core_simulated": false,
+  "board_status": "USER REPORT: images visible; text absent, unresolved",
+  "source_sha256": {
+    "lab_ex5_i2s_osd/src/user_source/hdl_source/SD/video_define.v": "77748966850a8f5af0d77f2cdb08006088ba5e1a31b98391fba6cc61c5247da2",
+    "lab_ex5_i2s_osd/src/user_source/hdl_source/SD/color_bar.v": "afe1f56714ec58d2477ba1717e5a36c5a0da5fe5c07d70d11aa5ace710c4b152",
+    "lab_ex5_i2s_osd/src/user_source/hdl_source/SD/video_timing_data.v": "c6f75501e98dd5995f687aafb40455beffe45b426137b5089a73ac3a036f7282",
+    "lab_ex5_i2s_osd/src/user_source/hdl_source/SD/video_delay.v": "f47c4b63f8baa6d8874c87dca5b72dfdadd19f4a107403da98752bce98936433",
+    "lab_ex5_i2s_osd/src/user_source/hdl_source/OSD/osd_fixed_layout.v": "ae5d6a6c83c6f526e4e314656b2684511b2862370103937970114a0c0b2bf14b",
+    "lab_ex5_i2s_osd/src/user_source/hdl_source/OSD/osd_font_rom.v": "6d5cbe8fb7ba0a075e0c2c9b53941ad639c244632ac05a699c610d34b64c959b",
+    "lab_ex5_i2s_osd/src/user_source/hdl_source/OSD/osd_glyph_pixel.v": "8a285e3e2e0f5d4f564dfbee7e53fa298e5035d1edcb9db086572cb95d2b7fc8",
+    "lab_ex5_i2s_osd/src/user_source/hdl_source/OSD/osd_overlay.v": "fb096b73258ad0e2451bc87452942217ff54fe6487cfacac41fd635eff70f172",
+    "lab_ex5_i2s_osd/src/user_source/hdl_source/OSD/osd_video_position.v": "69f0efa8ffbfc68046cdc6d8bf35d26eba61cb613d6c2db42d5f86c1ff6c2962",
+    "lab_ex5_i2s_osd/src/user_source/hdl_source/video_rgb_to_axis_640x480.v": "3b7a6988b4b040ee15019192658c5eeb331c1d7843f8ebe41f3c1fdf66b24b17",
+    "osd_dev/integration/top_osd_insert.vh": "e647265499ddf8d9e1bc89866e0649d0aba8d868878607f445d83e37b5a18901",
+    "osd_dev/sim/tb_real_video_timing.sv": "c8a1f46109f4c0f309e3e3c91b230821cc2b0c7a8ce7447cc24406911e942881",
+    "osd_dev/sim/run_real_video_timing.do": "353d9ca72c73488a680e17599b6a74891b33a6806e8555a8a118f055c5b00ce7"
+  }
+}
