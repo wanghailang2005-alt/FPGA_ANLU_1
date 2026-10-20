@@ -1,6 +1,6 @@
 # HX4S20 HDMI OSD 渐进开发
 
-本目录是三人协作项目中 OSD 板块的独立开发仓库。第一步已实现 ASCII 字库行查询；尚未接入原有 TF/SDRAM/HDMI 工程。
+本目录是三人协作项目中 OSD 板块的独立开发仓库。已完成 ASCII 字库行查询和单字符像素查询；尚未接入原有 TF/SDRAM/HDMI 工程。
 
 ## 当前能力
 
@@ -8,14 +8,18 @@
 - 字形基于 8×8 位图，每行重复两次形成 8×16 字符框，不是真正的原生 8×16 字体。
 - 每拍可接收一个行请求，输出经过一个寄存器级；无反压。
 - 高有效异步复位，复位或无效请求时输出清零。
+- `osd_glyph_pixel` 在字库后选择字内横坐标对应的像素，端到端固定两级寄存，支持每拍一个像素请求。
 - 文字还没有显示到 HDMI；当前验证级别为 SIM PASS，未进行本模块 TD 综合、时序或板测。
 
 ## 目录
 
 ```text
 rtl/osd_font_rom.v          可综合字体行查询
+rtl/osd_glyph_pixel.v       两级寄存的字符像素查询
 sim/tb_osd_font_rom.sv      独立自检与字形预览输出
 sim/run_font_rom.do         ModelSim 编译运行，返回成功或失败码
+sim/tb_osd_glyph_pixel.sv   完整字符像素和两级时序自检
+sim/run_glyph_pixel.do      选点模块自检入口
 evidence/                  真实仿真日志和 DUT 字形预览
 THIRD_PARTY_NOTICES.md      字形来源与适配说明
 LICENSE.FPGA-text-overlay   上游 MIT 许可原文
@@ -69,18 +73,49 @@ $LASTEXITCODE
 
 该命令预期返回 1，不能当作模块失败；正常功能自检仍使用不带参数的命令。
 
+## 第二步 单字符像素查询
+
+`osd_glyph_pixel` 输入为 `clk/rst/in_valid/char_code/glyph_x[2:0]/glyph_y[3:0]`，输出为 `out_valid/pixel_on`。x 范围 0～7，y 范围 0～15；1 表示文字前景像素，0 表示透明候选点。本模块不输出 RGB，不生成屏幕坐标。
+
+```text
+上升沿 N：字库寄存对应行，同时寄存输入 glyph_x
+上升沿 N+1：用匹配的行与 x 选择像素，寄存 out_valid/pixel_on
+```
+
+从输入到输出经过两级寄存器；输入在 N 沿采样，匹配结果在 N+1 沿更新后可用，不是再等待到 N+2。无效请求在同样两级时序后输出 0/0。有效的空格、未知字符仍返回 out_valid=1、pixel_on=0。
+
+ModelSim 命令行：
+
+```powershell
+Set-Location 'D:\2026FPGA_1\HX4S20_Contest_202606\7_lab_ex_2026_nosoft\osd_dev\sim'
+& 'E:\Modelsim\win64\vsim.exe' -c -do run_glyph_pixel.do
+$LASTEXITCODE
+```
+
+结果为 `SIM PASS: glyph pixels requests=33288 checks=66582`，退出码 0。检查包括全部 256 编码×16 行×8 列、快速改变字符/坐标、气泡、复位中断和流水线排空。独立队列在每个沿检查上一沿请求的结果，避免把一级或三级误认为两级。
+
+`evidence/glyph_pixel_A.txt` 和 `.pbm` 是实际 DUT 输出的单字符图，PBM 中 1 表示字形前景。`modelsim_glyph_pixel.log` 保存编译与测试过程。当前仍只有 SIM PASS，未验证整帧视频对齐或板级显示。
+
+可选失败退出检查：
+
+```powershell
+& 'E:\Modelsim\win64\vsim.exe' -c -do 'set sim_args {+FORCE_FAIL}; set log_file ../evidence/modelsim_glyph_negative.log; do run_glyph_pixel.do'
+```
+
+预期返回 1。该命令只检验脚本失败判定，不代表正常模块自检失败。
+
 ## Git 与 GitHub
 
 本目录作为独立 Git 仓库，使用 `main` 分支。初始化提交包括模块、测试、使用说明、来源和验证证据。源码所在的上层参考工程没有被改成 Git 上传范围。
 
-在 GitHub 新建空仓库，例如 `fpga-hdmi-osd`，建议先设 Private。不要初始化 README、gitignore 或许可证，避免与已有本地历史冲突。新建后使用仓库页面提供的 HTTPS 地址绑定 origin 并推送 main；若远程已非空，先检查历史再集成，不能强推覆盖。
+GitHub 仓库已建立并绑定：<https://github.com/wanghailang2005-alt/fpga-hdmi-osd>，主分支为 main。每个经过自检的小步骤单独提交。若远程出现队友提交，先检查并集成历史，不能强推覆盖。
 
 认证由用户通过 Git Credential Manager 或浏览器登录完成，不把密码、Token 或私钥写进代码、日志或聊天。首次推送完成后，按同学的 GitHub 账号邀请协作者。
 
 ## 后续步骤
 
-1. 用字符内 x 坐标选取 `row_bits[7-x]`，完成一个字母的像素自检，并对齐 x 与行查询延迟。
-2. 在仿真背景上显示 HELLO FPGA，验证透明背景与 RGB/DE/HS/VS 对齐。
+1. 已完成：字库行查询与单字符像素查询，对齐 x 与行数据并自检。
+2. 下一步：在仿真背景上显示 HELLO FPGA，验证透明背景与 RGB/DE/HS/VS 对齐。
 3. 经单独接入方案审阅后，在候选工程接入并做 TD 检查与上板。
 4. 加入图片序号、轮播状态与菜单；最后做滚动字幕和四位 SW/K3 控制。
 
