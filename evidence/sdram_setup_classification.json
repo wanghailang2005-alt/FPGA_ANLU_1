@@ -1,0 +1,40 @@
+{
+  "source_report": "lab_ex5_i2s_osd/src/td_project/HDMI1.4b_Transmitter_v1.0_Runs/phy_1/HDMI1.4b_Transmitter_v1.0_pr.timing",
+  "source_sha256": "3438eefd48d294a86ea9a68d18b928731ddcfa09bf1502957224526e126d314d",
+  "tool": "TD 6.2.168116",
+  "report_detail_limit_per_group": 10,
+  "scope": "Routed slow-corner setup violations; counts from group summaries, not printed path count",
+  "groups": [
+    {
+      "group": "ext_mem_clk -> sd_card_clk",
+      "setup_wns_ns": -0.612,
+      "setup_tns_ns": -0.712,
+      "violating_endpoints": 2,
+      "printed_negative_paths": 2,
+      "begin_point": "frame_read_write_m0/frame_fifo_write_m0/fifo_aclr_reg_syn_8.clk (rising edge triggered by clock ext_mem_clk  { rise@0.000000ns  fall@4.000000ns  period=8.000000 })",
+      "end_point": "sd_card_bmp_m0/bmp_read_m0/write_req_reg_syn_11.b[0] (rising edge triggered by clock sd_card_clk  { rise@0.000000ns  fall@5.000000ns  period=10.000000 })"
+    },
+    {
+      "group": "ext_mem_clk -> sys_pll_m0/pll_inst.clkc[2]",
+      "setup_wns_ns": -2.799,
+      "setup_tns_ns": -80.345,
+      "violating_endpoints": 32,
+      "printed_negative_paths": 10,
+      "begin_point": "U3/u2_ram/u2_wrrd/app_wr_din_2d_reg[20]_syn_3.clk (rising edge triggered by clock ext_mem_clk  { rise@0.000000ns  fall@4.000000ns  period=8.000000 })",
+      "end_point": "U3/sdram.dq[17] (rising edge triggered by clock sys_pll_m0/pll_inst.clkc[2]  { rise@4.000000ns  fall@0.000000ns  period=8.000000 })"
+    },
+    {
+      "group": "sys_pll_m0/pll_inst.clkc[2] -> ext_mem_clk",
+      "setup_wns_ns": -6.699,
+      "setup_tns_ns": -214.368,
+      "violating_endpoints": 32,
+      "printed_negative_paths": 10,
+      "begin_point": "U3/sdram.dq[0] (rising edge triggered by clock sys_pll_m0/pll_inst.clkc[2]  { rise@4.000000ns  fall@0.000000ns  period=8.000000 })",
+      "end_point": "U3/sdram_syn_1.bpad (rising edge triggered by clock ext_mem_clk  { rise@0.000000ns  fall@4.000000ns  period=8.000000 })"
+    }
+  ],
+  "total_violating_endpoints": 66,
+  "setup_tns_ns": -295.425,
+  "hardware_modified": false,
+  "board_status": "UNVERIFIED"
+}

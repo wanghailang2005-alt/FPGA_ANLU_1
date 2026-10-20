@@ -1,0 +1,46 @@
+Read-only extracts from routed timing report; one worst printed path per failing group.
+
+Path Group: ext_mem_clk -> sd_card_clk
+Max            : SWNS     -0.612ns, STNS     -0.712ns,         2 Viol Endpoints,         5 Total Endpoints,         2 Paths Analyzed
+
+Slack               : -0.612ns
+Begin Point         : frame_read_write_m0/frame_fifo_write_m0/fifo_aclr_reg_syn_8.clk (rising edge triggered by clock ext_mem_clk  { rise@0.000000ns  fall@4.000000ns  period=8.000000 })
+End Point           : sd_card_bmp_m0/bmp_read_m0/write_req_reg_syn_11.b[0] (rising edge triggered by clock sd_card_clk  { rise@0.000000ns  fall@5.000000ns  period=10.000000 })
+Check Type          : setup
+Process             : slow
+Budget              : 2.000ns { sd_card_clk rising@10.000ns - ext_mem_clk rising@8.000ns }
+Data Path Delay     : 2.375ns (cell 1.270ns (53%), net 1.105ns (47%))
+Clock Skew          : 0.021ns
+Logic Level         : 3 ( LUT5=1  LUT4=1  LUT2=1 )
+Max Fanout          : 6
+Clock Uncertainty   : 0.100ns (sdc uncertainty: 0.000ns, default uncertainty: 0.100ns)
+
+Path Group: ext_mem_clk -> sys_pll_m0/pll_inst.clkc[2]
+Max            : SWNS     -2.799ns, STNS    -80.345ns,        32 Viol Endpoints,        48 Total Endpoints,        48 Paths Analyzed
+
+Slack               : -2.799ns
+Begin Point         : U3/u2_ram/u2_wrrd/app_wr_din_2d_reg[20]_syn_3.clk (rising edge triggered by clock ext_mem_clk  { rise@0.000000ns  fall@4.000000ns  period=8.000000 })
+End Point           : U3/sdram.dq[17] (rising edge triggered by clock sys_pll_m0/pll_inst.clkc[2]  { rise@4.000000ns  fall@0.000000ns  period=8.000000 })
+Check Type          : setup
+Process             : slow
+Budget              : 4.000ns { sys_pll_m0/pll_inst.clkc[2] rising@4.000ns - ext_mem_clk rising@0.000ns }
+Data Path Delay     : 10.364ns (cell 8.193ns (79%), net 2.171ns (21%))
+Clock Skew          : 3.665ns
+Logic Level         : 1 ( PAD=1 )
+Max Fanout          : 34
+Clock Uncertainty   : 0.100ns (sdc uncertainty: 0.000ns, default uncertainty: 0.100ns)
+
+Path Group: sys_pll_m0/pll_inst.clkc[2] -> ext_mem_clk
+Max            : SWNS     -6.699ns, STNS   -214.368ns,        32 Viol Endpoints,        32 Total Endpoints,        32 Paths Analyzed
+
+Slack               : -6.699ns
+Begin Point         : U3/sdram.dq[0] (rising edge triggered by clock sys_pll_m0/pll_inst.clkc[2]  { rise@4.000000ns  fall@0.000000ns  period=8.000000 })
+End Point           : U3/sdram_syn_1.bpad (rising edge triggered by clock ext_mem_clk  { rise@0.000000ns  fall@4.000000ns  period=8.000000 })
+Check Type          : setup
+Process             : slow
+Budget              : 4.000ns { ext_mem_clk rising@8.000ns - sys_pll_m0/pll_inst.clkc[2] rising@4.000ns }
+Data Path Delay     : 6.453ns (cell 6.453ns (100%), net 0.000ns (0%))
+Clock Skew          : 4.306ns
+Logic Level         : 0
+Max Fanout          : 0
+Clock Uncertainty   : 0.100ns (sdc uncertainty: 0.000ns, default uncertainty: 0.100ns)
