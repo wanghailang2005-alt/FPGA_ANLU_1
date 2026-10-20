@@ -1,6 +1,6 @@
 # HX4S20 HDMI OSD 渐进开发
 
-本目录是三人协作项目中 OSD 板块的独立开发仓库。已完成字库、单字符选点和 HELLO FPGA 固定文字的 RGB 透明叠加仿真；尚未接入原有 TF/SDRAM/HDMI 工程。
+本目录是三人协作项目中 OSD 板块的独立开发仓库。已完成字库、单字符选点、固定文字 RGB 透明叠加，以及 DE/VS 坐标恢复与 OSD 串联仿真；尚未接入原有 TF/SDRAM/HDMI 工程。
 
 ## 当前能力
 
@@ -10,6 +10,7 @@
 - 高有效异步复位，复位或无效请求时输出清零。
 - `osd_glyph_pixel` 在字库后选择字内横坐标对应的像素，端到端固定两级寄存，支持每拍一个像素请求。
 - `osd_overlay` 在 (16,16) 叠加白色 HELLO FPGA，三级寄存，背景/同步/坐标保持匹配，开关旁路不改变延迟。
+- `osd_video_position` 从已有 DE/VS 生成有效区坐标，一级寄存；未取得帧同步时保留视频并禁止 OSD 定位。
 - 文字还没有显示到 HDMI；当前验证级别为 SIM PASS，未进行本模块 TD 综合、时序或板测。
 
 ## 目录
@@ -19,12 +20,15 @@ rtl/osd_font_rom.v          可综合字体行查询
 rtl/osd_glyph_pixel.v       两级寄存的字符像素查询
 rtl/osd_fixed_layout.v      HELLO FPGA 字符排版，组合输出
 rtl/osd_overlay.v           三级视频寄存、透明叠加
+rtl/osd_video_position.v    DE/VS 恢复坐标，一级寄存
 sim/tb_osd_font_rom.sv      独立自检与字形预览输出
 sim/run_font_rom.do         ModelSim 编译运行，返回成功或失败码
 sim/tb_osd_glyph_pixel.sv   完整字符像素和两级时序自检
 sim/run_glyph_pixel.do      选点模块自检入口
 sim/tb_osd_overlay.sv       三帧完整视频逐拍自检
 sim/run_overlay.do          固定文字叠加自检入口
+sim/tb_osd_video_position.sv 双同步极性、坐标与四级串联自检
+sim/run_video_position.do   坐标恢复及串联自检入口
 evidence/                  真实仿真日志和 DUT 字形预览
 THIRD_PARTY_NOTICES.md      字形来源与适配说明
 LICENSE.FPGA-text-overlay   上游 MIT 许可原文
@@ -143,6 +147,37 @@ $LASTEXITCODE
 
 本步没有生成真实视频坐标模块，也没有进行 AXIS/HDMI 完整链路验证、TD 综合、时序或板测；后续实时接入须先核对坐标和同步来源。
 
+## 第四步 从现有视频恢复坐标
+
+`osd_video_position` 输入为 `clk/rst/in_rgb/in_de/in_hs/in_vs`；输出为一级寄存的 `out_rgb/out_de/out_hs/out_vs/out_x/out_y`，以及 `position_valid/frame_tick`。不生成像素时钟、HS/VS 或显示时序，也不控制 SDRAM 读取。
+
+- 固定支持 640×480 有效区。`VS_ACTIVE` 参数默认 0，与当前工程负极性同步匹配，也已验证设为 1。
+- 复位后必须先观察 VS 非活动、活动、再非活动的完整序列，才能启用坐标；初始低电平或复位清零不被当成完整 VS。
+- 每次合格 VS 活动结束时，在消隐期间产生一拍 `frame_tick` 并清零下一帧的 x/y 计数。
+- DE 有效拍按 x=0～639 计数；DE 下降后的消隐拍推进到下一有效行 y=0～479。输入须为每行一个连续 DE 区间的正常视频；不把异常 DE 毛刺当成可恢复的正常输入。
+- 只有位置可信且当前输入 DE 有效时，对应输出 `position_valid=1`。未知位置、消隐和越界时坐标输出 0、valid=0；原视频与同步仍透传。
+- 超长行或多余行到达无效哨兵 640/480 后不回绕。该保护不是完整视频格式检测，不声称自动恢复丢失同步或坏行。
+
+串联时将坐标模块的 RGB/DE/HS/VS/X/Y 一起送入 `osd_overlay`，文字 enable 还需与 `position_valid` 相与。外部请求 enable 与输入视频对应时，也延迟一级后使用；当前测试平台明确实现了该寄存，不依赖参数恰好不变。最终 SW 控制还需要帧边界锁存，不能把物理开关直接接入。
+
+```text
+原有 RGB/DE/HS/VS → 坐标恢复（1级）→ OSD（3级）→ 待接现有 RGB-to-AXIS
+```
+
+总计四级寄存，输入在 N 沿采样后，于 N+3 沿更新输出。获取帧同步前背景仍显示，只有文字暂时不显示。坐标有效标志只用于文字定位，不得拿它替代视频 DE，否则会丢弃启动帧。
+
+运行：
+
+```powershell
+Set-Location 'D:\2026FPGA_1\HX4S20_Contest_202606\7_lab_ex_2026_nosoft\osd_dev\sim'
+& 'E:\Modelsim\win64\vsim.exe' -c -do run_video_position.do
+$LASTEXITCODE
+```
+
+结果：`checks=6302022 frame_ticks=5 complete_frames=307200/307200/307200`，退出码 0。测试同时检查正/负 VS 极性的两个坐标模块，负极性实例串联 OSD；覆盖五帧、启动时半帧和复位低电平、有效区内复位、旁路、超长行哨兵与下一行恢复。
+
+`frame_tick` 与坐标模块输出同属于一级输出阶段；以后如果在 OSD 输出端使用帧事件，需要额外对齐后面的三级延迟。当前仍未接入真实主工程或执行 TD 实现。
+
 ## Git 与 GitHub
 
 本目录作为独立 Git 仓库，使用 `main` 分支。初始化提交包括模块、测试、使用说明、来源和验证证据。源码所在的上层参考工程没有被改成 Git 上传范围。
@@ -155,7 +190,8 @@ GitHub 仓库已建立并绑定：<https://github.com/wanghailang2005-alt/fpga-h
 
 1. 已完成：字库行查询与单字符像素查询，对齐 x 与行数据并自检。
 2. 已完成：在仿真背景上显示 HELLO FPGA，逐拍验证透明背景与 RGB/DE/HS/VS/坐标的三级对齐。
-3. 下一步：核对并实现实时坐标适配，再经单独接入方案审阅，在候选工程接入并做 TD 检查与上板。
-4. 加入图片序号、轮播状态与菜单；最后做滚动字幕和四位 SW/K3 控制。
+3. 已完成：实时 DE/VS 坐标适配与四级 OSD 串联自检。
+4. 下一步：经单独接入方案审阅，在候选工程接入并做 TD 检查与上板；原工程保留。
+5. 固定文字板测通过后加入图片序号、轮播状态与菜单；最后做滚动字幕和四位 SW/K3 控制。
 
 K1 复位、K2 下一张、K4 轮播保持一致；本步骤尚未修改物理端口或按键逻辑。
