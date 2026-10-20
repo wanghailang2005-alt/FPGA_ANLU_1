@@ -1,0 +1,64 @@
+# if {[file exists work]} {vmap work work} else {vlib work; vmap work work}
+# Model Technology ModelSim SE-64 vmap 2020.4 Lib Mapping Utility 2020.10 Oct 13 2020
+# vmap work work 
+# Modifying modelsim.ini
+# vlog -work work ../rtl/osd_font_rom.v ../rtl/osd_glyph_pixel.v ../rtl/osd_fixed_layout.v ../rtl/osd_overlay.v
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 16:55:28 on Oct 20,2026
+# vlog -work work ../rtl/osd_font_rom.v ../rtl/osd_glyph_pixel.v ../rtl/osd_fixed_layout.v ../rtl/osd_overlay.v 
+# -- Compiling module osd_font_rom
+# -- Compiling module osd_glyph_pixel
+# -- Compiling module osd_fixed_layout
+# -- Compiling module osd_overlay
+# 
+# Top level modules:
+# 	osd_overlay
+# End time: 16:55:29 on Oct 20,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+# vlog -sv -work work tb_osd_overlay.sv
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 16:55:29 on Oct 20,2026
+# vlog -sv -work work tb_osd_overlay.sv 
+# -- Compiling module tb_osd_overlay
+# 
+# Top level modules:
+# 	tb_osd_overlay
+# End time: 16:55:29 on Oct 20,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# eval vsim -voptargs=+acc -onfinish stop work.tb_osd_overlay $sim_args
+# vsim -voptargs="+acc" -onfinish stop work.tb_osd_overlay "+FORCE_FAIL" 
+# Start time: 16:55:29 on Oct 20,2026
+# ** Note: (vsim-8009) Loading existing optimized design _opt
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.tb_osd_overlay(fast)
+# Loading work.osd_overlay(fast)
+# Loading work.osd_fixed_layout(fast)
+# Loading work.osd_glyph_pixel(fast)
+# Loading work.osd_font_rom(fast)
+# run -all
+# ** Fatal: FAIL intentional harness check
+#    Time: 2 ns  Scope: tb_osd_overlay File: tb_osd_overlay.sv Line: 109
+# ** Note: $finish    : tb_osd_overlay.sv(109)
+#    Time: 2 ns  Iteration: 0  Instance: /tb_osd_overlay
+# Break in Module tb_osd_overlay at tb_osd_overlay.sv line 109
+# Stopped at tb_osd_overlay.sv line 109
+# if {[examine -radix unsigned /tb_osd_overlay/test_passed] != 1} {
+#     echo "FAIL: overlay self-check did not complete successfully"
+#     quit -code 1 -force
+# }
+# FAIL: overlay self-check did not complete successfully
+# End time: 16:55:29 on Oct 20,2026, Elapsed time: 0:00:00
+# Errors: 1, Warnings: 0

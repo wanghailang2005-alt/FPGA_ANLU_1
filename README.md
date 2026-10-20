@@ -1,6 +1,6 @@
 # HX4S20 HDMI OSD 渐进开发
 
-本目录是三人协作项目中 OSD 板块的独立开发仓库。已完成 ASCII 字库行查询和单字符像素查询；尚未接入原有 TF/SDRAM/HDMI 工程。
+本目录是三人协作项目中 OSD 板块的独立开发仓库。已完成字库、单字符选点和 HELLO FPGA 固定文字的 RGB 透明叠加仿真；尚未接入原有 TF/SDRAM/HDMI 工程。
 
 ## 当前能力
 
@@ -9,6 +9,7 @@
 - 每拍可接收一个行请求，输出经过一个寄存器级；无反压。
 - 高有效异步复位，复位或无效请求时输出清零。
 - `osd_glyph_pixel` 在字库后选择字内横坐标对应的像素，端到端固定两级寄存，支持每拍一个像素请求。
+- `osd_overlay` 在 (16,16) 叠加白色 HELLO FPGA，三级寄存，背景/同步/坐标保持匹配，开关旁路不改变延迟。
 - 文字还没有显示到 HDMI；当前验证级别为 SIM PASS，未进行本模块 TD 综合、时序或板测。
 
 ## 目录
@@ -16,10 +17,14 @@
 ```text
 rtl/osd_font_rom.v          可综合字体行查询
 rtl/osd_glyph_pixel.v       两级寄存的字符像素查询
+rtl/osd_fixed_layout.v      HELLO FPGA 字符排版，组合输出
+rtl/osd_overlay.v           三级视频寄存、透明叠加
 sim/tb_osd_font_rom.sv      独立自检与字形预览输出
 sim/run_font_rom.do         ModelSim 编译运行，返回成功或失败码
 sim/tb_osd_glyph_pixel.sv   完整字符像素和两级时序自检
 sim/run_glyph_pixel.do      选点模块自检入口
+sim/tb_osd_overlay.sv       三帧完整视频逐拍自检
+sim/run_overlay.do          固定文字叠加自检入口
 evidence/                  真实仿真日志和 DUT 字形预览
 THIRD_PARTY_NOTICES.md      字形来源与适配说明
 LICENSE.FPGA-text-overlay   上游 MIT 许可原文
@@ -104,6 +109,40 @@ $LASTEXITCODE
 
 预期返回 1。该命令只检验脚本失败判定，不代表正常模块自检失败。
 
+## 第三步 固定文字透明叠加
+
+![实际 DUT 输出的文字局部预览](evidence/hello_fpga_preview.png)
+
+预览来自仿真实际输出的 96×32 局部 PPM，PNG 只做 6 倍最近邻放大以方便阅读，不是开发板照片。原始 PPM 保存在 `evidence/hello_fpga_crop.ppm`。
+
+模块连接：`osd_fixed_layout → osd_glyph_pixel → RGB 前景/背景选择`。字体/选点模块未修改。固定字框覆盖 x=16～95、y=16～31；字形点为 1 时白色，其他有效像素保留原图，DE=0 时黑色。
+
+`osd_overlay` 接口：
+
+| 输入/输出 | 含义 |
+|---|---|
+| `clk/rst` | 单一像素时钟、高有效异步复位 |
+| `enable` | 文字开关；调用方保证一帧有效区期间稳定 |
+| `in_rgb[23:0]` / `out_rgb[23:0]` | RGB888，R 在高 8 位 |
+| `in_de/hs/vs` / `out_de/hs/vs` | 实际端口分别为 `in_de,in_hs,in_vs` 和 `out_de,out_hs,out_vs`；控制与像素等延迟 |
+| `in_x[9:0],in_y[8:0]` / `out_x,out_y` | 左上原点有效区坐标；坐标由调用方提供，不能从此模块取得新增视频时序 |
+
+排版是组合逻辑，不增加寄存级。选点经过两级寄存，同时背景与控制也经过两级；第三级寄存进行叠加并输出同步控制。输入在 N 沿采样，结果在 N+2 沿更新后可用；enable=0 也经过相同三级，不是直接接线旁路。主工程以后接入时，须使用匹配的 out_rgb/out_de/out_vs，不能只替换 RGB 而仍使用原始同步。
+
+PowerShell 运行入口：
+
+```powershell
+Set-Location 'D:\2026FPGA_1\HX4S20_Contest_202606\7_lab_ex_2026_nosoft\osd_dev\sim'
+& 'E:\Modelsim\win64\vsim.exe' -c -do run_overlay.do
+$LASTEXITCODE
+```
+
+实际结果：`checks=1260016 active_pixels=921600 foreground_pixels=868`，退出码 0。测试运行三帧 800×525 总时序，其中每帧 640×480 有效区，HS/VS 为负极性；三帧依次开启/关闭/开启，逐拍比较 RGB、DE、HS、VS、X/Y，覆盖空格、字框四边、首末行列、消隐和复位中断。仿真使用 100 MHz 测试时钟加速逻辑检查，这不是板级像素频率或实测帧率。
+
+正常日志为 `evidence/modelsim_overlay.log`。可用 `sim_args {+FORCE_FAIL}` 和独立 log_file 执行故意失败检查；预期返回 1。
+
+本步没有生成真实视频坐标模块，也没有进行 AXIS/HDMI 完整链路验证、TD 综合、时序或板测；后续实时接入须先核对坐标和同步来源。
+
 ## Git 与 GitHub
 
 本目录作为独立 Git 仓库，使用 `main` 分支。初始化提交包括模块、测试、使用说明、来源和验证证据。源码所在的上层参考工程没有被改成 Git 上传范围。
@@ -115,8 +154,8 @@ GitHub 仓库已建立并绑定：<https://github.com/wanghailang2005-alt/fpga-h
 ## 后续步骤
 
 1. 已完成：字库行查询与单字符像素查询，对齐 x 与行数据并自检。
-2. 下一步：在仿真背景上显示 HELLO FPGA，验证透明背景与 RGB/DE/HS/VS 对齐。
-3. 经单独接入方案审阅后，在候选工程接入并做 TD 检查与上板。
+2. 已完成：在仿真背景上显示 HELLO FPGA，逐拍验证透明背景与 RGB/DE/HS/VS/坐标的三级对齐。
+3. 下一步：核对并实现实时坐标适配，再经单独接入方案审阅，在候选工程接入并做 TD 检查与上板。
 4. 加入图片序号、轮播状态与菜单；最后做滚动字幕和四位 SW/K3 控制。
 
 K1 复位、K2 下一张、K4 轮播保持一致；本步骤尚未修改物理端口或按键逻辑。
