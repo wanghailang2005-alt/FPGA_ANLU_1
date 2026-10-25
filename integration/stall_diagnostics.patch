@@ -1,0 +1,131 @@
+--- a/src/user_source/hdl_source/SD/sd_card_bmp.v
++++ b/src/user_source/hdl_source/SD/sd_card_bmp.v
+@@ -96,6 +96,53 @@
+ wire auto_tick;
+ wire [1:0] next_from_current;
+ 
++// Observation only: no timeout recovery, no modifications to load control.
++localparam [31:0] DIAG_STALL_CYCLES = CLK_FREQ_HZ * 2;
++reg [31:0] diag_stall_count, diag_page_count;
++reg [18:0] diag_prev_pixels, diag_snapshot_pixels;
++reg [7:0] diag_prev_progress;
++reg [19:0] diag_snapshot_flags;
++reg diag_snapshot_valid, diag_flag_page;
++wire [7:0] diag_progress = {state_code_i, source_done_seen, write_done_seen,
++                            write_req, write_req_ack};
++wire [19:0] diag_flags_now = {4'hf,
++    load_busy, source_done_seen, write_done_seen, write_finish_pulse,
++    bmp_ready, write_req, write_req_ack, sd_init_done,
++    load_idx, disp_buf_idx,
++    wrfin_tgl_sync[2], wrfin_tgl_sync[1], next_req_pending, auto_play_en};
++wire diag_wait = load_busy && (source_done_seen || bmp_ready);
++always @(posedge clk or posedge rst) begin
++    if (rst) begin
++        diag_stall_count<=0; diag_page_count<=0; diag_prev_pixels<=0;
++        diag_snapshot_pixels<=0; diag_prev_progress<=0;
++        diag_snapshot_flags<=0; diag_snapshot_valid<=0; diag_flag_page<=0;
++    end else begin
++        diag_prev_pixels<=pixel_write_count;
++        diag_prev_progress<=diag_progress;
++        if (!sd_init_done || !load_busy || load_start_pulse) begin
++            diag_stall_count<=0; diag_snapshot_valid<=0;
++            diag_page_count<=0; diag_flag_page<=0;
++        end else begin
++            if (!diag_snapshot_valid) begin
++                if (diag_prev_pixels!=pixel_write_count || diag_prev_progress!=diag_progress)
++                    diag_stall_count<=0;
++                else if (diag_stall_count < DIAG_STALL_CYCLES-1)
++                    diag_stall_count<=diag_stall_count+1'b1;
++                else begin
++                    diag_snapshot_pixels<=pixel_write_count;
++                    diag_snapshot_flags<=diag_flags_now;
++                    diag_snapshot_valid<=1;
++                end
++            end
++            if (diag_snapshot_valid) begin
++                if (diag_page_count >= CLK_FREQ_HZ-1) begin
++                    diag_page_count<=0; diag_flag_page<=~diag_flag_page;
++                end else diag_page_count<=diag_page_count+1'b1;
++            end
++        end
++    end
++end
++
+ // Tags change only when a complete image is committed, never at load start.
+ always @(posedge clk or posedge rst) begin
+     if (rst) begin osd_tag0<=0; osd_tag1<=0; end
+@@ -108,7 +155,10 @@
+ 
+ assign write_en   = bmp_data_wr_en;
+ assign write_data = {bmp_data[23:16], bmp_data[15:8], bmp_data[7:0], 8'b0};
+-assign pixel_count_debug = load_error_seen ?
++assign pixel_count_debug = (diag_wait && !load_error_seen) ?
++                           reverse_hex_digits(diag_snapshot_valid ?
++                               (diag_flag_page ? diag_snapshot_flags : {1'b0,diag_snapshot_pixels}) :
++                               {1'b0,pixel_write_count}) : load_error_seen ?
+                            (debug_page == 2'd0) ? reverse_hex_digits(load_error_sector_seen) :
+                            (debug_page == 2'd1) ? reverse_hex_digits({4'd0, scan_first_signature_seen}) :
+                            (debug_page == 2'd2) ? reverse_hex_digits({4'd0, load_error_signature_seen}) :
+@@ -131,8 +181,9 @@
+ assign state_code = (scan_done && (img_found_count == 3'd0) && !display_valid) ? 4'he :
+                     (scan_done && (state_code_i == 4'd2)) ? 4'd5 :
+                     (load_busy && load_error_seen) ? 4'd8 :
+-                    (load_busy && source_done_seen && !display_valid && (pixel_write_count != 19'd307200)) ? 4'd7 :
+-                    (load_busy && source_done_seen && !display_valid) ? 4'd6 :
++                    (load_busy && source_done_seen && (pixel_write_count != 19'd307200)) ? 4'd7 :
++                    (load_busy && source_done_seen) ? 4'd6 :
++                    (load_busy && bmp_ready) ? 4'd9 :
+                     state_code_i;
+ 
+ key_press_debounce #(
+--- a/src/user_source/hdl_source/top_tf_hdmi_audio.v
++++ b/src/user_source/hdl_source/top_tf_hdmi_audio.v
+@@ -25,6 +25,8 @@
+     input                       sd_miso
+ );
+ 
++// Diagnostic A/B: 1=dynamic metadata path, 0=fixed text + legacy bank selection.
++parameter OSD_STATUS_MODE = 1;
+ parameter MEM_DATA_BITS = 32;
+ parameter ADDR_BITS     = 21;
+ parameter BUSRT_BITS    = 10;
+@@ -209,11 +211,11 @@
+     .rst_n             (rst_n),
+     .seg_sel           (seg_sel),
+     .seg_data          (seg_data),
+-    .seg_data_0        ((state_code == 4'd7 || state_code == 4'd8) ? {1'b1,seg_count_0} : {1'b1,7'b1111_111}),
+-    .seg_data_1        ((state_code == 4'd7 || state_code == 4'd8) ? {1'b1,seg_count_1} : {1'b1,7'b1111_111}),
+-    .seg_data_2        ((state_code == 4'd7 || state_code == 4'd8) ? {1'b1,seg_count_2} : {1'b1,7'b1111_111}),
+-    .seg_data_3        ((state_code == 4'd7 || state_code == 4'd8) ? {1'b1,seg_count_3} : {1'b1,7'b1111_111}),
+-    .seg_data_4        ((state_code == 4'd7 || state_code == 4'd8) ? {1'b1,seg_count_4} : {1'b1,7'b1111_111}),
++    .seg_data_0        ((state_code == 4'd6 || state_code == 4'd7 || state_code == 4'd8 || state_code == 4'd9) ? {1'b1,seg_count_0} : {1'b1,7'b1111_111}),
++    .seg_data_1        ((state_code == 4'd6 || state_code == 4'd7 || state_code == 4'd8 || state_code == 4'd9) ? {1'b1,seg_count_1} : {1'b1,7'b1111_111}),
++    .seg_data_2        ((state_code == 4'd6 || state_code == 4'd7 || state_code == 4'd8 || state_code == 4'd9) ? {1'b1,seg_count_2} : {1'b1,7'b1111_111}),
++    .seg_data_3        ((state_code == 4'd6 || state_code == 4'd7 || state_code == 4'd8 || state_code == 4'd9) ? {1'b1,seg_count_3} : {1'b1,7'b1111_111}),
++    .seg_data_4        ((state_code == 4'd6 || state_code == 4'd7 || state_code == 4'd8 || state_code == 4'd9) ? {1'b1,seg_count_4} : {1'b1,7'b1111_111}),
+     .seg_data_5        ({1'b1,seg_data_0})
+ );
+ 
+@@ -270,7 +272,7 @@
+     .read_addr_1       (BUF1_ADDR),
+     .read_addr_2       (24'd0),
+     .read_addr_3       (24'd0),
+-    .read_addr_index   (osd_mem_status[5:4]),
++    .read_addr_index   (OSD_STATUS_MODE ? osd_mem_status[5:4] : disp_buf_idx),
+     .read_len          (FRAME_PIXELS),
+     .read_en           (video_read_en),
+     .read_data         (video_read_data),
+@@ -392,11 +394,11 @@
+             osd_status_frame<=osd_pixel_status;
+     end
+ end
+-osd_overlay #(.STATUS_MODE(1)) u_osd_overlay (
++osd_overlay #(.STATUS_MODE(OSD_STATUS_MODE)) u_osd_overlay (
+     .image_valid(osd_status_frame[2]), .image_index(osd_status_frame[1:0]),
+     .auto_play(osd_status_frame[3]),
+     .clk(video_clk), .rst(rst_all),
+-    .enable(osd_position_valid),
++    .enable(osd_position_valid && (OSD_STATUS_MODE || osd_enable_frame)),
+     .in_rgb(osd_pos_rgb), .in_de(osd_pos_de),
+     .in_hs(osd_pos_hs), .in_vs(osd_pos_vs),
+     .in_x(osd_pos_x), .in_y(osd_pos_y),

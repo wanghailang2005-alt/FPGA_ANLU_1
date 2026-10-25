@@ -1,0 +1,11 @@
+{
+  "default_mode": 0,
+  "meaning": "fixed HELLO FPGA + legacy bank select + diagnostics",
+  "bit": "OSD_FIXED_DEFAULT_20261025.bit",
+  "sha256": "bc9218e5591812df23c9c7b90628a9375ce2720d5250837b0116aa93dc04f0fb",
+  "same_as_user_tested_bit": false,
+  "setup": "FAIL: WNS -6.699 ns, TNS -419.063 ns",
+  "hold": "WNS +0.019 ns, TNS 0",
+  "user_report": "FIXED_LEGACY same-card test: no issue observed",
+  "new_build_board": "UNVERIFIED"
+}

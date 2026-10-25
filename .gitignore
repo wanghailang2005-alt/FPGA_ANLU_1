@@ -6,3 +6,20 @@ sim/transcript
 *.vstf
 evidence/real_timing_osd.ppm
 sim/real_timing_negative.ppm
+
+evidence/status_video.ppm
+
+# Local diagnostics: vendor snapshots, bitstreams, tools and user video frames.
+evidence/video_tools/
+evidence/*_active_path.txt
+evidence/**/*.bit
+evidence/**/*.zip
+evidence/**/source_after/
+evidence/ack_release_*/*.v
+evidence/ack_release_*/negative_old_bmp.do
+evidence/storage_probe_*/*.v
+evidence/scroll_off_*/*.v
+evidence/scroll_compact_*/*.v
+evidence/k4_video_*/*.jpg
+evidence/*.ppm
+__pycache__/

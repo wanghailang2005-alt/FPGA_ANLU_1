@@ -1,0 +1,507 @@
+--- a/src/user_source/hdl_source/top_tf_hdmi_audio.v
++++ b/src/user_source/hdl_source/top_tf_hdmi_audio.v
+@@ -25,6 +25,8 @@
+     input                       sd_miso
+ );
+ 
++// Diagnostic A/B: 1=dynamic metadata path, 0=fixed text + legacy bank selection.
++parameter OSD_STATUS_MODE = 1;
+ parameter MEM_DATA_BITS = 32;
+ parameter ADDR_BITS     = 21;
+ parameter BUSRT_BITS    = 10;
+@@ -49,6 +51,20 @@
+ wire [23:0] vout_data_raw;
+ wire [23:0] vout_data;
+ wire        display_valid;
++wire rst_all;
++wire [7:0] osd_sd_status, osd_mem_status;
++wire [79:0] storage_diag_mem, storage_diag_sd;
++wire [2:0] storage_diag_write;
++osd_status_cdc #(.WIDTH(80)) u_storage_probe_mem_sd (
++    .src_clk(ext_mem_clk), .dst_clk(sd_card_clk), .rst(rst_all),
++    .src_data(storage_diag_mem), .dst_data(storage_diag_sd));
++wire [3:0] osd_read_status, osd_pixel_status;
++osd_status_cdc #(.WIDTH(8)) u_status_sd_mem (
++    .src_clk(sd_card_clk), .dst_clk(ext_mem_clk), .rst(rst_all),
++    .src_data(osd_sd_status), .dst_data(osd_mem_status));
++osd_status_cdc #(.WIDTH(4)) u_status_mem_pixel (
++    .src_clk(ext_mem_clk), .dst_clk(video_clk), .rst(rst_all),
++    .src_data(osd_read_status), .dst_data(osd_pixel_status));
+ 
+ wire [3:0]  state_code;
+ wire [6:0]  seg_data_0;
+@@ -116,7 +132,6 @@
+ wire [9:0]  tmds_clk_data;
+ 
+ // 统一复位：TF 图像链路 + HDMI 音频链路
+-wire rst_all;
+ assign rst_all = ~rst_n | ~audio_pll_lock;
+ 
+ // 保持你原来的 TF / SDRAM / video 时钟
+@@ -166,9 +181,11 @@
+     .key_auto          (key2),
+     .state_code        (state_code),
+     .pixel_count_debug (pixel_count_debug),
++    .storage_diag_sd(storage_diag_sd), .storage_diag_write(storage_diag_write),
+     .bmp_width         (16'd640),
+     .bmp_height        (16'd480),
+     .display_valid     (display_valid),
++    .osd_status(osd_sd_status),
+ 
+     .write_finish_toggle(frame_write_toggle_mem),
+     .write_buf_idx     (write_buf_idx),
+@@ -200,11 +217,11 @@
+     .rst_n             (rst_n),
+     .seg_sel           (seg_sel),
+     .seg_data          (seg_data),
+-    .seg_data_0        ((state_code == 4'd7 || state_code == 4'd8) ? {1'b1,seg_count_0} : {1'b1,7'b1111_111}),
+-    .seg_data_1        ((state_code == 4'd7 || state_code == 4'd8) ? {1'b1,seg_count_1} : {1'b1,7'b1111_111}),
+-    .seg_data_2        ((state_code == 4'd7 || state_code == 4'd8) ? {1'b1,seg_count_2} : {1'b1,7'b1111_111}),
+-    .seg_data_3        ((state_code == 4'd7 || state_code == 4'd8) ? {1'b1,seg_count_3} : {1'b1,7'b1111_111}),
+-    .seg_data_4        ((state_code == 4'd7 || state_code == 4'd8) ? {1'b1,seg_count_4} : {1'b1,7'b1111_111}),
++    .seg_data_0        ((state_code == 4'd6 || state_code == 4'd7 || state_code == 4'd8 || state_code == 4'd9) ? {1'b1,seg_count_0} : {1'b1,7'b1111_111}),
++    .seg_data_1        ((state_code == 4'd6 || state_code == 4'd7 || state_code == 4'd8 || state_code == 4'd9) ? {1'b1,seg_count_1} : {1'b1,7'b1111_111}),
++    .seg_data_2        ((state_code == 4'd6 || state_code == 4'd7 || state_code == 4'd8 || state_code == 4'd9) ? {1'b1,seg_count_2} : {1'b1,7'b1111_111}),
++    .seg_data_3        ((state_code == 4'd6 || state_code == 4'd7 || state_code == 4'd8 || state_code == 4'd9) ? {1'b1,seg_count_3} : {1'b1,7'b1111_111}),
++    .seg_data_4        ((state_code == 4'd6 || state_code == 4'd7 || state_code == 4'd8 || state_code == 4'd9) ? {1'b1,seg_count_4} : {1'b1,7'b1111_111}),
+     .seg_data_5        ({1'b1,seg_data_0})
+ );
+ 
+@@ -256,11 +273,12 @@
+     .read_req          (video_read_req),
+     .read_req_ack      (video_read_req_ack),
+     .read_finish       (),
++    .read_status(osd_mem_status), .read_frame_status(osd_read_status),
+     .read_addr_0       (BUF0_ADDR),
+     .read_addr_1       (BUF1_ADDR),
+     .read_addr_2       (24'd0),
+     .read_addr_3       (24'd0),
+-    .read_addr_index   (disp_buf_idx),
++    .read_addr_index   (OSD_STATUS_MODE ? osd_mem_status[5:4] : disp_buf_idx),
+     .read_len          (FRAME_PIXELS),
+     .read_en           (video_read_en),
+     .read_data         (video_read_data),
+@@ -274,6 +292,7 @@
+     .write_req         (sd_card_write_req),
+     .write_req_ack     (sd_card_write_req_ack),
+     .write_finish      (frame_write_finish),
++    .storage_diag_mem(storage_diag_mem), .storage_diag_write(storage_diag_write),
+     .write_addr_0      (BUF0_ADDR),
+     .write_addr_1      (BUF1_ADDR),
+     .write_addr_2      (24'd0),
+@@ -336,12 +355,71 @@
+ );
+ 
+ // ===================== RGB/DE 转 AXIS 视频 =====================
++// Candidate-only insertion before the existing RGB-to-AXIS instance.
++wire [23:0] osd_pos_rgb;
++wire osd_pos_de, osd_pos_hs, osd_pos_vs, osd_position_valid, osd_frame_tick;
++wire [9:0] osd_pos_x;
++wire [8:0] osd_pos_y;
++wire [23:0] osd_video_rgb;
++wire osd_video_de, osd_video_hs, osd_video_vs;
++wire [9:0] osd_video_x;
++wire [8:0] osd_video_y;
++reg osd_display_meta, osd_display_sync, osd_enable_frame;
++
++// Only the OSD enable consumes this synchronized status. The original
++// display_valid black-screen gate and TF/SDRAM path remain unchanged.
++always @(posedge video_clk or posedge rst_all) begin
++    if (rst_all) begin
++        osd_display_meta <= 1'b0;
++        osd_display_sync <= 1'b0;
++        osd_enable_frame <= 1'b0;
++    end else begin
++        osd_display_meta <= display_valid;
++        osd_display_sync <= osd_display_meta;
++        if (osd_frame_tick)
++            osd_enable_frame <= osd_display_sync;
++    end
++end
++
++osd_video_position #(.VS_ACTIVE(1'b0)) u_osd_video_position (
++    .clk(video_clk), .rst(rst_all),
++    .in_rgb(vout_data), .in_de(de), .in_hs(hs), .in_vs(vs),
++    .out_rgb(osd_pos_rgb), .out_de(osd_pos_de),
++    .out_hs(osd_pos_hs), .out_vs(osd_pos_vs),
++    .out_x(osd_pos_x), .out_y(osd_pos_y),
++    .position_valid(osd_position_valid), .frame_tick(osd_frame_tick)
++);
++// Latch after the memory frame request, at active-video entry. Metadata
++// has the entire vertical back porch to cross; first text pixel is x=16.
++reg osd_pos_de_prev;
++reg [3:0] osd_status_frame;
++always @(posedge video_clk or posedge rst_all) begin
++    if (rst_all) begin osd_pos_de_prev<=0; osd_status_frame<=0; end
++    else begin
++        osd_pos_de_prev<=osd_pos_de;
++        if (osd_pos_de && !osd_pos_de_prev && osd_pos_y==0)
++            osd_status_frame<=osd_pixel_status;
++    end
++end
++osd_overlay #(.STATUS_MODE(OSD_STATUS_MODE)) u_osd_overlay (
++    .image_valid(osd_status_frame[2]), .image_index(osd_status_frame[1:0]),
++    .auto_play(osd_status_frame[3]),
++    .clk(video_clk), .rst(rst_all),
++    .enable(osd_position_valid && (OSD_STATUS_MODE || osd_enable_frame)),
++    .in_rgb(osd_pos_rgb), .in_de(osd_pos_de),
++    .in_hs(osd_pos_hs), .in_vs(osd_pos_vs),
++    .in_x(osd_pos_x), .in_y(osd_pos_y),
++    .out_rgb(osd_video_rgb), .out_de(osd_video_de),
++    .out_hs(osd_video_hs), .out_vs(osd_video_vs),
++    .out_x(osd_video_x), .out_y(osd_video_y)
++);
++
+ video_rgb_to_axis_640x480 u_video_rgb_to_axis_640x480(
+     .I_clk         (video_clk),
+     .I_rst         (rst_all),
+-    .I_vs          (vs),
+-    .I_de          (de),
+-    .I_rgb         (vout_data),
++    .I_vs          (osd_video_vs),
++    .I_de          (osd_video_de),
++    .I_rgb         (osd_video_rgb),
+     .O_video_user  (axis_s_user),
+     .O_video_valid (axis_s_valid),
+     .O_video_last  (axis_s_last),
+--- a/src/user_source/hdl_source/SD/sd_card_bmp.v
++++ b/src/user_source/hdl_source/SD/sd_card_bmp.v
+@@ -14,7 +14,11 @@
+     input  [15:0]               bmp_width,
+     input  [15:0]               bmp_height,
+     output reg                  display_valid,
+-
++    // SD-domain coherent metadata: {auto,valid,selected bank,tag1,tag0}.
++    output wire [7:0]           osd_status,
++
++    input [79:0] storage_diag_sd,
++    input [2:0] storage_diag_write,
+     input                       write_finish_toggle,
+     output reg [1:0]            write_buf_idx,
+     output reg [1:0]            disp_buf_idx,
+@@ -29,6 +33,13 @@
+     input                       SD_MISO
+ );
+ 
++// Return ACK is held by the memory domain until write_req is revoked.
++// Only the first synchronizer stage consumes the raw cross-domain level.
++(* ASYNC_REG="TRUE" *) reg write_ack_meta, write_ack_sync;
++always @(posedge clk or posedge rst) begin
++    if (rst) begin write_ack_meta<=0; write_ack_sync<=0; end
++    else begin write_ack_meta<=write_req_ack; write_ack_sync<=write_ack_meta; end
++end
+ wire key_next_press;
+ wire key_auto_press;
+ 
+@@ -69,6 +80,8 @@
+ reg [31:0]       img_sector1;
+ reg [31:0]       img_sector2;
+ reg [31:0]       img_sector3;
++reg [1:0] osd_tag0, osd_tag1;
++assign osd_status = {auto_play_en, display_valid, disp_buf_idx, osd_tag1, osd_tag0};
+ reg              next_req_pending;
+ reg              load_busy;
+ reg [18:0]       pixel_write_count;
+@@ -92,9 +105,89 @@
+ wire auto_tick;
+ wire [1:0] next_from_current;
+ 
++// Observation only: no timeout recovery, no modifications to load control.
++localparam [31:0] DIAG_STALL_CYCLES = CLK_FREQ_HZ * 2;
++reg [31:0] diag_stall_count, diag_page_count;
++reg [18:0] diag_prev_pixels, diag_snapshot_pixels;
++reg [7:0] diag_prev_progress;
++reg [19:0] diag_snapshot_flags;
++reg diag_snapshot_valid;
++reg [2:0] diag_probe_page;
++wire diag_flag_page = (diag_probe_page == 1);
++reg [79:0] diag_storage_snapshot;
++reg [2:0] diag_write_snapshot;
++reg [19:0] diag_page_value;
++always @* begin
++    case (diag_probe_page)
++        0: diag_page_value = {1'b0,diag_snapshot_pixels};
++        1: diag_page_value = diag_snapshot_flags;
++        2: diag_page_value = diag_storage_snapshot[19:0];
++        3: diag_page_value = diag_storage_snapshot[39:20];
++        4: diag_page_value = {4'hc,diag_storage_snapshot[67:64],diag_storage_snapshot[49:40],2'b0};
++        5: diag_page_value = {4'hd,diag_storage_snapshot[75:68],diag_write_snapshot,5'd0};
++        6: diag_page_value = {4'he,diag_storage_snapshot[59:50],6'd0};
++        default: diag_page_value = 20'hbad00;
++    endcase
++end
++wire [7:0] diag_progress = {state_code_i, source_done_seen, write_done_seen,
++                            write_req, write_ack_sync};
++wire [19:0] diag_flags_now = {4'hf,
++    load_busy, source_done_seen, write_done_seen, write_finish_pulse,
++    bmp_ready, write_req, write_ack_sync, sd_init_done,
++    load_idx, disp_buf_idx,
++    wrfin_tgl_sync[2], wrfin_tgl_sync[1], next_req_pending, auto_play_en};
++wire diag_wait = load_busy && (source_done_seen || bmp_ready);
++always @(posedge clk or posedge rst) begin
++    if (rst) begin
++        diag_stall_count<=0; diag_page_count<=0; diag_prev_pixels<=0;
++        diag_snapshot_pixels<=0; diag_prev_progress<=0;
++        diag_snapshot_flags<=0; diag_snapshot_valid<=0; diag_probe_page<=0;
++        diag_storage_snapshot<=0; diag_write_snapshot<=0;
++    end else begin
++        diag_prev_pixels<=pixel_write_count;
++        diag_prev_progress<=diag_progress;
++        if (!sd_init_done || !load_busy || load_start_pulse) begin
++            diag_stall_count<=0; diag_snapshot_valid<=0;
++            diag_page_count<=0; diag_probe_page<=0;
++        end else begin
++            if (!diag_snapshot_valid) begin
++                if (diag_prev_pixels!=pixel_write_count || diag_prev_progress!=diag_progress)
++                    diag_stall_count<=0;
++                else if (diag_stall_count < DIAG_STALL_CYCLES-1)
++                    diag_stall_count<=diag_stall_count+1'b1;
++                else begin
++                    diag_snapshot_pixels<=pixel_write_count;
++                    diag_snapshot_flags<=diag_flags_now;
++                    diag_storage_snapshot<=storage_diag_sd;
++                    diag_write_snapshot<=storage_diag_write;
++                    diag_snapshot_valid<=1;
++                end
++            end
++            if (diag_snapshot_valid) begin
++                if (diag_page_count >= CLK_FREQ_HZ-1) begin
++                    diag_page_count<=0; diag_probe_page <= (diag_probe_page==6) ? 3'd0 : diag_probe_page+1'b1;
++                end else diag_page_count<=diag_page_count+1'b1;
++            end
++        end
++    end
++end
++
++// Tags change only when a complete image is committed, never at load start.
++always @(posedge clk or posedge rst) begin
++    if (rst) begin osd_tag0<=0; osd_tag1<=0; end
++    else if (!sd_init_done) begin osd_tag0<=0; osd_tag1<=0; end
++    else if (load_busy && source_done_seen && (write_done_seen || write_finish_pulse)) begin
++        if (pending_buf_idx==0) osd_tag0<=load_idx;
++        else if (pending_buf_idx==1) osd_tag1<=load_idx;
++    end
++end
++
+ assign write_en   = bmp_data_wr_en;
+ assign write_data = {bmp_data[23:16], bmp_data[15:8], bmp_data[7:0], 8'b0};
+-assign pixel_count_debug = load_error_seen ?
++assign pixel_count_debug = (diag_wait && !load_error_seen) ?
++                           reverse_hex_digits(diag_snapshot_valid ?
++                               diag_page_value :
++                               {1'b0,pixel_write_count}) : load_error_seen ?
+                            (debug_page == 2'd0) ? reverse_hex_digits(load_error_sector_seen) :
+                            (debug_page == 2'd1) ? reverse_hex_digits({4'd0, scan_first_signature_seen}) :
+                            (debug_page == 2'd2) ? reverse_hex_digits({4'd0, load_error_signature_seen}) :
+@@ -117,8 +210,9 @@
+ assign state_code = (scan_done && (img_found_count == 3'd0) && !display_valid) ? 4'he :
+                     (scan_done && (state_code_i == 4'd2)) ? 4'd5 :
+                     (load_busy && load_error_seen) ? 4'd8 :
+-                    (load_busy && source_done_seen && !display_valid && (pixel_write_count != 19'd307200)) ? 4'd7 :
+-                    (load_busy && source_done_seen && !display_valid) ? 4'd6 :
++                    (load_busy && source_done_seen && (pixel_write_count != 19'd307200)) ? 4'd7 :
++                    (load_busy && source_done_seen) ? 4'd6 :
++                    (load_busy && bmp_ready) ? 4'd9 :
+                     state_code_i;
+ 
+ key_press_debounce #(
+@@ -431,7 +525,7 @@
+     .bmp_width              (bmp_width),
+     .bmp_height             (bmp_height),
+     .write_req              (write_req),
+-    .write_req_ack          (write_req_ack),
++    .write_req_ack          (write_ack_sync),
+     .sd_sec_read            (sd_sec_read),
+     .sd_sec_read_addr       (sd_sec_read_addr),
+     .sd_sec_read_data       (sd_sec_read_data),
+--- a/src/user_source/hdl_source/SD/bmp_read.v
++++ b/src/user_source/hdl_source/SD/bmp_read.v
+@@ -47,6 +47,7 @@
+ localparam ST_LOAD_HDR  = 3'd2;
+ localparam ST_LOAD_WAIT = 3'd3;
+ localparam ST_LOAD_DATA = 3'd4;
++localparam ST_LOAD_RELEASE = 3'd5;
+ 
+ reg [2:0]  state;
+ reg [9:0]  rd_cnt;
+@@ -336,8 +337,18 @@
+                 state_code <= 4'd3;
+                 if (write_req_ack) begin
+                     write_req <= 1'b0;
+-                    state     <= ST_LOAD_DATA;
+-                end
++                    state     <= ST_LOAD_RELEASE;
++                end
++            end
++
++            ST_LOAD_RELEASE: begin
++                // ACK low confirms that the memory controller released FIFO clear.
++                // Do not request sector data or emit pixels while ACK remains high.
++                state_code  <= 4'd3;
++                write_req   <= 1'b0;
++                sd_sec_read <= 1'b0;
++                if (!write_req_ack)
++                    state <= ST_LOAD_DATA;
+             end
+ 
+             ST_LOAD_DATA: begin
+--- a/src/user_source/hdl_source/SD/frame_fifo_write.v
++++ b/src/user_source/hdl_source/SD/frame_fifo_write.v
+@@ -28,6 +28,9 @@
+ 	input                            wr_burst_data_req,          // from external memory controller,write data request ,before data 1 clock 
+ 	input                            wr_burst_finish,            // from external memory controller,burst write finish
+ 	*/
++    output wire [ADDR_BITS-1:0] diag_write_count,
++    output wire [3:0] diag_write_state,
++    output wire [BURST_BITS-1:0] diag_burst_count,
+ 	input                            write_req,                  // data write module write request,keep '1' until read_req_ack = '1'
+ 	output reg                       write_req_ack,              // data write module write request response
+ 	output                           write_finish,               // data write module write request finish
+@@ -78,6 +81,9 @@
+ reg App_wr_en_r;
+ reg App_wr_en_d0;
+ 
++assign diag_write_count = write_cnt;
++assign diag_write_state = state;
++assign diag_burst_count = burst_cnt;
+ wire into_burst;
+ assign into_burst = (((write_len_latch <= (rdusedw + write_cnt))||rdusedw > BURST_SIZE) && ~App_rd_busy);//当rd在突发时不会进入burst
+ 
+--- a/src/user_source/hdl_source/SD/frame_fifo_read.v
++++ b/src/user_source/hdl_source/SD/frame_fifo_read.v
+@@ -34,6 +34,8 @@
+ 	input[ADDR_BITS - 1:0]           read_addr_1,                // data read module read request base address 1, used when read_addr_index = 1
+ 	input[ADDR_BITS - 1:0]           read_addr_2,                // data read module read request base address 1, used when read_addr_index = 2
+ 	input[ADDR_BITS - 1:0]           read_addr_3,                // data read module read request base address 1, used when read_addr_index = 3
++    input [7:0] read_status, // coherent metadata already in mem_clk domain
++    output reg [3:0] read_frame_status,
+ 	input[1:0]                       read_addr_index,            // select valid base address from read_addr_0 read_addr_1 read_addr_2 read_addr_3
+ 	input[ADDR_BITS - 1:0]           read_len,                   // data read module read request data length
+ 	output reg                       fifo_aclr,                  // to fifo asynchronous clear
+@@ -60,6 +62,18 @@
+ reg[3:0]                             state;                      //state machine
+ reg[1:0]                             read_addr_index_d0;         //synchronize to 'mem_clk' clock domain first
+ reg[1:0]                             read_addr_index_d1;         //synchronize to 'mem_clk' clock domain second
++reg [7:0] status_d0, status_d1;
++// Same two registers as read_addr_index_d0/d1; use the same bank on the
++// final S_ACK edge that initializes App_rd_addr_r.
++always @(posedge mem_clk or posedge rst) begin
++    if (rst) begin status_d0<=0; status_d1<=0; read_frame_status<=0; end
++    else begin
++        status_d0<=read_status; status_d1<=status_d0;
++        if (state==S_ACK)
++            read_frame_status <= {status_d1[7:6],
++                (read_addr_index_d1==0 ? status_d1[1:0] : status_d1[3:2])};
++    end
++end
+ reg [ADDR_BITS - 1:0]	 App_rd_addr_r;
+ 
+ reg [BURST_BITS - 1:0]				burst_cnt;
+--- a/src/user_source/hdl_source/SD/frame_read_write.v
++++ b/src/user_source/hdl_source/SD/frame_read_write.v
+@@ -40,6 +40,8 @@
+ 	input[ADDR_BITS - 1:0]           read_addr_1,                // data read module read request base address 1, used when read_addr_index = 1
+ 	input[ADDR_BITS - 1:0]           read_addr_2,                // data read module read request base address 1, used when read_addr_index = 2
+ 	input[ADDR_BITS - 1:0]           read_addr_3,                // data read module read request base address 1, used when read_addr_index = 3
++    input [7:0] read_status, // coherent metadata already in mem_clk domain
++    output wire [3:0] read_frame_status,
+ 	input[1:0]                       read_addr_index,            // select valid base address from read_addr_0 read_addr_1 read_addr_2 read_addr_3
+ 	input[ADDR_BITS - 1:0]           read_len,                   // data read module read request data length
+ 	input                            read_en,                    // data read module read request for one data, read_data valid next clock
+@@ -69,6 +71,8 @@
+ 	input[1:0]                       write_addr_index,           // select valid base address from write_addr_0 write_addr_1 write_addr_2 write_addr_3
+ 	input[ADDR_BITS - 1:0]           write_len,                  // data write module write request data length
+ 	input                            write_en,                   // data write module write request for one data
++    output wire [79:0] storage_diag_mem,
++    output wire [2:0] storage_diag_write,
+ 	input[WRITE_DATA_BITS - 1:0]     write_data                 // write data
+ 
+ );
+@@ -87,6 +91,48 @@
+ assign App_wr_busy = O_wr_busy;//下个时钟写指令拉高
+ assign App_rd_busy = O_rd_busy;//读指令还没有过去十个时钟;因为写指令优先，不需要在意下个时钟是否是读指令
+ assign App_wr_dm = 4'b0000;
++// Observation only: these signals never gate FIFO or memory control.
++wire diag_fifo_full, diag_fifo_empty;
++wire [ADDR_BITS-1:0] diag_write_count;
++wire [3:0] diag_write_state;
++wire [BURST_BITS-1:0] diag_burst_count;
++reg [19:0] diag_fifo_pop_count;
++reg diag_underflow, diag_finish_seen;
++reg diag_req_prev, diag_overflow, diag_reset_write;
++always @(posedge write_clk or posedge rst) begin
++    if (rst) begin
++        diag_req_prev<=0; diag_overflow<=0; diag_reset_write<=0;
++    end else begin
++        diag_req_prev<=write_req;
++        if (write_req && !diag_req_prev) begin
++            diag_overflow<=0; diag_reset_write<=0;
++        end else begin
++            if (write_en && diag_fifo_full && !write_fifo_aclr) diag_overflow<=1;
++            if (write_en && write_fifo_aclr) diag_reset_write<=1;
++        end
++    end
++end
++always @(posedge mem_clk or posedge rst) begin
++    if (rst) begin
++        diag_fifo_pop_count<=0; diag_underflow<=0; diag_finish_seen<=0;
++    end else if (write_fifo_aclr) begin
++        diag_fifo_pop_count<=0; diag_underflow<=0; diag_finish_seen<=0;
++    end else begin
++        if (App_wr_en && !diag_fifo_empty) diag_fifo_pop_count<=diag_fifo_pop_count+1'b1;
++        if (App_wr_en && diag_fifo_empty) diag_underflow<=1;
++        if (write_finish) diag_finish_seen<=1;
++    end
++end
++// [75:68]flags, [67:64]state, [59:50]burst, [49:40]used,
++// [39:20]nonempty FIFO read requests, [19:0]completed-burst word count.
++wire [19:0] diag_commits = diag_write_count;
++wire [9:0] diag_used = rdusedw;
++wire [9:0] diag_burst = diag_burst_count;
++assign storage_diag_mem = {4'd0, diag_finish_seen, diag_underflow,
++    App_rd_busy, App_wr_busy, Sdr_busy, Sdr_init_done, write_finish,
++    write_fifo_aclr, diag_write_state, 4'd0, diag_burst, diag_used,
++    diag_fifo_pop_count, diag_commits};
++assign storage_diag_write = {diag_reset_write, diag_overflow, diag_fifo_full};
+ 
+ //instantiate an asynchronous FIFO 
+ wfifo_32_32_512 write_buf
+@@ -97,8 +143,8 @@
+ 	.we                      	(write_en                 ),          // Write Request
+ 	.re                      	(App_wr_en        		  ),          // Read Request
+ 	.di                       	(write_data               ),          // Input Data
+-	.empty_flag                 (                         ),          // Read side Empty flag
+-	.full_flag                  (                         ),          // Write side Full flag
++	.empty_flag                 (diag_fifo_empty),          // Read side Empty flag
++	.full_flag                  (diag_fifo_full),          // Write side Full flag
+ 	.wrusedw                	(              	  		  ),          // Read Used Words
+ 	.rdusedw                	(rdusedw                  ),          // Write Used Words
+ 	.dout                       (App_wr_din		          )
+@@ -129,6 +175,8 @@
+     .App_wr_addr				(App_wr_addr),
+ 	.write_req                  (write_req                ),
+ 	.write_req_ack              (write_req_ack            ),
++    .diag_write_count(diag_write_count), .diag_write_state(diag_write_state),
++    .diag_burst_count(diag_burst_count),
+ 	.write_finish               (write_finish             ),
+ 	.write_addr_0               (write_addr_0             ),
+ 	.write_addr_1               (write_addr_1             ),
+@@ -166,6 +214,7 @@
+ )
+ frame_fifo_read_m0
+ (
++    .read_status(read_status), .read_frame_status(read_frame_status),
+ 	.rst                        (rst                      ),
+ 	.mem_clk                    (mem_clk                  ),
+     .Sdr_init_done				(Sdr_init_done),
+--- a/src/user_source/hdl_source/video_rgb_to_axis_640x480.v
++++ b/src/user_source/hdl_source/video_rgb_to_axis_640x480.v
+@@ -44,7 +44,7 @@
+         if (I_de) begin
+             if (!S_de_1d) begin
+                 // 一行首像素
+-                S_x_cnt <= 11'd0;
++                S_x_cnt <= 11'd1;
+                 if (S_frame_arm) begin
+                     O_video_user <= 1'b1;
+                     S_frame_arm  <= 1'b0;

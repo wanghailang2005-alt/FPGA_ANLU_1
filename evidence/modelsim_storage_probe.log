@@ -1,0 +1,88 @@
+# if {[file exists work]} {vmap work work} else {vlib work; vmap work work}
+# Model Technology ModelSim SE-64 vmap 2020.4 Lib Mapping Utility 2020.10 Oct 13 2020
+# vmap work work 
+# Modifying modelsim.ini
+# set h ../../lab_ex5_i2s_osd/src/user_source/hdl_source
+# ../../lab_ex5_i2s_osd/src/user_source/hdl_source
+# vlog -work work $h/IP/afifo_16_32_256.v $h/IP/afifo_32_16_256.v $h/SD/frame_fifo_write.v $h/SD/frame_fifo_read.v $h/SD/frame_read_write.v
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 17:35:42 on Oct 25,2026
+# vlog -work work ../../lab_ex5_i2s_osd/src/user_source/hdl_source/IP/afifo_16_32_256.v ../../lab_ex5_i2s_osd/src/user_source/hdl_source/IP/afifo_32_16_256.v ../../lab_ex5_i2s_osd/src/user_source/hdl_source/SD/frame_fifo_write.v ../../lab_ex5_i2s_osd/src/user_source/hdl_source/SD/frame_fifo_read.v ../../lab_ex5_i2s_osd/src/user_source/hdl_source/SD/frame_read_write.v 
+# -- Compiling module wfifo_32_32_512
+# -- Compiling module fifo_cross_domain_addr_process_al_wfifo_32_32_512
+# -- Compiling module ram_infer_wfifo_32_32_512
+# -- Compiling module rfifo_32_32_512
+# -- Compiling module fifo_cross_domain_addr_process_al_rfifo_32_32_512
+# -- Compiling module ram_infer_rfifo_32_32_512
+# -- Compiling module frame_fifo_write
+# -- Compiling module frame_fifo_read
+# -- Compiling module frame_read_write
+# 
+# Top level modules:
+# 	frame_read_write
+# End time: 17:35:42 on Oct 25,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vlog -sv -work work tb_storage_probe.sv
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 17:35:42 on Oct 25,2026
+# vlog -sv -work work tb_storage_probe.sv 
+# -- Compiling module tb_storage_probe
+# 
+# Top level modules:
+# 	tb_storage_probe
+# End time: 17:35:42 on Oct 25,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vsim -voptargs=+acc -onfinish stop work.tb_storage_probe
+# vsim -voptargs="+acc" -onfinish stop work.tb_storage_probe 
+# Start time: 17:35:42 on Oct 25,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: tb_storage_probe.sv(9): (vopt-2685) [TFMPC] - Too few port connections for 'dut'.  Expected 41, found 31.
+# ** Warning: tb_storage_probe.sv(9): (vopt-2718) [TFMPC] - Missing connection for port 'App_wr_dm'.
+# ** Warning: tb_storage_probe.sv(9): (vopt-2718) [TFMPC] - Missing connection for port 'App_wr_din'.
+# ** Warning: tb_storage_probe.sv(9): (vopt-2718) [TFMPC] - Missing connection for port 'App_wr_addr'.
+# ** Warning: tb_storage_probe.sv(9): (vopt-2718) [TFMPC] - Missing connection for port 'App_wr_en'.
+# ** Warning: tb_storage_probe.sv(9): (vopt-2718) [TFMPC] - Missing connection for port 'read_data'.
+# ** Warning: tb_storage_probe.sv(9): (vopt-2718) [TFMPC] - Missing connection for port 'read_frame_status'.
+# ** Warning: tb_storage_probe.sv(9): (vopt-2718) [TFMPC] - Missing connection for port 'read_finish'.
+# ** Warning: tb_storage_probe.sv(9): (vopt-2718) [TFMPC] - Missing connection for port 'read_req_ack'.
+# ** Warning: tb_storage_probe.sv(9): (vopt-2718) [TFMPC] - Missing connection for port 'App_rd_addr'.
+# ** Warning: tb_storage_probe.sv(9): (vopt-2718) [TFMPC] - Missing connection for port 'App_rd_en'.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=11.
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.tb_storage_probe(fast)
+# Loading work.frame_read_write(fast)
+# Loading work.wfifo_32_32_512(fast)
+# Loading work.fifo_cross_domain_addr_process_al_wfifo_32_32_512(fast)
+# Loading work.ram_infer_wfifo_32_32_512(fast)
+# Loading work.frame_fifo_write(fast)
+# Loading work.rfifo_32_32_512(fast)
+# Loading work.fifo_cross_domain_addr_process_al_rfifo_32_32_512(fast)
+# Loading work.ram_infer_rfifo_32_32_512(fast)
+# Loading work.frame_fifo_read(fast)
+# ** Warning: (vsim-3015) [PCDPC] - Port size (9) does not match connection size (10) for port 'rdusedw'. The port definition is at: ../../lab_ex5_i2s_osd/src/user_source/hdl_source/IP/afifo_16_32_256.v(37).
+#    Time: 0 ps  Iteration: 0  Instance: /tb_storage_probe/dut/write_buf File: ../../lab_ex5_i2s_osd/src/user_source/hdl_source/SD/frame_read_write.v Line: 138
+# ** Warning: (vsim-3015) [PCDPC] - Port size (9) does not match connection size (10) for port 'wrusedw'. The port definition is at: ../../lab_ex5_i2s_osd/src/user_source/hdl_source/IP/afifo_32_16_256.v(36).
+#    Time: 0 ps  Iteration: 0  Instance: /tb_storage_probe/dut/read_buf File: ../../lab_ex5_i2s_osd/src/user_source/hdl_source/SD/frame_read_write.v Line: 192
+# run -all
+# SIM PASS storage probe: real FIFO transfer, counters, sticky errors, clear
+# ** Note: $finish    : tb_storage_probe.sv(47)
+#    Time: 440 ns  Iteration: 1  Instance: /tb_storage_probe
+# Break in Module tb_storage_probe at tb_storage_probe.sv line 47
+# Stopped at tb_storage_probe.sv line 47
+# if {[examine -radix unsigned /tb_storage_probe/test_passed] != 1} {quit -code 1 -force}
+# quit -code 0 -force
+# End time: 17:35:43 on Oct 25,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 13

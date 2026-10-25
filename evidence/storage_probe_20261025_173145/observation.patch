@@ -1,0 +1,211 @@
+--- before/SD/frame_fifo_write.v
++++ after/SD/frame_fifo_write.v
+@@ -28,6 +28,9 @@
+ 	input                            wr_burst_data_req,          // from external memory controller,write data request ,before data 1 clock 
+ 	input                            wr_burst_finish,            // from external memory controller,burst write finish
+ 	*/
++    output wire [ADDR_BITS-1:0] diag_write_count,
++    output wire [3:0] diag_write_state,
++    output wire [BURST_BITS-1:0] diag_burst_count,
+ 	input                            write_req,                  // data write module write request,keep '1' until read_req_ack = '1'
+ 	output reg                       write_req_ack,              // data write module write request response
+ 	output                           write_finish,               // data write module write request finish
+@@ -78,6 +81,9 @@
+ reg App_wr_en_r;
+ reg App_wr_en_d0;
+ 
++assign diag_write_count = write_cnt;
++assign diag_write_state = state;
++assign diag_burst_count = burst_cnt;
+ wire into_burst;
+ assign into_burst = (((write_len_latch <= (rdusedw + write_cnt))||rdusedw > BURST_SIZE) && ~App_rd_busy);//当rd在突发时不会进入burst
+ 
+--- before/SD/frame_read_write.v
++++ after/SD/frame_read_write.v
+@@ -71,6 +71,8 @@
+ 	input[1:0]                       write_addr_index,           // select valid base address from write_addr_0 write_addr_1 write_addr_2 write_addr_3
+ 	input[ADDR_BITS - 1:0]           write_len,                  // data write module write request data length
+ 	input                            write_en,                   // data write module write request for one data
++    output wire [79:0] storage_diag_mem,
++    output wire [2:0] storage_diag_write,
+ 	input[WRITE_DATA_BITS - 1:0]     write_data                 // write data
+ 
+ );
+@@ -89,6 +91,48 @@
+ assign App_wr_busy = O_wr_busy;//下个时钟写指令拉高
+ assign App_rd_busy = O_rd_busy;//读指令还没有过去十个时钟;因为写指令优先，不需要在意下个时钟是否是读指令
+ assign App_wr_dm = 4'b0000;
++// Observation only: these signals never gate FIFO or memory control.
++wire diag_fifo_full, diag_fifo_empty;
++wire [ADDR_BITS-1:0] diag_write_count;
++wire [3:0] diag_write_state;
++wire [BURST_BITS-1:0] diag_burst_count;
++reg [19:0] diag_fifo_pop_count;
++reg diag_underflow, diag_finish_seen;
++reg diag_req_prev, diag_overflow, diag_reset_write;
++always @(posedge write_clk or posedge rst) begin
++    if (rst) begin
++        diag_req_prev<=0; diag_overflow<=0; diag_reset_write<=0;
++    end else begin
++        diag_req_prev<=write_req;
++        if (write_req && !diag_req_prev) begin
++            diag_overflow<=0; diag_reset_write<=0;
++        end else begin
++            if (write_en && diag_fifo_full && !write_fifo_aclr) diag_overflow<=1;
++            if (write_en && write_fifo_aclr) diag_reset_write<=1;
++        end
++    end
++end
++always @(posedge mem_clk or posedge rst) begin
++    if (rst) begin
++        diag_fifo_pop_count<=0; diag_underflow<=0; diag_finish_seen<=0;
++    end else if (write_fifo_aclr) begin
++        diag_fifo_pop_count<=0; diag_underflow<=0; diag_finish_seen<=0;
++    end else begin
++        if (App_wr_en && !diag_fifo_empty) diag_fifo_pop_count<=diag_fifo_pop_count+1'b1;
++        if (App_wr_en && diag_fifo_empty) diag_underflow<=1;
++        if (write_finish) diag_finish_seen<=1;
++    end
++end
++// [75:68]flags, [67:64]state, [59:50]burst, [49:40]used,
++// [39:20]nonempty FIFO read requests, [19:0]completed-burst word count.
++wire [19:0] diag_commits = diag_write_count;
++wire [9:0] diag_used = rdusedw;
++wire [9:0] diag_burst = diag_burst_count;
++assign storage_diag_mem = {4'd0, diag_finish_seen, diag_underflow,
++    App_rd_busy, App_wr_busy, Sdr_busy, Sdr_init_done, write_finish,
++    write_fifo_aclr, diag_write_state, 4'd0, diag_burst, diag_used,
++    diag_fifo_pop_count, diag_commits};
++assign storage_diag_write = {diag_reset_write, diag_overflow, diag_fifo_full};
+ 
+ //instantiate an asynchronous FIFO 
+ wfifo_32_32_512 write_buf
+@@ -99,8 +143,8 @@
+ 	.we                      	(write_en                 ),          // Write Request
+ 	.re                      	(App_wr_en        		  ),          // Read Request
+ 	.di                       	(write_data               ),          // Input Data
+-	.empty_flag                 (                         ),          // Read side Empty flag
+-	.full_flag                  (                         ),          // Write side Full flag
++	.empty_flag                 (diag_fifo_empty),          // Read side Empty flag
++	.full_flag                  (diag_fifo_full),          // Write side Full flag
+ 	.wrusedw                	(              	  		  ),          // Read Used Words
+ 	.rdusedw                	(rdusedw                  ),          // Write Used Words
+ 	.dout                       (App_wr_din		          )
+@@ -131,6 +175,8 @@
+     .App_wr_addr				(App_wr_addr),
+ 	.write_req                  (write_req                ),
+ 	.write_req_ack              (write_req_ack            ),
++    .diag_write_count(diag_write_count), .diag_write_state(diag_write_state),
++    .diag_burst_count(diag_burst_count),
+ 	.write_finish               (write_finish             ),
+ 	.write_addr_0               (write_addr_0             ),
+ 	.write_addr_1               (write_addr_1             ),
+--- before/SD/sd_card_bmp.v
++++ after/SD/sd_card_bmp.v
+@@ -17,6 +17,8 @@
+     // SD-domain coherent metadata: {auto,valid,selected bank,tag1,tag0}.
+     output wire [7:0]           osd_status,
+ 
++    input [79:0] storage_diag_sd,
++    input [2:0] storage_diag_write,
+     input                       write_finish_toggle,
+     output reg [1:0]            write_buf_idx,
+     output reg [1:0]            disp_buf_idx,
+@@ -102,7 +104,24 @@
+ reg [18:0] diag_prev_pixels, diag_snapshot_pixels;
+ reg [7:0] diag_prev_progress;
+ reg [19:0] diag_snapshot_flags;
+-reg diag_snapshot_valid, diag_flag_page;
++reg diag_snapshot_valid;
++reg [2:0] diag_probe_page;
++wire diag_flag_page = (diag_probe_page == 1);
++reg [79:0] diag_storage_snapshot;
++reg [2:0] diag_write_snapshot;
++reg [19:0] diag_page_value;
++always @* begin
++    case (diag_probe_page)
++        0: diag_page_value = {1'b0,diag_snapshot_pixels};
++        1: diag_page_value = diag_snapshot_flags;
++        2: diag_page_value = diag_storage_snapshot[19:0];
++        3: diag_page_value = diag_storage_snapshot[39:20];
++        4: diag_page_value = {4'hc,diag_storage_snapshot[67:64],diag_storage_snapshot[49:40],2'b0};
++        5: diag_page_value = {4'hd,diag_storage_snapshot[75:68],diag_write_snapshot,5'd0};
++        6: diag_page_value = {4'he,diag_storage_snapshot[59:50],6'd0};
++        default: diag_page_value = 20'hbad00;
++    endcase
++end
+ wire [7:0] diag_progress = {state_code_i, source_done_seen, write_done_seen,
+                             write_req, write_req_ack};
+ wire [19:0] diag_flags_now = {4'hf,
+@@ -115,13 +134,14 @@
+     if (rst) begin
+         diag_stall_count<=0; diag_page_count<=0; diag_prev_pixels<=0;
+         diag_snapshot_pixels<=0; diag_prev_progress<=0;
+-        diag_snapshot_flags<=0; diag_snapshot_valid<=0; diag_flag_page<=0;
++        diag_snapshot_flags<=0; diag_snapshot_valid<=0; diag_probe_page<=0;
++        diag_storage_snapshot<=0; diag_write_snapshot<=0;
+     end else begin
+         diag_prev_pixels<=pixel_write_count;
+         diag_prev_progress<=diag_progress;
+         if (!sd_init_done || !load_busy || load_start_pulse) begin
+             diag_stall_count<=0; diag_snapshot_valid<=0;
+-            diag_page_count<=0; diag_flag_page<=0;
++            diag_page_count<=0; diag_probe_page<=0;
+         end else begin
+             if (!diag_snapshot_valid) begin
+                 if (diag_prev_pixels!=pixel_write_count || diag_prev_progress!=diag_progress)
+@@ -131,12 +151,14 @@
+                 else begin
+                     diag_snapshot_pixels<=pixel_write_count;
+                     diag_snapshot_flags<=diag_flags_now;
++                    diag_storage_snapshot<=storage_diag_sd;
++                    diag_write_snapshot<=storage_diag_write;
+                     diag_snapshot_valid<=1;
+                 end
+             end
+             if (diag_snapshot_valid) begin
+                 if (diag_page_count >= CLK_FREQ_HZ-1) begin
+-                    diag_page_count<=0; diag_flag_page<=~diag_flag_page;
++                    diag_page_count<=0; diag_probe_page <= (diag_probe_page==6) ? 3'd0 : diag_probe_page+1'b1;
+                 end else diag_page_count<=diag_page_count+1'b1;
+             end
+         end
+@@ -157,7 +179,7 @@
+ assign write_data = {bmp_data[23:16], bmp_data[15:8], bmp_data[7:0], 8'b0};
+ assign pixel_count_debug = (diag_wait && !load_error_seen) ?
+                            reverse_hex_digits(diag_snapshot_valid ?
+-                               (diag_flag_page ? diag_snapshot_flags : {1'b0,diag_snapshot_pixels}) :
++                               diag_page_value :
+                                {1'b0,pixel_write_count}) : load_error_seen ?
+                            (debug_page == 2'd0) ? reverse_hex_digits(load_error_sector_seen) :
+                            (debug_page == 2'd1) ? reverse_hex_digits({4'd0, scan_first_signature_seen}) :
+--- before/top_tf_hdmi_audio.v
++++ after/top_tf_hdmi_audio.v
+@@ -53,6 +53,11 @@
+ wire        display_valid;
+ wire rst_all;
+ wire [7:0] osd_sd_status, osd_mem_status;
++wire [79:0] storage_diag_mem, storage_diag_sd;
++wire [2:0] storage_diag_write;
++osd_status_cdc #(.WIDTH(80)) u_storage_probe_mem_sd (
++    .src_clk(ext_mem_clk), .dst_clk(sd_card_clk), .rst(rst_all),
++    .src_data(storage_diag_mem), .dst_data(storage_diag_sd));
+ wire [3:0] osd_read_status, osd_pixel_status;
+ osd_status_cdc #(.WIDTH(8)) u_status_sd_mem (
+     .src_clk(sd_card_clk), .dst_clk(ext_mem_clk), .rst(rst_all),
+@@ -176,6 +181,7 @@
+     .key_auto          (key2),
+     .state_code        (state_code),
+     .pixel_count_debug (pixel_count_debug),
++    .storage_diag_sd(storage_diag_sd), .storage_diag_write(storage_diag_write),
+     .bmp_width         (16'd640),
+     .bmp_height        (16'd480),
+     .display_valid     (display_valid),
+@@ -286,6 +292,7 @@
+     .write_req         (sd_card_write_req),
+     .write_req_ack     (sd_card_write_req_ack),
+     .write_finish      (frame_write_finish),
++    .storage_diag_mem(storage_diag_mem), .storage_diag_write(storage_diag_write),
+     .write_addr_0      (BUF0_ADDR),
+     .write_addr_1      (BUF1_ADDR),
+     .write_addr_2      (24'd0),

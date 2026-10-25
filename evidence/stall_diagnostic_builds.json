@@ -1,0 +1,32 @@
+[
+  {
+    "variant": "FIXED_LEGACY",
+    "mode": 0,
+    "bit": "OSD_DIAG_FIXED_LEGACY_20261025.bit",
+    "sha256": "a84d982ef4098d8d90cbac984f35fa569447756e63341c34762a03d69a5be857",
+    "bytes": 629624,
+    "timing": "SWNS: -6.699ns, STNS: -419.063ns.\nHWNS: 0.019ns, HTNS: 0.000ns.\n",
+    "source_sha256": {
+      "src/user_source/hdl_source/top_tf_hdmi_audio.v": "fc12bd17ff30028b42be691c002ea66c2d8b7e6947c614257d19518b323ce7ca",
+      "src/user_source/hdl_source/SD/sd_card_bmp.v": "c80421bc0ffd0ab974e25338f2902bef68dae3963a2c58d65872425b504796af",
+      "src/user_source/hdl_source/SD/frame_fifo_read.v": "b7ea9465cf82f5df4015265fdb313adf92cc1498e1dacb0e95c268cea935758c",
+      "src/user_source/hdl_source/SD/frame_read_write.v": "35589809e66e4d7eecbcc1bf4e71d2fe0f91d1a94709fd9817ceba33d1f52bb5"
+    },
+    "board": "UNVERIFIED"
+  },
+  {
+    "variant": "DYNAMIC",
+    "mode": 1,
+    "bit": "OSD_DIAG_DYNAMIC_20261025.bit",
+    "sha256": "7de92fadbeb41deba367878660618af12e58bb202c72ff7908aed6606635e870",
+    "bytes": 629624,
+    "timing": "SWNS: -6.699ns, STNS: -404.416ns.\nHWNS: 0.003ns, HTNS: 0.000ns.\n",
+    "source_sha256": {
+      "src/user_source/hdl_source/top_tf_hdmi_audio.v": "25adc0a0891130e54584f54cd56d0c88a9949a419facbc19634a41214a70c359",
+      "src/user_source/hdl_source/SD/sd_card_bmp.v": "c80421bc0ffd0ab974e25338f2902bef68dae3963a2c58d65872425b504796af",
+      "src/user_source/hdl_source/SD/frame_fifo_read.v": "b7ea9465cf82f5df4015265fdb313adf92cc1498e1dacb0e95c268cea935758c",
+      "src/user_source/hdl_source/SD/frame_read_write.v": "35589809e66e4d7eecbcc1bf4e71d2fe0f91d1a94709fd9817ceba33d1f52bb5"
+    },
+    "board": "UNVERIFIED"
+  }
+]

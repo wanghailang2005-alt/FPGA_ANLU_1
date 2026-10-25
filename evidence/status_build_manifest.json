@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-25",
+  "device": "EG4S20BG256",
+  "tool": "TD 6.2.168116",
+  "bit": "OSD_STATUS_IMG_AUTO_20261025.bit",
+  "bit_bytes": 629624,
+  "bit_sha256": "a10b2a408cc34cf07ad900a02ddd0d45cab0f0178adebf26b849158e5cafbe2b",
+  "candidate_source_sha256": {
+    "src/user_source/hdl_source/top_tf_hdmi_audio.v": "84d28f5868e16c848b624b0b6ae134157c567258d0de708a275063a06d601cc4",
+    "src/user_source/hdl_source/SD/sd_card_bmp.v": "1122df1b57ba01dcec90e865b1f14642a589e777da6b5cde3d56968f6cdfa234",
+    "src/user_source/hdl_source/SD/frame_read_write.v": "35589809e66e4d7eecbcc1bf4e71d2fe0f91d1a94709fd9817ceba33d1f52bb5",
+    "src/user_source/hdl_source/SD/frame_fifo_read.v": "b7ea9465cf82f5df4015265fdb313adf92cc1498e1dacb0e95c268cea935758c",
+    "src/user_source/hdl_source/OSD/osd_overlay.v": "a06019e38830b56b8cb776f7fa4b1cdeb5ad7f16c854307209ca9538c50617c5",
+    "src/user_source/hdl_source/OSD/osd_status_layout.v": "9798a31ef49710dbd825eba98a69a9db60fb154672034cc0a5cccb10f78bebd4",
+    "src/user_source/hdl_source/OSD/osd_status_cdc.v": "f65334dc43e4eeb3c42fcea7927d6613cdc65a132c907c4024846ce358267977"
+  },
+  "setup": "FAIL",
+  "board": "UNVERIFIED"
+}

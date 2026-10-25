@@ -1,0 +1,22 @@
+{
+  "created_at": "2026-10-25T16:23:56.979878+08:00",
+  "status": "USER_REPORTED_BOARD_PASS",
+  "correction": "User corrected previous identification: DYNAMIC is the successfully programmed, non-stalling bit. Previous fixed-mode baseline selection is superseded.",
+  "baseline_name": "Dynamic IMG/AUTO diagnostic version",
+  "project": "src/td_project/HDMI1.4b_Transmitter_v1.0.al",
+  "OSD_STATUS_MODE": 1,
+  "read_selection": "osd_mem_status[5:4] (original DYNAMIC build; not a new hybrid)",
+  "tested_bit": "OSD_DIAG_DYNAMIC_20261025.bit",
+  "tested_bit_sha256": "7de92fadbeb41deba367878660618af12e58bb202c72ff7908aed6606635e870",
+  "matching_source_sha256": {
+    "src/user_source/hdl_source/top_tf_hdmi_audio.v": "25adc0a0891130e54584f54cd56d0c88a9949a419facbc19634a41214a70c359",
+    "src/user_source/hdl_source/SD/sd_card_bmp.v": "c80421bc0ffd0ab974e25338f2902bef68dae3963a2c58d65872425b504796af",
+    "src/user_source/hdl_source/SD/frame_fifo_read.v": "b7ea9465cf82f5df4015265fdb313adf92cc1498e1dacb0e95c268cea935758c",
+    "src/user_source/hdl_source/SD/frame_read_write.v": "35589809e66e4d7eecbcc1bf4e71d2fe0f91d1a94709fd9817ceba33d1f52bb5"
+  },
+  "board_evidence": "User explicitly identified this exact bit as correct and non-stalling",
+  "historical_dynamic_build_timing": "SWNS: -6.699ns, STNS: -404.416ns.\nHWNS: 0.003ns, HTNS: 0.000ns.\n",
+  "this_action": "Source selection and project file inclusion verified only; no synthesis, implementation, bitgen, or programming",
+  "runs_phy_bit_note": "Existing Runs/phy_1 output belongs to previous build and was not replaced; use tested_bit above",
+  "archive_status": "Previous fixed-mode user-verified archive no longer identifies the selected successful baseline"
+}

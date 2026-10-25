@@ -1,0 +1,36 @@
+{
+  "video": "D:/wechat/xwechat_files/wxid_3hfdipjgoe5n22_3116/msg/video/2026-10/270a976a28ab74cf3da5af87db27369e.mp4",
+  "duration_seconds": 24.8,
+  "observed_pages": [
+    {
+      "t": "18-20",
+      "display": "4B0006",
+      "meaning": "source sent counter 307200; main state6"
+    },
+    {
+      "t": "21-21.5",
+      "display": "FC9CD6",
+      "meaning": "frozen SD flags FC9CD; auto=1"
+    },
+    {
+      "t": "22-22.5",
+      "display": "000006",
+      "meaning": "completed burst counter0"
+    },
+    {
+      "t": "23-23.5",
+      "display": "000006",
+      "meaning": "nonempty FIFO pop request counter0"
+    },
+    {
+      "t": "24-24.5",
+      "display": "C20006",
+      "meaning": "writer state2 CHECK_FIFO; rdusedw0"
+    }
+  ],
+  "missing_pages": [
+    "D: memory and write-domain flags",
+    "E: burst counter"
+  ],
+  "interpretation": "Writer snapshot has no counted burst completions or nonempty FIFO pops since its last clear, state CHECK_FIFO and used0. Source sent307200 is not proof of FIFO acceptance. Could reflect late reset/loss or absent start/acceptance; not sufficient to identify root cause. Need D/E pages; diagnostic timing also fails."
+}

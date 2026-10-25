@@ -1,4 +1,8 @@
+> 当前成功版请以 [current_baseline](current_baseline/README.md) 和 [2026-10-25测试记录](../docs/2026-10-25.md) 为准；下文保留历史接入过程。
+
 # 固定文字 OSD 候选工程接入
+
+当前候选已升级为动态 IMG/AUTO 版本；最新构建、下载和回退说明见 [STATUS_OSD.md](STATUS_OSD.md)。本页下文保留固定字幕历史过程。
 
 最新状态（2026-10-25）：字幕前景色已改黑；用户反馈屏幕已显示 HELLO FPGA。下文构建时间、bit 哈希与 UNVERIFIED 表格为历史记录，不代表本次板测所用 bit。完整回归和整机时序收敛仍待完成，详见仓库 README 最新记录。
 

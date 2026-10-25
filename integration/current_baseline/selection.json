@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-25",
+  "status": "USER_REPORTED_BOARD_PASS",
+  "tested_bit": "OSD_FIX_ACK_RELEASE_20261025_181945.bit",
+  "tested_bit_sha256": "9bbfee3e1754fdc4109ad0957b558c986579db885c8aae92a94b25f6893db99c",
+  "timing": "SWNS: -6.699ns, STNS: -312.086ns.\nHWNS: 0.011ns, HTNS: 0.000ns.\n",
+  "patch_base": "workspace original lab_ex5_i2s; apply from copied candidate root with git apply",
+  "patch_files": [
+    "src/user_source/hdl_source/top_tf_hdmi_audio.v",
+    "src/user_source/hdl_source/SD/sd_card_bmp.v",
+    "src/user_source/hdl_source/SD/bmp_read.v",
+    "src/user_source/hdl_source/SD/frame_fifo_write.v",
+    "src/user_source/hdl_source/SD/frame_fifo_read.v",
+    "src/user_source/hdl_source/SD/frame_read_write.v",
+    "src/user_source/hdl_source/video_rgb_to_axis_640x480.v"
+  ],
+  "source_sha256": {
+    "top_tf_hdmi_audio.v": "f420bef6e605b518a9bd8d3bb1dadd4bd36297c66ff220e74b43dc37f95eab08",
+    "SD/sd_card_bmp.v": "9982518503dae5de728c2001dbe0eec20e6bb278e9d212f6dccad72a93feeb9a",
+    "SD/bmp_read.v": "0154998e5344445c6097e917655067af160cf36b161c9939e1c986e082f42b5e",
+    "SD/frame_fifo_write.v": "147ec08117c7495e6fff7a5ff253dfdb7b10476ea1f1e6ce74a77413a97d8b16",
+    "SD/frame_fifo_read.v": "b7ea9465cf82f5df4015265fdb313adf92cc1498e1dacb0e95c268cea935758c",
+    "SD/frame_read_write.v": "5000ab28b0d1233bf701ba3c0cac1422f781c8cc3aa7a82ec494321e21d90ac6",
+    "video_rgb_to_axis_640x480.v": "3b7a6988b4b040ee15019192658c5eeb331c1d7843f8ebe41f3c1fdf66b24b17",
+    "OSD/osd_fixed_layout.v": "ae5d6a6c83c6f526e4e314656b2684511b2862370103937970114a0c0b2bf14b",
+    "OSD/osd_font_rom.v": "6d5cbe8fb7ba0a075e0c2c9b53941ad639c244632ac05a699c610d34b64c959b",
+    "OSD/osd_glyph_pixel.v": "8a285e3e2e0f5d4f564dfbee7e53fa298e5035d1edcb9db086572cb95d2b7fc8",
+    "OSD/osd_overlay.v": "8dc8046d5664e461d9d4170a07b229abe138c8e086e42817e6be6f44f5ef7cd4",
+    "OSD/osd_status_cdc.v": "f65334dc43e4eeb3c42fcea7927d6613cdc65a132c907c4024846ce358267977",
+    "OSD/osd_status_layout.v": "9798a31ef49710dbd825eba98a69a9db60fb154672034cc0a5cccb10f78bebd4",
+    "OSD/osd_video_position.v": "69f0efa8ffbfc68046cdc6d8bf35d26eba61cb613d6c2db42d5f86c1ff6c2962"
+  },
+  "board_scope": "User reports this version has no issue; 30-minute/audio/reset full regression not confirmed",
+  "vendor_payload": "Complete project/IP and bit archived locally, not published",
+  "normalized_lf_sha256": {
+    "top_tf_hdmi_audio.v": "1d7c221bb60acd22677bc0ba363e7d610f96f8f7f04f4d77a531dc6444c379db",
+    "SD/sd_card_bmp.v": "a630c390491602ae1c78bbb4ee8b3054a2df6c60a2f8600b8627e45dd9a0282e",
+    "SD/bmp_read.v": "8bc4d7649ac09d68468eea3ccd0afe71433b3481cce0670eb2b02ac0169c112c",
+    "SD/frame_fifo_write.v": "6adb5b5eb641b190e3138c320bb2997ca115bbf6b2347db6fd8560ce4e9f99e7",
+    "SD/frame_fifo_read.v": "421d78898c1f99d463d5dcb04c03b38f9cf17bdb3eca7b1c70472da15d393c6b",
+    "SD/frame_read_write.v": "67cdb8dcb1372913c8ec69810c70609042f98bafcf93c690f7de7669224fe94c",
+    "video_rgb_to_axis_640x480.v": "3b7a6988b4b040ee15019192658c5eeb331c1d7843f8ebe41f3c1fdf66b24b17",
+    "OSD/osd_fixed_layout.v": "ae5d6a6c83c6f526e4e314656b2684511b2862370103937970114a0c0b2bf14b",
+    "OSD/osd_font_rom.v": "6d5cbe8fb7ba0a075e0c2c9b53941ad639c244632ac05a699c610d34b64c959b",
+    "OSD/osd_glyph_pixel.v": "8a285e3e2e0f5d4f564dfbee7e53fa298e5035d1edcb9db086572cb95d2b7fc8",
+    "OSD/osd_overlay.v": "8dc8046d5664e461d9d4170a07b229abe138c8e086e42817e6be6f44f5ef7cd4",
+    "OSD/osd_status_cdc.v": "f65334dc43e4eeb3c42fcea7927d6613cdc65a132c907c4024846ce358267977",
+    "OSD/osd_status_layout.v": "9798a31ef49710dbd825eba98a69a9db60fb154672034cc0a5cccb10f78bebd4",
+    "OSD/osd_video_position.v": "69f0efa8ffbfc68046cdc6d8bf35d26eba61cb613d6c2db42d5f86c1ff6c2962"
+  },
+  "hash_note": "source_sha256 hashes exact build bytes; normalized_lf_sha256 permits Git line-ending conversion. Exact full source snapshot remains local."
+}

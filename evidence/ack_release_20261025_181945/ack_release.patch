@@ -1,0 +1,69 @@
+--- before/SD/sd_card_bmp.v
++++ after/SD/sd_card_bmp.v
+@@ -33,6 +33,13 @@
+     input                       SD_MISO
+ );
+ 
++// Return ACK is held by the memory domain until write_req is revoked.
++// Only the first synchronizer stage consumes the raw cross-domain level.
++(* ASYNC_REG="TRUE" *) reg write_ack_meta, write_ack_sync;
++always @(posedge clk or posedge rst) begin
++    if (rst) begin write_ack_meta<=0; write_ack_sync<=0; end
++    else begin write_ack_meta<=write_req_ack; write_ack_sync<=write_ack_meta; end
++end
+ wire key_next_press;
+ wire key_auto_press;
+ 
+@@ -123,10 +130,10 @@
+     endcase
+ end
+ wire [7:0] diag_progress = {state_code_i, source_done_seen, write_done_seen,
+-                            write_req, write_req_ack};
++                            write_req, write_ack_sync};
+ wire [19:0] diag_flags_now = {4'hf,
+     load_busy, source_done_seen, write_done_seen, write_finish_pulse,
+-    bmp_ready, write_req, write_req_ack, sd_init_done,
++    bmp_ready, write_req, write_ack_sync, sd_init_done,
+     load_idx, disp_buf_idx,
+     wrfin_tgl_sync[2], wrfin_tgl_sync[1], next_req_pending, auto_play_en};
+ wire diag_wait = load_busy && (source_done_seen || bmp_ready);
+@@ -518,7 +525,7 @@
+     .bmp_width              (bmp_width),
+     .bmp_height             (bmp_height),
+     .write_req              (write_req),
+-    .write_req_ack          (write_req_ack),
++    .write_req_ack          (write_ack_sync),
+     .sd_sec_read            (sd_sec_read),
+     .sd_sec_read_addr       (sd_sec_read_addr),
+     .sd_sec_read_data       (sd_sec_read_data),
+--- before/SD/bmp_read.v
++++ after/SD/bmp_read.v
+@@ -47,6 +47,7 @@
+ localparam ST_LOAD_HDR  = 3'd2;
+ localparam ST_LOAD_WAIT = 3'd3;
+ localparam ST_LOAD_DATA = 3'd4;
++localparam ST_LOAD_RELEASE = 3'd5;
+ 
+ reg [2:0]  state;
+ reg [9:0]  rd_cnt;
+@@ -336,8 +337,18 @@
+                 state_code <= 4'd3;
+                 if (write_req_ack) begin
+                     write_req <= 1'b0;
+-                    state     <= ST_LOAD_DATA;
+-                end
++                    state     <= ST_LOAD_RELEASE;
++                end
++            end
++
++            ST_LOAD_RELEASE: begin
++                // ACK low confirms that the memory controller released FIFO clear.
++                // Do not request sector data or emit pixels while ACK remains high.
++                state_code  <= 4'd3;
++                write_req   <= 1'b0;
++                sd_sec_read <= 1'b0;
++                if (!write_req_ack)
++                    state <= ST_LOAD_DATA;
+             end
+ 
+             ST_LOAD_DATA: begin
