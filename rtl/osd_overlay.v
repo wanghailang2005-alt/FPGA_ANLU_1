@@ -1,5 +1,5 @@
 `timescale 1ns/1ps
-// Fixed white HELLO FPGA, transparent background; three registered stages.
+// Fixed black HELLO FPGA, transparent background; three registered stages.
 // enable must be stable for an active frame; frame-boundary control is upstream.
 module osd_overlay (
     input wire clk,
@@ -47,7 +47,7 @@ module osd_overlay (
             if (!video_d2[45])
                 out_rgb <= 24'd0;
             else if (glyph_valid && pixel_on)
-                out_rgb <= 24'hFFFFFF;
+                out_rgb <= 24'h000000;
             else
                 out_rgb <= video_d2[23:0];
         end

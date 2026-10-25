@@ -13,7 +13,7 @@ module tb_osd_overlay;
     wire [8:0] out_y;
     reg test_passed = 0;
     reg [45:0] q0 = 0, q1 = 0, expected;
-    integer checks = 0, active_pixels = 0, white_pixels = 0;
+    integer checks = 0, active_pixels = 0, black_pixels = 0;
     integer frame_i, h, v, drain_i;
     integer ppm_file;
     reg [7:0] bg_r, bg_g, bg_b;
@@ -62,7 +62,7 @@ module tb_osd_overlay;
                 local_row = (y - 16) / 2;
                 whole = bitmap((message >> ((9-index)*8)) & 255);
                 foreground = (whole >> (63 - local_row*8 - local_col)) & 1;
-                if (foreground) reference_rgb = 24'hFFFFFF;
+                if (foreground) reference_rgb = 24'h000000;
             end
         end
     endfunction
@@ -89,7 +89,7 @@ module tb_osd_overlay;
                        {out_de,out_hs,out_vs,out_x,out_y,out_rgb}, expected);
             if (out_de) begin
                 active_pixels = active_pixels + 1;
-                if (out_rgb == 24'hFFFFFF) white_pixels = white_pixels + 1;
+                if (out_rgb == 24'h000000) black_pixels = black_pixels + 1;
                 if (capture && out_x >= 8 && out_x < 104 &&
                     out_y >= 8 && out_y < 40)
                     $fdisplay(ppm_file, "%0d %0d %0d",
@@ -122,7 +122,7 @@ module tb_osd_overlay;
         rst = 0;
         repeat (4) @(negedge clk);
         active_pixels = 0;
-        white_pixels = 0;
+        black_pixels = 0;
 
         ppm_file = $fopen("../evidence/hello_fpga_crop.ppm", "w");
         if (!ppm_file) $fatal(1, "FAIL preview open");
@@ -156,10 +156,10 @@ module tb_osd_overlay;
         $fclose(ppm_file);
         if (active_pixels != 3*640*480)
             $fatal(1, "FAIL active pixel count=%0d", active_pixels);
-        if (white_pixels == 0) $fatal(1, "FAIL no foreground pixels");
+        if (black_pixels == 0) $fatal(1, "FAIL no foreground pixels");
         test_passed = 1;
         $display("SIM PASS: overlay checks=%0d active_pixels=%0d foreground_pixels=%0d; 3 full frames, enabled/bypass/enabled, reset, 3 stages.",
-                 checks, active_pixels, white_pixels);
+                 checks, active_pixels, black_pixels);
         $finish;
     end
 endmodule

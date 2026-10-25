@@ -83,7 +83,7 @@ module tb_osd_video_position;
                 local_row = (y - 16) / 2;
                 whole = bitmap((message >> ((9-index)*8)) & 255);
                 foreground = (whole >> (63 - local_row*8 - local_col)) & 1;
-                if (foreground) reference_rgb = 24'hFFFFFF;
+                if (foreground) reference_rgb = 24'h000000;
             end
         end
     endfunction

@@ -62,7 +62,7 @@ module tb_real_video_timing;
                 local_row = (y - 16) / 2;
                 whole = bitmap((message >> ((9-index)*8)) & 255);
                 foreground = (whole >> (63 - local_row*8 - local_col)) & 1;
-                if (foreground) reference_rgb = 24'hFFFFFF;
+                if (foreground) reference_rgb = 24'h000000;
             end
         end
     endfunction
@@ -129,7 +129,7 @@ module tb_real_video_timing;
                 if(axis_last)lines=lines+1;
                 if(axis_valid)begin
                     pixels=pixels+1;
-                    if(axis_data==24'hffffff)text_pixels=text_pixels+1;
+                    if(axis_data==24'h000000)text_pixels=text_pixels+1;
                     if(frames==3)begin
                         $fwrite(image_file,"%0d %0d %0d\n",axis_data[23:16],axis_data[15:8],axis_data[7:0]);
                         captured=captured+1;
