@@ -1,5 +1,7 @@
 # HX4S20 HDMI OSD 开发记录
 
+> 2026-10-27集成候选：已合并图片转场、IMG/AUTO和滚动字幕，三组仿真及TD bit生成完成，整机setup未通过。用户随后反馈白屏，重新下载初始bit也白屏；原因未定位，本候选未通过板测。见[今日记录](docs/2026-10-27.md)、[统一按键规划](docs/按键与拨码规划.md)及[集成补丁](integration/transition_20261027/README.md)。
+
 > 当前基线（2026-10-25）：动态 IMG/AUTO + 黑色 WELCOME TO ANLU FPGA 滚动字幕 + ACK释放握手修复。用户报告最终测试版正常；整机setup仍失败，WNS=-6.699ns。
 >
 > 今日测试：[2026-10-25记录](docs/2026-10-25.md) · 当前源码集成：[基线补丁与哈希](integration/current_baseline/README.md)。旧bit、旧固定版记录和后文历史描述不代表当前选择。厂商完整工程、IP和bit只在本地归档。
