@@ -1,0 +1,769 @@
+diff --git a/src/user_source/hdl_source/SD/scale_on_load.v b/src/user_source/hdl_source/SD/scale_on_load.v
+new file mode 100644
+index 0000000..883b311
+--- /dev/null
++++ b/src/user_source/hdl_source/SD/scale_on_load.v
+@@ -0,0 +1,185 @@
++`timescale 1ns/1ps
++`default_nettype none
++// RGB888, bottom-up rows in AND out. The existing SDRAM writer flips rows.
++// Input is valid/ready; output is a write pulse with FIFO occupancy feedback.
++// Own implementation; references and limitations are recorded in README.md.
++module scale_on_load #(
++    parameter OUT_W=640, OUT_H=480, SRC_W_MAX=1024,
++    parameter FIFO_STALL=384
++)(
++    input wire clk, rst, load_start,
++    input wire [1:0] mode,
++    input wire [15:0] src_w, src_h,
++    input wire src_px_valid,
++    input wire [23:0] src_px,
++    output wire src_accept,
++    input wire source_done,
++    input wire [8:0] fifo_usedw,
++    output reg tgt_px_valid,
++    output reg [31:0] tgt_px,
++    output wire busy,
++    output reg cfg_error, frame_done
++);
++localparam IDLE=0, CFG=1, CFGDIV=2, OFFSETS=3, XSTEP=4,
++           XSTEPWAIT=5, XSEED=6, XSEEDWAIT=7, Y=8, YWAIT=9,
++           ROW=10, READ=11, EMIT=12, BLACK=13, TAIL=14, YPREP=15;
++reg [3:0] state;
++reg [10:0] w,h;
++reg [1:0] m;
++reg [31:0] sc_w,sc_h;
++reg signed [31:0] offx,offy;
++reg cfg_width;
++reg [31:0] x_step,x_frac,x_seed,x_rem_seed,sx,x_rem;
++reg [15:0] tx,tr,needed,src_x,src_row,row_tag;
++reg row_full, start_d, source_seen;
++reg black_ready;
++wire start = load_start && !start_d;
++wire signed [31:0] fy_raw = $signed(OUT_H-1)-$signed({16'd0,tr})-offy;
++reg signed [31:0] fy;
++reg [19:0] crop_x;
++wire signed [31:0] fx = $signed({16'd0,tx})-offx;
++wire inside_x = fx>=0 && fx<$signed(sc_w);
++wire inside_y = fy>=0 && fy<$signed(sc_h);
++wire [31:0] x_sum = x_rem+x_frac;
++reg [23:0] line_mem[0:SRC_W_MAX-1];
++reg [23:0] line_q;
++assign busy = state!=IDLE;
++assign src_accept = !rst && !start && ((state==TAIL) ||
++                    (state==ROW && !row_full && src_row<=needed));
++// No reset on RAM ports: infer a synchronous simple dual-port block RAM.
++always @(posedge clk) begin
++    if(src_px_valid && src_accept && state==ROW && src_row==needed)
++        line_mem[src_x] <= src_px;
++    if(state==READ && inside_x) line_q <= line_mem[sx[9:0]];
++end
++reg div_go;
++reg [31:0] div_n,div_d;
++wire div_busy,div_done;
++wire [31:0] div_q,div_r;
++zoom_udiv32 u_div(clk,rst,div_go,div_n,div_d,div_busy,div_done,div_q,div_r);
++always @(posedge clk or posedge rst) begin
++    if(rst) begin
++        state<=IDLE; start_d<=0; source_seen<=0; black_ready<=0;
++        w<=0; h<=0; m<=0; sc_w<=1; sc_h<=1; offx<=0; offy<=0;
++        cfg_width<=0; x_step<=0; x_frac<=0; x_seed<=0; x_rem_seed<=0;
++        sx<=0; x_rem<=0; tx<=0; tr<=0; needed<=0;
++        src_x<=0; src_row<=0; row_tag<=0; row_full<=0;
++        div_go<=0; div_n<=0; div_d<=1; fy<=0; crop_x<=0;
++        tgt_px_valid<=0; tgt_px<=0; cfg_error<=0; frame_done<=0;
++    end else begin
++        start_d<=load_start; div_go<=0; tgt_px_valid<=0; frame_done<=0;
++        if(source_done) source_seen<=1;
++        if(src_px_valid && src_accept) begin
++            if(src_x==w-1) begin
++                src_x<=0; src_row<=src_row+1'b1;
++                if(state==ROW && src_row==needed) begin
++                    row_full<=1; row_tag<=src_row;
++                end
++            end else src_x<=src_x+1'b1;
++        end
++        if(start) begin
++            w<=src_w[10:0]; h<=src_h[10:0]; m<=mode;
++            tr<=0; tx<=0; src_x<=0; src_row<=0; row_full<=0; source_seen<=0; black_ready<=0;
++            cfg_error<=src_w==0 || src_h==0 || src_w>SRC_W_MAX || src_h>1024;
++            state <= (src_w==0 || src_h==0 || src_w>SRC_W_MAX || src_h>1024) ? IDLE : CFG;
++        end else case(state)
++            IDLE: ;
++            CFG: begin
++                if(m==0 || m==3) begin sc_w<=w; sc_h<=h; state<=OFFSETS; end
++                else begin
++                    // Fit: choose the limiting dimension. Fill: choose its opposite.
++                    if(((w*OUT_H <= h*OUT_W) && m==1) ||
++                       ((w*OUT_H > h*OUT_W) && m==2)) begin
++                        sc_h<=OUT_H; div_n<=w*OUT_H; div_d<=h; cfg_width<=1;
++                    end else begin
++                        sc_w<=OUT_W; div_n<=h*OUT_W; div_d<=w; cfg_width<=0;
++                    end
++                    div_go<=1; state<=CFGDIV;
++                end
++            end
++            CFGDIV: if(div_done) begin
++                if(cfg_width) sc_w<=div_q==0 ? 1 : div_q;
++                else sc_h<=div_q==0 ? 1 : div_q;
++                state<=OFFSETS;
++            end
++            OFFSETS: begin
++                offx<=($signed(OUT_W)-$signed(sc_w)) >>> 1;
++                offy<=($signed(OUT_H)-$signed(sc_h)) >>> 1;
++                state<=XSTEP;
++            end
++            XSTEP: begin
++                crop_x<=offx<0 ? -offx : 0;
++                div_n<=w; div_d<=sc_w; div_go<=1; state<=XSTEPWAIT;
++            end
++            XSTEPWAIT: if(div_done) begin x_step<=div_q; x_frac<=div_r; state<=XSEED; end
++            XSEED: begin
++                if(offx<0) begin div_n<=crop_x*w; div_d<=sc_w; div_go<=1; state<=XSEEDWAIT; end
++                else begin x_seed<=0; x_rem_seed<=0; state<=YPREP; end
++            end
++            XSEEDWAIT: if(div_done) begin x_seed<=div_q; x_rem_seed<=div_r; state<=YPREP; end
++            YPREP: begin fy<=fy_raw; state<=Y; end
++            Y: begin
++                tx<=0; sx<=x_seed; x_rem<=x_rem_seed; black_ready<=0;
++                if(inside_y) begin div_n<=fy[19:0]*h; div_d<=sc_h; div_go<=1; state<=YWAIT; end
++                else state<=BLACK;
++            end
++            YWAIT: if(div_done) begin needed<=h-1-div_q; state<=ROW; end
++            ROW: begin
++                if(row_full && row_tag==needed) state<=READ;
++                else if(row_full) row_full<=0;
++            end
++            READ: state<=EMIT; // line_q sampled here; EMIT consumes it next edge.
++            EMIT: if(fifo_usedw<FIFO_STALL) begin
++                tgt_px_valid<=1; tgt_px<=inside_x ? {line_q,8'd0} : 32'd0;
++                if(inside_x) begin
++                    sx<=sx+x_step+(x_sum>=sc_w ? 32'd1 : 32'd0);
++                    x_rem<=x_sum>=sc_w ? x_sum-sc_w : x_sum;
++                end
++                if(tx==OUT_W-1) begin
++                    if(tr==OUT_H-1) state<=TAIL;
++                    else begin tr<=tr+1'b1; state<=YPREP; end
++                end else begin tx<=tx+1'b1; state<=READ; end
++            end
++            BLACK: if(!black_ready) begin
++                // Match READ/EMIT cadence: one preparation clock per pixel.
++                black_ready<=1;
++            end else if(fifo_usedw<FIFO_STALL) begin
++                tgt_px_valid<=1; tgt_px<=0; black_ready<=0;
++                if(tx==OUT_W-1) begin
++                    if(tr==OUT_H-1) state<=TAIL;
++                    else begin tr<=tr+1'b1; state<=YPREP; end
++                end else tx<=tx+1'b1;
++            end
++            TAIL: if(source_seen || source_done) begin frame_done<=1; state<=IDLE; end
++            default: state<=IDLE;
++        endcase
++    end
++end
++endmodule
++
++// One shared iterative divider: no variable combinational divide in pixel paths.
++module zoom_udiv32(
++    input wire clk,rst,go,
++    input wire [31:0] numerator,denominator,
++    output reg busy,done,
++    output reg [31:0] quotient,remainder
++);
++reg [31:0] n,d;
++reg [4:0] bitno;
++wire [32:0] trial={remainder,n[bitno]};
++always @(posedge clk or posedge rst) begin
++    if(rst) begin busy<=0; done<=0; quotient<=0; remainder<=0; n<=0; d<=1; bitno<=0; end
++    else begin
++        done<=0;
++        if(go && !busy) begin
++            n<=numerator; d<=denominator; quotient<=0; remainder<=0; bitno<=31; busy<=1;
++        end else if(busy) begin
++            if(trial>={1'b0,d}) begin remainder<=trial-{1'b0,d}; quotient[bitno]<=1; end
++            else remainder<=trial[31:0];
++            if(bitno==0) begin busy<=0; done<=1; end
++            else bitno<=bitno-1'b1;
++        end
++    end
++end
++endmodule
++`default_nettype wire
+diff --git a/src/user_source/hdl_source/SD/bmp_read.v b/src/user_source/hdl_source/SD/bmp_read.v
+index f97ea9c..9f7ee98 100644
+--- a/src/user_source/hdl_source/SD/bmp_read.v
++++ b/src/user_source/hdl_source/SD/bmp_read.v
+@@ -39,6 +39,8 @@ module bmp_read(
+     input                       sd_sec_read_end,
+ 
+     output reg                  bmp_data_wr_en,
++    output wire [15:0] src_w, src_h,
++    input wire src_accept,
+     output reg [23:0]           bmp_data
+ );
+ 
+@@ -48,6 +50,7 @@ localparam ST_LOAD_HDR  = 3'd2;
+ localparam ST_LOAD_WAIT = 3'd3;
+ localparam ST_LOAD_DATA = 3'd4;
+ localparam ST_LOAD_RELEASE = 3'd5;
++localparam ST_DRAIN=3'd6, ST_DRAIN_READ=3'd7;
+ 
+ reg [2:0]  state;
+ reg [9:0]  rd_cnt;
+@@ -74,15 +77,44 @@ wire [31:0] next_scan_sector_if_match;
+ wire [31:0] next_scan_sector_if_miss;
+ 
+ assign ready = (state == ST_IDLE);
+-assign header_match = (header_0 == "B") &&
+-                      (header_1 == "M") &&
+-                      (width[15:0]  == bmp_width) &&
+-                      (height[15:0] == bmp_height) &&
+-                      (bit_count    == 16'd24) &&
+-                      (compression  == 32'd0);
+-assign bmp_data_valid = (sd_sec_read_data_valid == 1'b1) &&
+-                        (bmp_len_cnt >= pixel_offset) &&
+-                        (bmp_len_cnt <  file_len);
++assign src_w=width[15:0];
++assign src_h=height[15:0];
++reg [31:0] row_bytes,row_stride,pixel_size,pixel_end;
++reg header_match_q;
++// Header fields settle by byte 34; decisions occur only after byte 511.
++// Pipeline frame-constant arithmetic rather than placing a multiply/add/compare
++// chain on the 100 MHz sector request path. Invalid large dimensions are rejected.
++always @(posedge clk or posedge rst) begin
++    if(rst) begin row_bytes<=0; row_stride<=0; pixel_size<=0; pixel_end<=0; header_match_q<=0; end
++    else begin
++        row_bytes<={21'd0,width[10:0]}*32'd3;
++        row_stride<=(row_bytes+32'd3)&32'hfffffffc;
++        pixel_size<=row_stride[12:0]*height[10:0];
++        pixel_end<=pixel_offset+pixel_size;
++        header_match_q<=(header_0=="B") && (header_1=="M") &&
++    width>=1 && width<=1024 && height>=1 && height<=1024 &&
++    bit_count==24 && compression==0 && pixel_offset>=54 &&
++    pixel_end>=pixel_offset && file_len>=pixel_end;
++    end
++end
++assign header_match=header_match_q;
++reg [7:0] sector_mem[0:511];
++reg [7:0] sector_q;
++reg [8:0] recv_idx, drain_idx;
++reg [31:0] row_byte;
++wire advance=(state==ST_DRAIN) && (!bmp_data_wr_en || src_accept);
++assign bmp_data_valid=advance && bmp_len_cnt>=pixel_offset &&
++    bmp_len_cnt<pixel_end && row_byte<row_bytes;
++always @(posedge clk) begin
++    if(state==ST_LOAD_DATA && sd_sec_read_data_valid)
++        sector_mem[recv_idx]<=sd_sec_read_data;
++    if(state==ST_DRAIN_READ) sector_q<=sector_mem[drain_idx];
++end
++always @(posedge clk or posedge rst) begin
++    if(rst) recv_idx<=0;
++    else if(state!=ST_LOAD_DATA) recv_idx<=0;
++    else if(sd_sec_read_data_valid) recv_idx<=recv_idx+1'b1;
++end
+ // Header bytes 2..5 set file_len; scan decisions occur after the full
+ // 512-byte sector. Precompute one cycle later to break the length ->
+ // rounding -> sector address -> end-of-scan comparison timing path.
+@@ -156,61 +188,36 @@ always @(posedge clk or posedge rst) begin
+     end
+ end
+ 
++// Drain one buffered sector; pending pixel is held until ready.
+ always @(posedge clk or posedge rst) begin
+-    if (rst) begin
+-        bmp_len_cnt <= 32'd0;
+-    end else if (state == ST_LOAD_DATA) begin
+-        if (sd_sec_read_data_valid)
+-            bmp_len_cnt <= bmp_len_cnt + 32'd1;
++    if(rst) begin
++        bmp_len_cnt<=0; row_byte<=0; bmp_byte_idx<=0;
++        bmp_data_wr_en<=0; bmp_data<=0;
+     end else begin
+-        bmp_len_cnt <= 32'd0;
+-    end
+-end
+-
+-always @(posedge clk or posedge rst) begin
+-    if (rst) begin
+-        bmp_byte_idx <= 2'd0;
+-    end else if (state == ST_LOAD_DATA) begin
+-        if (bmp_data_valid)
+-            bmp_byte_idx <= (bmp_byte_idx == 2'd2) ? 2'd0 : (bmp_byte_idx + 2'd1);
+-    end else begin
+-        bmp_byte_idx <= 2'd0;
+-    end
+-end
+-
+-always @(posedge clk or posedge rst) begin
+-    if (rst) begin
+-        bmp_data_wr_en <= 1'b0;
+-        bmp_data       <= 24'd0;
+-    end else if (state == ST_LOAD_DATA) begin
+-        if (bmp_data_valid) begin
+-            case (bmp_byte_idx)
+-                2'd0: begin
+-                    bmp_data_wr_en <= 1'b0;
+-                    bmp_data[7:0]  <= sd_sec_read_data;
+-                end
+-                2'd1: begin
+-                    bmp_data_wr_en <= 1'b0;
+-                    bmp_data[15:8] <= sd_sec_read_data;
+-                end
+-                2'd2: begin
+-                    bmp_data_wr_en  <= 1'b1;
+-                    bmp_data[23:16] <= sd_sec_read_data;
+-                end
+-                default: begin
+-                    bmp_data_wr_en <= 1'b0;
+-                end
+-            endcase
+-        end else begin
+-            bmp_data_wr_en <= 1'b0;
++        if(bmp_data_wr_en && src_accept) bmp_data_wr_en<=0;
++        if(state!=ST_LOAD_DATA && state!=ST_DRAIN && state!=ST_DRAIN_READ) begin
++            bmp_len_cnt<=0; row_byte<=0; bmp_byte_idx<=0;
++        end else if(advance) begin
++            bmp_len_cnt<=bmp_len_cnt+1'b1;
++            if(bmp_len_cnt>=pixel_offset && bmp_len_cnt<pixel_end) begin
++                if(row_byte==row_stride-1) row_byte<=0;
++                else row_byte<=row_byte+1'b1;
++            end
++            if(bmp_data_valid) begin
++                case(bmp_byte_idx)
++                    0: bmp_data[7:0]<=sector_q;
++                    1: bmp_data[15:8]<=sector_q;
++                    2: begin bmp_data[23:16]<=sector_q; bmp_data_wr_en<=1; end
++                endcase
++                bmp_byte_idx<=bmp_byte_idx==2 ? 0 : bmp_byte_idx+1'b1;
++            end
+         end
+-    end else begin
+-        bmp_data_wr_en <= 1'b0;
+     end
+ end
+ 
+ always @(posedge clk or posedge rst) begin
+     if (rst) begin
++        drain_idx<=0;
+         state             <= ST_IDLE;
+         state_code        <= 4'd0;
+         sd_sec_read       <= 1'b0;
+@@ -231,6 +238,7 @@ always @(posedge clk or posedge rst) begin
+         load_sector_latched <= 32'd0;
+         load_retry_count <= 2'd0;
+     end else if (!sd_init_done) begin
++        drain_idx<=0;
+         state             <= ST_IDLE;
+         state_code        <= 4'd0;
+         sd_sec_read       <= 1'b0;
+@@ -361,17 +369,23 @@ always @(posedge clk or posedge rst) begin
+             end
+ 
+             ST_LOAD_DATA: begin
+-                state_code  <= 4'd4;
+-                sd_sec_read <= 1'b1;
+-
+-                if (sd_sec_read_end) begin
+-                    sd_sec_read <= 1'b0;
+-                    if (bmp_len_cnt >= file_len) begin
+-                        load_done <= 1'b1;
+-                        state <= ST_IDLE;
+-                    end else begin
+-                        sd_sec_read_addr <= sd_sec_read_addr + 32'd1;
+-                    end
++                state_code<=4'd4; sd_sec_read<=1;
++                if(sd_sec_read_end) begin
++                    sd_sec_read<=0; drain_idx<=0; state<=ST_DRAIN_READ;
++                end
++            end
++            ST_DRAIN_READ: begin sd_sec_read<=0; state<=ST_DRAIN; end
++            ST_DRAIN: begin
++                sd_sec_read<=0;
++                if(advance) begin
++                    if(drain_idx==511) begin
++                        if(bmp_len_cnt+1>=file_len) begin
++                            load_done<=1; state<=ST_IDLE;
++                        end else begin
++                            sd_sec_read_addr<=sd_sec_read_addr+1'b1;
++                            state<=ST_LOAD_DATA;
++                        end
++                    end else begin drain_idx<=drain_idx+1'b1; state<=ST_DRAIN_READ; end
+                 end
+             end
+ 
+diff --git a/src/user_source/hdl_source/SD/sd_card_bmp.v b/src/user_source/hdl_source/SD/sd_card_bmp.v
+index 99ec37b..b51ce7b 100644
+--- a/src/user_source/hdl_source/SD/sd_card_bmp.v
++++ b/src/user_source/hdl_source/SD/sd_card_bmp.v
+@@ -9,6 +9,10 @@ module sd_card_bmp #(
+     input                       rst,
+     input                       key_next,
+     input                       key_auto,
++    input [1:0] scale_mode,
++    input diagnostic_gray_requested,
++    output wire [79:0] diagnostic_source,
++    input [8:0] write_fifo_usedw,
+     input transition_dark_toggle,
+     input transition_done_toggle,
+     output reg transition_req_toggle,
+@@ -195,8 +199,49 @@ always @(posedge clk or posedge rst) begin
+     end
+ end
+ 
+-assign write_en   = bmp_data_wr_en;
+-assign write_data = {bmp_data[23:16], bmp_data[15:8], bmp_data[7:0], 8'b0};
++wire [15:0] source_w,source_h;
++wire source_ready,scale_done,scale_error;
++reg [1:0] load_scale_mode,applied_scale_mode;
++wire [31:0] scaled_data;
++reg diagnostic_req_prev,diagnostic_gray_frame;
++reg [10:0] diagnostic_width,diagnostic_height;
++reg [19:0] diagnostic_sector;
++always @(posedge clk or posedge rst) begin
++    if(rst) begin
++        diagnostic_req_prev<=0;diagnostic_gray_frame<=0;
++        diagnostic_width<=0;diagnostic_height<=0;diagnostic_sector<=0;
++    end else begin
++        diagnostic_req_prev<=write_req;
++        if(write_req && !diagnostic_req_prev) begin
++            diagnostic_gray_frame<=diagnostic_gray_requested;
++            diagnostic_width<=source_w[10:0];diagnostic_height<=source_h[10:0];
++            diagnostic_sector<=load_sector[19:0];
++        end
++    end
++end
++assign write_data=diagnostic_gray_frame ? 32'hc0c0c000 : scaled_data;
++assign diagnostic_source={storage_diag_write,storage_diag_sd[74],scan_done,
++    display_valid,load_busy,diagnostic_gray_frame,8'd0,
++    scale_error,load_scale_mode,diagnostic_width,diagnostic_height,
++    diagnostic_sector,pixel_write_count};
++wire reload_scale=scale_mode!=applied_scale_mode;
++always @(posedge clk or posedge rst) begin
++    if(rst) begin load_scale_mode<=0; applied_scale_mode<=0; end
++    else begin
++        if(load_start_pulse) load_scale_mode<=scale_mode;
++        if(load_busy && source_done_seen && (write_done_seen || write_finish_pulse))
++            applied_scale_mode<=load_scale_mode;
++    end
++end
++scale_on_load u_scale (
++    .clk(clk), .rst(rst || bmp_load_error), .load_start(write_req),
++    .mode(load_scale_mode), .src_w(source_w), .src_h(source_h),
++    .src_px_valid(bmp_data_wr_en), .src_px(bmp_data), .src_accept(source_ready),
++    .source_done(bmp_load_done),
++    // Writer clears FIFO during request/ACK. Borders must wait as well as BMP data.
++    .fifo_usedw((write_req || write_ack_sync) ? 9'd511 : write_fifo_usedw),
++    .tgt_px_valid(write_en), .tgt_px(scaled_data), .busy(),
++    .cfg_error(scale_error), .frame_done(scale_done));
+ assign pixel_count_debug = (diag_wait && !load_error_seen) ?
+                            reverse_hex_digits(diag_snapshot_valid ?
+                                diag_page_value :
+@@ -380,7 +425,7 @@ always @(posedge clk or posedge rst) begin
+             end
+ 
+             // 记住 bmp_read 已经把源图送完 FIFO，但还不能切显示，得等整帧写完
+-            if (load_busy && bmp_load_done)
++            if (load_busy && scale_done)
+                 source_done_seen <= 1'b1;
+             if (load_busy && bmp_load_error) begin
+                 load_error_seen <= 1'b1;
+@@ -402,7 +447,7 @@ always @(posedge clk or posedge rst) begin
+                 debug_page_count <= 32'd0;
+                 debug_page <= 2'd0;
+             end
+-            else if (load_busy && bmp_data_wr_en && (pixel_write_count < 19'd307200))
++            else if (load_busy && write_en && (pixel_write_count < 19'd307200))
+                 pixel_write_count <= pixel_write_count + 1'b1;
+ 
+             if (load_error_seen) begin
+@@ -486,6 +531,14 @@ always @(posedge clk or posedge rst) begin
+                     next_req_pending <= 1'b0;
+                     auto_cnt         <= 32'd0;
+                 end
++                else if(scan_done && bmp_ready && display_valid && !load_busy &&
++                        !transition_active && reload_scale) begin
++                    load_idx<=img_idx; load_sector<=sector_lut(img_idx);
++                    pending_buf_idx<=next_buf_lut(disp_buf_idx,display_valid);
++                    write_buf_idx<=next_buf_lut(disp_buf_idx,display_valid);
++                    load_start_pulse<=1; load_busy<=1;
++                    pixel_write_count<=0; source_done_seen<=0; write_done_seen<=0; auto_cnt<=0;
++                end
+                 // 手动下一张优先：写到“非当前显示”的另一块 buffer
+                 else if (scan_done && bmp_ready && display_valid && !load_busy && !transition_active && next_req_pending && (img_found_count != 3'd0)) begin
+                     load_idx         <= next_from_current;
+@@ -554,6 +607,7 @@ bmp_read bmp_read_m0(
+     .sd_sec_read_data_valid (sd_sec_read_data_valid),
+     .sd_sec_read_end        (sd_sec_read_end),
+     .bmp_data_wr_en         (bmp_data_wr_en),
++    .src_w(source_w), .src_h(source_h), .src_accept(source_ready),
+     .bmp_data               (bmp_data)
+ );
+ 
+diff --git a/src/user_source/hdl_source/SD/frame_read_write.v b/src/user_source/hdl_source/SD/frame_read_write.v
+index c92c158..00a847f 100644
+--- a/src/user_source/hdl_source/SD/frame_read_write.v
++++ b/src/user_source/hdl_source/SD/frame_read_write.v
+@@ -70,6 +70,8 @@ module frame_read_write
+ 	input[ADDR_BITS - 1:0]           write_addr_3,               // data write module write request base address 1, used when write_addr_index = 3
+ 	input[1:0]                       write_addr_index,           // select valid base address from write_addr_0 write_addr_1 write_addr_2 write_addr_3
+ 	input[ADDR_BITS - 1:0]           write_len,                  // data write module write request data length
++	output wire [8:0] write_usedw,
++    output wire [1:0] diagnostic_read,
+ 	input                            write_en,                   // data write module write request for one data
+     output wire [79:0] storage_diag_mem,
+     output wire [2:0] storage_diag_write,
+@@ -145,7 +147,7 @@ wfifo_32_32_512 write_buf
+ 	.di                       	(write_data               ),          // Input Data
+ 	.empty_flag                 (diag_fifo_empty),          // Read side Empty flag
+ 	.full_flag                  (diag_fifo_full),          // Write side Full flag
+-	.wrusedw                	(              	  		  ),          // Read Used Words
++	.wrusedw(write_usedw),          // Read Used Words
+ 	.rdusedw                	(rdusedw                  ),          // Write Used Words
+ 	.dout                       (App_wr_din		          )
+ );
+@@ -188,7 +190,22 @@ frame_fifo_write_m0
+ 	.rdusedw                 	(rdusedw                  )
+ );
+ 
+-//instantiate an asynchronous FIFO 
++// Read-side diagnostics are clocked where FIFO consumption occurs.
++wire diagnostic_read_empty;
++reg diagnostic_read_req_prev,diagnostic_read_underflow,diagnostic_last_underflow;
++always @(posedge read_clk or posedge rst) begin
++    if(rst) begin
++        diagnostic_read_req_prev<=0;diagnostic_read_underflow<=0;diagnostic_last_underflow<=0;
++    end else begin
++        diagnostic_read_req_prev<=read_req;
++        if(read_req && !diagnostic_read_req_prev) begin
++            diagnostic_last_underflow<=diagnostic_read_underflow;
++            diagnostic_read_underflow<=0;
++        end else if(read_en && diagnostic_read_empty) diagnostic_read_underflow<=1;
++    end
++end
++assign diagnostic_read={diagnostic_read_underflow|diagnostic_last_underflow,diagnostic_read_empty};
++//instantiate an asynchronous FIFO
+ rfifo_32_32_512 read_buf
+ 	(
+ 	.clkr                     	(read_clk                   ),          // Read side clock
+@@ -197,7 +214,7 @@ rfifo_32_32_512 read_buf
+ 	.we                     	(Sdr_rd_en       			),          // Write Request
+ 	.re                     	(read_en                    ),          // Read Request
+ 	.di                      	(Sdr_rd_dout                ),          // Input Data
+-	.empty_flag					(                           ),          // Read side Empty flag
++	.empty_flag(diagnostic_read_empty),          // Read side Empty flag
+ 	.full_flag					(                           ),          // Write side Full flag
+ 	.wrusedw                	(wrusedw         	  	  		 ),          // Read Used Words
+ 	.rdusedw                	(                  			 ),          // Write Used Words
+diff --git a/src/user_source/hdl_source/user_control.v b/src/user_source/hdl_source/user_control.v
+index 714685c..17d4515 100644
+--- a/src/user_source/hdl_source/user_control.v
++++ b/src/user_source/hdl_source/user_control.v
+@@ -13,6 +13,7 @@ module user_control #(
+     input  wire [3:0] sw,
+     output reg  [1:0] transition_mode,
+     output reg  [1:0] duration_sel,
++    output reg [1:0] scale_mode,
+     output reg  [3:0] sw_stable
+ );
+     localparam integer FILTER_CYCLES = (CLK_FREQ_HZ / 1000) * FILTER_MS;
+@@ -86,6 +87,7 @@ module user_control #(
+     // K3 在 SW 正在变化/滤波期间的操作会被丢弃。
+     always @(posedge clk or negedge rst_n) begin
+         if (!rst_n) begin
++            scale_mode <= 2'd0;
+             transition_mode <= MODE_DIRECT;
+             duration_sel    <= 2'd1; // 默认中等：30 帧
+         end else if (key3_press && sw_ready &&
+@@ -99,6 +101,7 @@ module user_control #(
+                         default:     transition_mode <= MODE_DIRECT;
+                     endcase
+                 end
++                4'b0111: scale_mode <= scale_mode==2 ? 0 : scale_mode+1'b1;
+                 4'b0101: begin
+                     if (duration_sel >= 2'd2)
+                         duration_sel <= 2'd0;
+diff --git a/src/user_source/hdl_source/top_tf_hdmi_audio.v b/src/user_source/hdl_source/top_tf_hdmi_audio.v
+index ad5fe55..f902a23 100644
+--- a/src/user_source/hdl_source/top_tf_hdmi_audio.v
++++ b/src/user_source/hdl_source/top_tf_hdmi_audio.v
+@@ -56,10 +56,30 @@ wire        display_valid;
+ wire rst_all;
+ wire transition_req_toggle, transition_commit_toggle, transition_dark_toggle, transition_done_toggle;
+ wire [1:0] transition_mode, transition_duration;
++wire [1:0] scale_mode,scale_mode_sd;
++wire [3:0] diagnostic_sw_stable,diagnostic_sw_video;
++wire [2:0] diagnostic_config_sd;
++wire [79:0] diagnostic_source_sd,diagnostic_source_sys;
++wire [7:0] diagnostic_health_video,diagnostic_health_sys;
++wire [1:0] diagnostic_read;
++assign scale_mode_sd=diagnostic_config_sd[1:0];
++wire [8:0] write_fifo_usedw;
++osd_status_cdc #(.WIDTH(3)) u_scale_mode_cdc (
++    .src_clk(clk), .dst_clk(sd_card_clk), .rst(rst_all),
++    .src_data({(diagnostic_sw_stable==4'ha),scale_mode}), .dst_data(diagnostic_config_sd));
+ user_control u_transition_control (
+     .clk(clk), .rst_n(~rst_all), .key3_n(key3), .sw(sw),
+-    .transition_mode(transition_mode), .duration_sel(transition_duration), .sw_stable()
++    .transition_mode(transition_mode), .duration_sel(transition_duration), .scale_mode(scale_mode), .sw_stable(diagnostic_sw_stable)
+ );
++osd_status_cdc #(.WIDTH(4)) u_diag_sw_video (
++ .src_clk(clk),.dst_clk(video_clk),.rst(rst_all),
++ .src_data(diagnostic_sw_stable),.dst_data(diagnostic_sw_video));
++osd_status_cdc #(.WIDTH(80)) u_diag_source_sys (
++ .src_clk(sd_card_clk),.dst_clk(clk),.rst(rst_all),
++ .src_data(diagnostic_source_sd),.dst_data(diagnostic_source_sys));
++osd_status_cdc #(.WIDTH(8)) u_diag_health_sys (
++ .src_clk(video_clk),.dst_clk(clk),.rst(rst_all),
++ .src_data(diagnostic_health_video),.dst_data(diagnostic_health_sys));
+ wire [8:0] osd_sd_status, osd_mem_status;
+ wire [79:0] storage_diag_mem, storage_diag_sd;
+ wire [2:0] storage_diag_write;
+@@ -77,6 +97,17 @@ osd_status_cdc #(.WIDTH(5)) u_status_mem_pixel (
+ wire [3:0]  state_code;
+ wire [6:0]  seg_data_0;
+ wire [19:0] pixel_count_debug;
++wire [23:0] diagnostic_legacy_sys;
++reg [23:0] diagnostic_legacy_sd;
++always @(posedge sd_card_clk or posedge rst_all) begin
++ if(rst_all) diagnostic_legacy_sd<=0;
++ else diagnostic_legacy_sd<={state_code,pixel_count_debug};
++end
++wire [3:0] state_code_sys=diagnostic_legacy_sys[23:20];
++wire [19:0] pixel_count_sys=diagnostic_legacy_sys[19:0];
++osd_status_cdc #(.WIDTH(24)) u_diag_legacy_sys (
++ .src_clk(sd_card_clk),.dst_clk(clk),.rst(rst_all),
++ .src_data(diagnostic_legacy_sd),.dst_data(diagnostic_legacy_sys));
+ wire [6:0]  seg_count_0;
+ wire [6:0]  seg_count_1;
+ wire [6:0]  seg_count_2;
+@@ -205,6 +236,8 @@ sd_card_bmp #(
+ 
+     .write_req         (sd_card_write_req),
+     .write_req_ack     (sd_card_write_req_ack),
++    .write_fifo_usedw(write_fifo_usedw), .scale_mode(scale_mode_sd),
++    .diagnostic_gray_requested(diagnostic_config_sd[2]),.diagnostic_source(diagnostic_source_sd),
+     .write_en          (sd_card_write_en),
+     .write_data        (sd_card_write_data),
+     .SD_nCS            (sd_ncs),
+@@ -214,27 +247,48 @@ sd_card_bmp #(
+ );
+ 
+ seg_decoder seg_decoder_m0(
+-    .bin_data          (state_code),
++    .bin_data          (state_code_sys),
+     .seg_data          (seg_data_0)
+ );
+ 
+-seg_decoder seg_count_decoder_0(.bin_data(pixel_count_debug[3:0]),   .seg_data(seg_count_0));
+-seg_decoder seg_count_decoder_1(.bin_data(pixel_count_debug[7:4]),   .seg_data(seg_count_1));
+-seg_decoder seg_count_decoder_2(.bin_data(pixel_count_debug[11:8]),  .seg_data(seg_count_2));
+-seg_decoder seg_count_decoder_3(.bin_data(pixel_count_debug[15:12]), .seg_data(seg_count_3));
+-seg_decoder seg_count_decoder_4(.bin_data(pixel_count_debug[19:16]), .seg_data(seg_count_4));
+-
++seg_decoder seg_count_decoder_0(.bin_data(pixel_count_sys[3:0]),   .seg_data(seg_count_0));
++seg_decoder seg_count_decoder_1(.bin_data(pixel_count_sys[7:4]),   .seg_data(seg_count_1));
++seg_decoder seg_count_decoder_2(.bin_data(pixel_count_sys[11:8]),  .seg_data(seg_count_2));
++seg_decoder seg_count_decoder_3(.bin_data(pixel_count_sys[15:12]), .seg_data(seg_count_3));
++seg_decoder seg_count_decoder_4(.bin_data(pixel_count_sys[19:16]), .seg_data(seg_count_4));
++
++wire diagnostic_page=diagnostic_sw_stable>=4'h9;
++reg [19:0] diagnostic_number;
++always @* begin
++ case(diagnostic_sw_stable)
++  4'hb:diagnostic_number={9'd0,diagnostic_source_sys[60:50]};
++  4'hc:diagnostic_number={9'd0,diagnostic_source_sys[49:39]};
++  4'hd:diagnostic_number=diagnostic_source_sys[38:19];
++  4'he:diagnostic_number={1'b0,diagnostic_source_sys[18:0]};
++  default:diagnostic_number={4'd0,diagnostic_source_sys[79:72],diagnostic_health_sys};
++ endcase
++end
++wire [7:0] diagnostic_segment[0:5];
++genvar dg;
++generate for(dg=0;dg<5;dg=dg+1) begin:diag_digits
++ wire [6:0] decoded;
++ seg_decoder u_dec(.bin_data(diagnostic_number[dg*4+:4]),.seg_data(decoded));
++ assign diagnostic_segment[dg]={1'b1,decoded};
++end endgenerate
++wire [6:0] diagnostic_page_segment;
++seg_decoder u_diag_page(.bin_data(diagnostic_sw_stable),.seg_data(diagnostic_page_segment));
++assign diagnostic_segment[5]={1'b0,diagnostic_page_segment};
+ seg_scan seg_scan_m0(
+     .clk               (clk),
+     .rst_n             (rst_n),
+     .seg_sel           (seg_sel),
+     .seg_data          (seg_data),
+-    .seg_data_0        ((state_code == 4'd6 || state_code == 4'd7 || state_code == 4'd8 || state_code == 4'd9) ? {1'b1,seg_count_0} : {1'b1,7'b1111_111}),
+-    .seg_data_1        ((state_code == 4'd6 || state_code == 4'd7 || state_code == 4'd8 || state_code == 4'd9) ? {1'b1,seg_count_1} : {1'b1,7'b1111_111}),
+-    .seg_data_2        ((state_code == 4'd6 || state_code == 4'd7 || state_code == 4'd8 || state_code == 4'd9) ? {1'b1,seg_count_2} : {1'b1,7'b1111_111}),
+-    .seg_data_3        ((state_code == 4'd6 || state_code == 4'd7 || state_code == 4'd8 || state_code == 4'd9) ? {1'b1,seg_count_3} : {1'b1,7'b1111_111}),
+-    .seg_data_4        ((state_code == 4'd6 || state_code == 4'd7 || state_code == 4'd8 || state_code == 4'd9) ? {1'b1,seg_count_4} : {1'b1,7'b1111_111}),
+-    .seg_data_5        ({1'b1,seg_data_0})
++    .seg_data_0        (diagnostic_page ? diagnostic_segment[0] : ((state_code_sys == 4'd6 || state_code_sys == 4'd7 || state_code_sys == 4'd8 || state_code_sys == 4'd9) ? {1'b1,seg_count_0} : {1'b1,7'b1111_111})),
++    .seg_data_1        (diagnostic_page ? diagnostic_segment[1] : ((state_code_sys == 4'd6 || state_code_sys == 4'd7 || state_code_sys == 4'd8 || state_code_sys == 4'd9) ? {1'b1,seg_count_1} : {1'b1,7'b1111_111})),
++    .seg_data_2        (diagnostic_page ? diagnostic_segment[2] : ((state_code_sys == 4'd6 || state_code_sys == 4'd7 || state_code_sys == 4'd8 || state_code_sys == 4'd9) ? {1'b1,seg_count_2} : {1'b1,7'b1111_111})),
++    .seg_data_3        (diagnostic_page ? diagnostic_segment[3] : ((state_code_sys == 4'd6 || state_code_sys == 4'd7 || state_code_sys == 4'd8 || state_code_sys == 4'd9) ? {1'b1,seg_count_3} : {1'b1,7'b1111_111})),
++    .seg_data_4        (diagnostic_page ? diagnostic_segment[4] : ((state_code_sys == 4'd6 || state_code_sys == 4'd7 || state_code_sys == 4'd8 || state_code_sys == 4'd9) ? {1'b1,seg_count_4} : {1'b1,7'b1111_111})),
++    .seg_data_5        (diagnostic_page ? diagnostic_segment[5] : ({1'b1,seg_data_0}))
+ );
+ 
+ // ===================== 原图像时序与帧缓存 =====================
+@@ -320,6 +374,7 @@ frame_read_write #(
+     .write_addr_3      (24'd0),
+     .write_addr_index  (write_buf_idx),
+     .write_len         (FRAME_PIXELS),
++    .write_usedw(write_fifo_usedw), .diagnostic_read(diagnostic_read),
+     .write_en          (sd_card_write_en),
+     .write_data        (sd_card_write_data)
+ );
+@@ -422,12 +477,18 @@ always @(posedge video_clk or posedge rst_all) begin
+             osd_status_frame<=osd_pixel_status[3:0];
+     end
+ end
++wire [23:0] diagnostic_overlay_rgb;
++zoom_diagnostics u_zoom_diagnostics(
++ .clk(video_clk),.rst(rst_all),.select_pattern(diagnostic_sw_video==4'h9),
++ .de(osd_pos_de),.hs(osd_pos_hs),.vs(osd_pos_vs),.position_valid(osd_position_valid),
++ .x(osd_pos_x),.y(osd_pos_y),.rgb(osd_pos_rgb),.read_health(diagnostic_read),
++ .rgb_out(diagnostic_overlay_rgb),.health(diagnostic_health_video));
+ osd_overlay #(.STATUS_MODE(OSD_STATUS_MODE)) u_osd_overlay (
+     .image_valid(osd_status_frame[2]), .image_index(osd_status_frame[1:0]),
+     .auto_play(osd_status_frame[3]),
+     .clk(video_clk), .rst(rst_all),
+     .enable(osd_position_valid && (OSD_STATUS_MODE || osd_enable_frame)),
+-    .in_rgb(osd_pos_rgb), .in_de(osd_pos_de),
++    .in_rgb(diagnostic_overlay_rgb), .in_de(osd_pos_de),
+     .in_hs(osd_pos_hs), .in_vs(osd_pos_vs),
+     .in_x(osd_pos_x), .in_y(osd_pos_y),
+     .out_rgb(osd_video_rgb), .out_de(osd_video_de),
+diff --git a/src/user_source/hdl_source/zoom_diagnostics.v b/src/user_source/hdl_source/zoom_diagnostics.v
+new file mode 100644
+index 0000000..09d5d93
+--- /dev/null
++++ b/src/user_source/hdl_source/zoom_diagnostics.v
+@@ -0,0 +1,26 @@
++`timescale 1ns/1ps
++// Combinational substitution adds zero pixel latency; controls are untouched.
++module zoom_diagnostics(
++ input wire clk,rst,select_pattern,de,hs,vs,position_valid,
++ input wire [9:0] x,
++ input wire [8:0] y,
++ input wire [23:0] rgb,
++ input wire [1:0] read_health,
++ output wire [23:0] rgb_out,
++ output wire [7:0] health
++);
++reg prev_hs,prev_vs,seen_hs,seen_vs,seen_de,seen_position;
++always @(posedge clk or posedge rst) begin
++ if(rst) begin
++  prev_hs<=0;prev_vs<=0;seen_hs<=0;seen_vs<=0;seen_de<=0;seen_position<=0;
++ end else begin
++  prev_hs<=hs;prev_vs<=vs;
++  if(prev_hs!=hs) seen_hs<=1;
++  if(prev_vs!=vs) seen_vs<=1;
++  if(de) seen_de<=1;
++  if(position_valid) seen_position<=1;
++ end
++end
++assign health={2'd0,read_health,seen_hs,seen_vs,seen_de,seen_position};
++assign rgb_out=select_pattern ? ((x[5]^y[5]) ? 24'he0e0a0 : 24'hffffff) : rgb;
++endmodule

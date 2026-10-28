@@ -20,3 +20,7 @@
 最新项目为hdmi_async_exp_20261028/src/td_project/HDMI1.4b_Transmitter_v1.0.al。当前GUI版bit哈希fc087e1684d7de60b6fe3bfeef511e04afcf5d2f549d2c5e4e57f2c3d5cc6bdc；此前批处理命名bit为8284d9ec…，不可视为同一文件。
 
 后续缩放建议另建候选，保留两个成功版本。所有bit仍在本地，GitHub的[版本清单](../integration/timing_20261028/versions.json)只记录路径/哈希。
+
+## 后续更新：当前使用zoom_black2
+
+zoom_dev为首次失败候选，zoom_fix为诊断版，zoom_black2为用户全部板测通过的最近邻版。旧目录和bit保留；本地归档archives/20261028_ZOOM_BLACK2_BOARD_PASS。见[版本记录](../integration/zoom_20261028/README.md)。

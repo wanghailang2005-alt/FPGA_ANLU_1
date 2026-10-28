@@ -1,0 +1,24 @@
+{
+  "date": "2026-10-28",
+  "bits_uploaded": false,
+  "versions": [
+    {
+      "path": "zoom_dev/ZOOM_NEAREST_20261028.bit",
+      "sha256": "d7ee4a0e293d8e3b90496850616aeb366e409d59136065fc94d9909e5e834b1a",
+      "bytes": 629624,
+      "status": "BOARD FAIL: bands/flicker and missing text reported"
+    },
+    {
+      "path": "zoom_fix/ZOOM_DIAGNOSTIC_20261028.bit",
+      "sha256": "a9347effa445951d0846b4159f656fe00fb9358934e14c09c85a7e6a59d82ca1",
+      "bytes": 629624,
+      "status": "Diagnostic: gray storage frame stable; initial black-border corruption persisted"
+    },
+    {
+      "path": "zoom_black2/ZOOM_BLACK2_20261028.bit",
+      "sha256": "e8309327b536240992149c9d7faaf8f35fb8fd6166679d2d1144809c51035b59",
+      "bytes": 629624,
+      "status": "BOARD PASS: user confirmed all tests passed on 2026-10-28"
+    }
+  ]
+}

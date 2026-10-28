@@ -1,0 +1,56 @@
+# do card.do
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 17:32:05 on Oct 28,2026
+# vlog -work card_work -sv ../src/user_source/hdl_source/SD/scale_on_load.v ../src/user_source/hdl_source/SD/bmp_read.v ../src/user_source/hdl_source/SD/sd_card_bmp.v tb_card.sv 
+# -- Compiling module scale_on_load
+# -- Compiling module zoom_udiv32
+# -- Compiling module bmp_read
+# -- Compiling module sd_card_bmp
+# -- Compiling module key_press_debounce
+# -- Compiling module tb_card
+# -- Compiling module sd_card_top
+# 
+# Top level modules:
+# 	tb_card
+# End time: 17:32:05 on Oct 28,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vsim -voptargs="+acc" -onfinish stop card_work.tb_card 
+# Start time: 17:32:05 on Oct 28,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# ** Note: (vopt-143) Recognized 1 FSM in module "bmp_read(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "scale_on_load(fast)".
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.tb_card(fast)
+# Loading work.sd_card_bmp(fast)
+# Loading work.scale_on_load(fast)
+# Loading work.zoom_udiv32(fast)
+# Loading work.key_press_debounce(fast)
+# Loading work.bmp_read(fast)
+# Loading work.sd_card_top(fast)
+# PASS card commit=1 image=0 mode=0 count=307200
+# PASS card commit=2 image=0 mode=1 count=307200
+# PASS card commit=3 image=0 mode=2 count=307200
+# PASS card commit=4 image=0 mode=0 count=307200
+# PASS card commit=5 image=1 mode=0 count=307200
+# PASS card commit=6 image=2 mode=0 count=307200
+# PASS card commit=7 image=3 mode=0 count=307200
+# RESULT PASS card transactions=7 checked_pixels=2150400 diagnostic_gray=PASS
+# ** Note: $finish    : tb_card.sv(117)
+#    Time: 100631050 ns  Iteration: 1  Instance: /tb_card
+# Break in Module tb_card at tb_card.sv line 117
+# Stopped at tb_card.sv line 117
+# End time: 17:32:17 on Oct 28,2026, Elapsed time: 0:00:12
+# Errors: 0, Warnings: 0

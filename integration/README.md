@@ -13,3 +13,5 @@
 ## 历史工具
 
 [FIXED_OSD_GUIDE.md](FIXED_OSD_GUIDE.md)、STATUS_OSD.md、STALL_DIAGNOSTICS.md及旧补丁/构建脚本保留原路径，供追溯。最新版本以日期、哈希和验证阶段选择。
+
+最新：[最近邻缩放BOARD PASS归档](zoom_20261028/README.md)。当前基线zoom_black2；上表时序实验版为历史基线。

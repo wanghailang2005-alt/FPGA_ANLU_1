@@ -1,0 +1,71 @@
+# do run.do
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 17:32:11 on Oct 28,2026
+# vlog -sv ../src/user_source/hdl_source/SD/scale_on_load.v ../src/user_source/hdl_source/SD/bmp_read.v tb_zoom.sv 
+# -- Compiling module scale_on_load
+# -- Compiling module zoom_udiv32
+# -- Compiling module bmp_read
+# -- Compiling module tb_zoom
+# 
+# Top level modules:
+# 	tb_zoom
+# End time: 17:32:11 on Oct 28,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vsim -voptargs="+acc" -onfinish stop work.tb_zoom 
+# Start time: 17:32:12 on Oct 28,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# ** Note: (vopt-143) Recognized 1 FSM in module "bmp_read(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "scale_on_load(fast)".
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.tb_zoom(fast)
+# Loading work.bmp_read(fast)
+# Loading work.scale_on_load(fast)
+# Loading work.zoom_udiv32(fast)
+# PASS src=320x240 mode=0 target=307200 source=76800 cycles=1431322
+# PASS src=640x480 mode=0 target=307200 source=307200 cycles=3630803
+# PASS src=800x600 mode=0 target=307200 source=480000 cycles=5282546
+# PASS src=321x241 mode=0 target=307200 source=77361 cycles=1435790
+# PASS src=240x320 mode=0 target=307200 source=76800 cycles=1433023
+# PASS src=1x1 mode=0 target=307200 source=1 cycles=693330
+# PASS src=1024x1 mode=0 target=307200 source=1024 cycles=703072
+# PASS src=1x1024 mode=0 target=307200 source=1024 cycles=721292
+# PASS src=320x240 mode=1 target=307200 source=76800 cycles=1437191
+# PASS src=640x480 mode=1 target=307200 source=307200 cycles=3630813
+# PASS src=800x600 mode=1 target=307200 source=480000 cycles=5273194
+# PASS src=321x241 mode=1 target=307200 source=77361 cycles=1437449
+# PASS src=240x320 mode=1 target=307200 source=76800 cycles=1437237
+# PASS src=1x1 mode=1 target=307200 source=1 cycles=712199
+# PASS src=1024x1 mode=1 target=307200 source=1024 cycles=703076
+# PASS src=1x1024 mode=1 target=307200 source=1024 cycles=718296
+# PASS src=320x240 mode=2 target=307200 source=76800 cycles=1437444
+# PASS src=640x480 mode=2 target=307200 source=307200 cycles=3630813
+# PASS src=800x600 mode=2 target=307200 source=480000 cycles=5273192
+# PASS src=321x241 mode=2 target=307200 source=77361 cycles=1437449
+# PASS src=240x320 mode=2 target=307200 source=76800 cycles=1440294
+# PASS src=1x1 mode=2 target=307200 source=1 cycles=712201
+# PASS src=1024x1 mode=2 target=307200 source=1024 cycles=721945
+# PASS src=1x1024 mode=2 target=307200 source=1024 cycles=726096
+# PASS rejected BMP width=0 height=240 compression=0
+# PASS rejected BMP width=1025 height=480 compression=0
+# PASS rejected BMP width=640 height=-480 compression=0
+# PASS rejected BMP width=640 height=480 compression=1
+# RESULT PASS cases=24 checked_target_pixels=7372800 rejected=4
+# ** Note: $finish    : tb_zoom.sv(174)
+#    Time: 460915610 ns  Iteration: 1  Instance: /tb_zoom
+# Break in Module tb_zoom at tb_zoom.sv line 174
+# Stopped at tb_zoom.sv line 174
+# End time: 17:32:54 on Oct 28,2026, Elapsed time: 0:00:42
+# Errors: 0, Warnings: 0

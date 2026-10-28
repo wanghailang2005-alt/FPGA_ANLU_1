@@ -1,0 +1,29 @@
+{
+  "changed_source_files": [
+    "hdl_source/SD/bmp_read.v",
+    "hdl_source/SD/frame_read_write.v",
+    "hdl_source/SD/scale_on_load.v",
+    "hdl_source/SD/sd_card_bmp.v",
+    "hdl_source/top_tf_hdmi_audio.v",
+    "hdl_source/user_control.v"
+  ],
+  "simulation": "PASS",
+  "card_control": "PASS",
+  "controls": "PASS",
+  "reset": "PASS",
+  "setup_wns_ns": 0.108,
+  "setup_tns_ns": 0.0,
+  "hold_wns_ns": 0.011,
+  "hold_tns_ns": 0.0,
+  "sta_coverage_percent": 95.86,
+  "timing_scope": "Inherited SDRAM related-clock exception; not full SDRAM closure",
+  "board": "FAIL: user observed flickering horizontal bars, one black image, missing OSD/scroll; baseline remains normal",
+  "bit_sha256": "d7ee4a0e293d8e3b90496850616aeb366e409d59136065fc94d9909e5e834b1a",
+  "resources": {
+    "lut": 7107,
+    "reg": 5458,
+    "bram9k": 24,
+    "dsp": 11,
+    "pll": 3
+  }
+}

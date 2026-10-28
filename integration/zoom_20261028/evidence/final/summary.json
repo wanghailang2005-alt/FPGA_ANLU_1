@@ -1,0 +1,26 @@
+{
+  "purpose": "Black border 2-cycle cadence comparison",
+  "board": "BOARD PASS (user confirmed 2026-10-28): black borders stable, all three adaptation modes, continuous image switching and autoplay tests passed; user reports all tests passed. No separately measured long-duration stability or SDRAM electrical timing closure claimed.",
+  "changed_rtl": [
+    "hdl_source/SD/scale_on_load.v"
+  ],
+  "bit_sha256": "e8309327b536240992149c9d7faaf8f35fb8fd6166679d2d1144809c51035b59",
+  "baseline_bit_sha256": "a9347effa445951d0846b4159f656fe00fb9358934e14c09c85a7e6a59d82ca1",
+  "setup_wns_ns": 0.133,
+  "hold_wns_ns": 0.003,
+  "sta_coverage_percent": 95.55,
+  "resources": {
+    "lut": 7430,
+    "reg": 5799,
+    "bram9k": 24,
+    "dsp": 11,
+    "pll": 3
+  },
+  "simulations": {
+    "pixels": 7372800,
+    "load_control_pixels": 2150400,
+    "cadence_assertion": "PASS",
+    "reset": "PASS"
+  },
+  "timing_limit": "Inherited related SDRAM clock exception; not complete SDRAM timing closure"
+}
