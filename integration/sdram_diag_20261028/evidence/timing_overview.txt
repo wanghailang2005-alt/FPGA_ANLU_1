@@ -1,0 +1,78 @@
+Created by          : Tang Dynasty v6.2.168116
+                    : Copyright (c) 2012-2025 Anlogic Inc.
+Generated           : Wed Oct 28 11:30:34 2026
+
+Top Model           : sdram_diag_top
+Device              : EG4S20BG256
+Speed               : NA
+STA coverage        : 99.96%
+Constraint File     : D:/2026FPGA_1/HX4S20_Contest_202606/7_lab_ex_2026_nosoft/lab_ex5_i2s_osd_transition/sdram_diagnosis_20261028/memory_test/src/user_source/constraints_source/timing.sdc;
+Confidence          : Routed
+Check Corner        : Both (Slow and Fast)
+CRPR Enabled        : Yes
+Report Scheme       : 10 end point(s) per path group, 1 path(s) per end point
+
+
+Check Status
+-------------
+
+Corner   | Max      Min     
+------------------------------------
+Slow     | yes      yes     
+Fast     | yes      yes     
+
+
+Timing Status
+--------------------
+	SWNS: -6.699ns, STNS: -297.640ns
+	HWNS: 0.214ns, HTNS: 0.000ns
+	Period Check WNS: 0.000ns
+
+
+Clock Summary
+--------------------
+
+       Clock-Id:       C-Freq       Fanout   Clock-Name
+--------------------------------------------------------------------------------
+           clk0:      125.000          610   ext_mem_clk
+           clk1:       50.000            3   clk
+           clk2:      125.000            1   sdram_shift_clk
+           clk3:      100.000            0   sys_pll_m0/pll_inst.clkc[0]
+--------------------------------------------------------------------------------
+
+       Name            Type         Rise(ns)   Fall(ns)          C-Period(ns)     C-Freq(MHz)          R-Period(ns)     R-Freq(MHz)         SWNS(ns)   STNS(ns)         HWNS(ns)   HTNS(ns)         Skew(ns)           Fanout        Max-Level        CC-From    CC-To
+       clk0           local            0.000      4.000                 8.000         125.000                21.398          46.733           -6.699   -214.368            0.214      0.000            0.480              610                6             no       no
+       clk1           local            0.000     10.000                20.000          50.000                20.000          50.000            0.000      0.000            0.000      0.000            0.000                3                0             no       no
+       clk2           local            4.000      0.000                 8.000         125.000                13.674          73.131           -2.837    -83.272            3.740      0.000            0.000                1                1             no       no
+       clk3           local            0.000      5.000                10.000         100.000                10.000         100.000            0.000      0.000            0.000      0.000            0.000                0                0             no       no
+
+Notes
+----------
+C-Period  :  constraint period
+C-Freq    :  constraint freq
+R-Period  :  report min period
+R-Freq    :  report fmax
+CC-From   :  has path(s) from cross-domain clock
+CC-To     :  has path(s) to cross-domain clock
+
+
+*   Clock R-Period data only takes intra-clock timing. SWNS/STNS/HWNS/HTNS take both intra-clock and inter-clock timing.
+*   If there is mismatch between R-Period and SWNS, check inter-clock timing of this clock as capture clock.
+*   SWNS/STNS/HWNS/HTNS of timing exception (SMCP/SMD) only counted in global Timing Status, not counted in Clock Summary.
+
+Intra clock domain timing
+--------------------------------------------------
+
+----------------------------------------------------------------------------------------------------
+Path Group     :     ext_mem_clk -> ext_mem_clk
+Type           :     Self
+From Clock     :     ext_mem_clk
+To Clock       :     ext_mem_clk
+Min Period     :     6.595ns
+Fmax           :     151.630MHz
+
+Statistics:
+Max            : SWNS      1.405ns, STNS      0.000ns,         0 Viol Endpoints,      1493 Total Endpoints,      3000 Paths Analyzed
+Min            : HWNS      0.214ns, HTNS      0.000ns,         0 Viol Endpoints,      1493 Total Endpoints,      3000 Paths Analyzed
+----------------------------------------------------------------------------------------------------
+

@@ -1,0 +1,55 @@
+{
+  "date": "2026-10-28",
+  "bits_uploaded": false,
+  "versions": [
+    {
+      "version": "transition_20261027",
+      "local_path": "lab_ex5_i2s_osd_transition/OSD_TRANSITION_20261027.bit",
+      "sha256": "f64e399a6f29a3b4b8ebc68517ddb0107b5ac4845f632bb95601b875abad1945",
+      "bytes": 629624,
+      "status": "用户确认板测通过"
+    },
+    {
+      "version": "transition_gui_20261028_1037",
+      "local_path": "lab_ex5_i2s_osd_transition/board_pass_20261028/BEST_RESULT_BOARD_PASS_20261028.bit",
+      "sha256": "9b2fbab75273a515178f86b14d710dca00f42afbb940674adc33ff9d6aa975c8",
+      "bytes": 629624,
+      "status": "用户确认板测通过"
+    },
+    {
+      "version": "timing_stage1",
+      "local_path": "lab_ex5_i2s_osd_transition/timing_opt_stage1_20261028/OSD_TRANSITION_TIMING_STAGE1_20261028.bit",
+      "sha256": "7ef7a2ac00e15b54e063bec14992d58a59b8c7212ed1b8fa924a6f52044d462b",
+      "bytes": 629624,
+      "status": "仿真及构建通过；无独立板测确认"
+    },
+    {
+      "version": "timing_stage2",
+      "local_path": "lab_ex5_i2s_osd_transition/timing_opt_stage2_20261028/OSD_TRANSITION_TIMING_STAGE2_20261028.bit",
+      "sha256": "eaec32ad3aba2bf830d2ff923af2a52d383bebdd59c2a5ab12b76e1f1a3068f5",
+      "bytes": 629624,
+      "status": "用户确认板测通过；SDRAM setup仍失败"
+    },
+    {
+      "version": "async_batch",
+      "local_path": "hdmi_async_exp_20261028/OSD_TRANSITION_ASYNC_EXPERIMENT_20261028.bit",
+      "sha256": "8284d9ec38f560ad733aaa4c78e6ec91913c5eaec3f4478dbc596d2e2f806d88",
+      "bytes": 629624,
+      "status": "早前批处理构建；与GUI bit不同"
+    },
+    {
+      "version": "async_gui",
+      "local_path": "hdmi_async_exp_20261028/board_pass_20261028/OSD_ASYNC_GUI_20261028_115635.bit",
+      "sha256": "fc087e1684d7de60b6fe3bfeef511e04afcf5d2f549d2c5e4e57f2c3d5cc6bdc",
+      "bytes": 629624,
+      "status": "用户截图及完整功能板测反馈对应的GUI版本；用户未逐哈希确认下载文件"
+    },
+    {
+      "version": "sdram_diag",
+      "local_path": "lab_ex5_i2s_osd_transition/sdram_diagnosis_20261028/memory_test/SDRAM_DIAG_125_BASELINE.bit",
+      "sha256": "0744206ab864f4a4d7d2b40acd4d5fbcfa62865a48788bd45afa1ce19b1808f6",
+      "bytes": 629635,
+      "status": "构建完成；未上板"
+    }
+  ]
+}

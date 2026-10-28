@@ -1,0 +1,19 @@
+diff --git a/src/user_source/constraints_source/timing.sdc b/src/user_source/constraints_source/timing.sdc
+index cad501a..ae9c49e 100644
+--- a/src/user_source/constraints_source/timing.sdc
++++ b/src/user_source/constraints_source/timing.sdc
+@@ -36,6 +36,14 @@ rename_clock -name {video_clk}   -source [get_ports {clk}] -master_clock {clk} [
+ rename_clock -name {hdmi_5x_clk} -source [get_ports {clk}] -master_clock {clk} [get_pins {video_pll_m0/pll_inst.clkc[1]}]
+ rename_clock -name {audio_mclk}  -source [get_ports {clk}] -master_clock {clk} [get_pins {u_audio_pll/pll_inst.clkc[2]}]
+ 
++# USER-APPROVED EXPERIMENT ONLY: name the existing 125MHz/180-degree
++# output and SUPPRESS analysis between it and ext_mem_clk. These clocks
++# are physically related. This exception is not proof of timing closure.
++rename_clock -name {ext_mem_clk_sft} -source [get_ports {clk}] -master_clock {clk} [get_pins {sys_pll_m0/pll_inst.clkc[2]}]
++set_clock_groups -asynchronous \
++    -group [get_clocks {ext_mem_clk}] \
++    -group [get_clocks {ext_mem_clk_sft}]
++
+ # ------------------------------------------------------------
+ # 4. 从原 timing(2).sdc 迁移过来的 HDMI 像素/串行时钟约束
+ #

@@ -1,0 +1,152 @@
+Reading pref.tcl
+
+# 2020.4
+
+# do run.do
+# Model Technology ModelSim SE-64 vmap 2020.4 Lib Mapping Utility 2020.10 Oct 13 2020
+# vmap work work 
+# Modifying modelsim.ini
+# ../src/user_source/hdl_source
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 10:48:12 on Oct 28,2026
+# vlog ../src/user_source/hdl_source/SD/image_transition.v 
+# -- Compiling module image_transition
+# 
+# Top level modules:
+# 	image_transition
+# End time: 10:48:12 on Oct 28,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 10:48:12 on Oct 28,2026
+# vlog ../src/user_source/hdl_source/OSD/osd_overlay.v ../src/user_source/hdl_source/OSD/osd_status_layout.v ../src/user_source/hdl_source/OSD/osd_fixed_layout.v ../src/user_source/hdl_source/OSD/osd_glyph_pixel.v ../src/user_source/hdl_source/OSD/osd_font_rom.v 
+# -- Compiling module osd_overlay
+# -- Compiling module osd_status_layout
+# -- Compiling module osd_fixed_layout
+# -- Compiling module osd_glyph_pixel
+# -- Compiling module osd_font_rom
+# 
+# Top level modules:
+# 	osd_overlay
+# End time: 10:48:12 on Oct 28,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 10:48:12 on Oct 28,2026
+# vlog -sv tb_integrated.sv 
+# -- Compiling module tb_integrated
+# 
+# Top level modules:
+# 	tb_integrated
+# End time: 10:48:12 on Oct 28,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vsim -voptargs="+acc" -onfinish stop work.tb_integrated 
+# Start time: 10:48:12 on Oct 28,2026
+# ** Note: (vsim-8009) Loading existing optimized design _opt
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.tb_integrated(fast)
+# Loading work.image_transition(fast)
+# Loading work.osd_overlay(fast)
+# Loading work.osd_status_layout(fast)
+# Loading work.osd_glyph_pixel(fast)
+# Loading work.osd_font_rom(fast)
+# SIM PASS modes=3 durations=3 pixels=545297 preserved_glyphs=22586
+# ** Note: $finish    : tb_integrated.sv(85)
+#    Time: 5628090 ns  Iteration: 1  Instance: /tb_integrated
+# Break in Module tb_integrated at tb_integrated.sv line 85
+# Stopped at tb_integrated.sv line 85
+# End time: 10:48:14 on Oct 28,2026, Elapsed time: 0:00:02
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 10:48:14 on Oct 28,2026
+# vlog ../src/user_source/hdl_source/SD/sd_card_bmp.v ../src/user_source/hdl_source/SD/bmp_read.v ../src/user_source/hdl_source/SD/sd_card_top.v ../src/user_source/hdl_source/SD/sd_card_cmd.v ../src/user_source/hdl_source/SD/sd_card_sec_read_write.v ../src/user_source/hdl_source/SD/spi_master.v 
+# -- Compiling module sd_card_bmp
+# -- Compiling module key_press_debounce
+# -- Compiling module bmp_read
+# -- Compiling module sd_card_top
+# -- Compiling module sd_card_cmd
+# -- Compiling module sd_card_sec_read_write
+# -- Compiling module spi_master
+# 
+# Top level modules:
+# 	sd_card_bmp
+# End time: 10:48:14 on Oct 28,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 10:48:14 on Oct 28,2026
+# vlog -sv tb_control.sv 
+# -- Compiling module tb_control
+# 
+# Top level modules:
+# 	tb_control
+# End time: 10:48:14 on Oct 28,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vsim -voptargs="+acc" -onfinish stop work.tb_control 
+# Start time: 10:48:14 on Oct 28,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# ** Note: (vopt-143) Recognized 1 FSM in module "bmp_read(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "sd_card_cmd(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "sd_card_sec_read_write(fast)".
+# ** Note: (vopt-143) Recognized 1 FSM in module "spi_master(fast)".
+# Loading sv_std.std
+# Loading work.tb_control(fast)
+# Loading work.sd_card_bmp(fast)
+# Loading work.key_press_debounce(fast)
+# Loading work.bmp_read(fast)
+# Loading work.sd_card_top(fast)
+# Loading work.sd_card_sec_read_write(fast)
+# Loading work.sd_card_cmd(fast)
+# Loading work.spi_master(fast)
+# SIM PASS controller: first image, 4 toggled commits, delayed dark/done, busy K2, reset
+# ** Note: $finish    : tb_control.sv(57)
+#    Time: 1770 ns  Iteration: 1  Instance: /tb_control
+# Break in Module tb_control at tb_control.sv line 57
+# Stopped at tb_control.sv line 57
+# End time: 10:48:16 on Oct 28,2026, Elapsed time: 0:00:02
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 10:48:16 on Oct 28,2026
+# vlog ../src/user_source/hdl_source/OSD/osd_status_cdc.v ../src/user_source/hdl_source/SD/frame_fifo_read.v 
+# -- Compiling module osd_status_cdc
+# -- Compiling module frame_fifo_read
+# 
+# Top level modules:
+# 	osd_status_cdc
+# 	frame_fifo_read
+# End time: 10:48:16 on Oct 28,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 10:48:16 on Oct 28,2026
+# vlog -sv tb_transport.sv 
+# -- Compiling module tb_transport
+# 
+# Top level modules:
+# 	tb_transport
+# End time: 10:48:16 on Oct 28,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vsim -voptargs="+acc" -onfinish stop work.tb_transport 
+# Start time: 10:48:16 on Oct 28,2026
+# ** Note: (vsim-8009) Loading existing optimized design _opt2
+# Loading sv_std.std
+# Loading work.tb_transport(fast)
+# Loading work.osd_status_cdc(fast)
+# Loading work.osd_status_cdc(fast__1)
+# Loading work.frame_fifo_read(fast)
+# SIM PASS status transport checks=18; asynchronous clocks, bank/tag, mid-frame commit, reset
+# ** Note: $finish    : tb_transport.sv(78)
+#    Time: 21640 ns  Iteration: 1  Instance: /tb_transport
+# Break in Module tb_transport at tb_transport.sv line 78
+# Stopped at tb_transport.sv line 78
+# End time: 10:48:17 on Oct 28,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0

@@ -1,5 +1,8 @@
 # 仿真入口
 
+> 新增[BMP/FIFO测试](../integration/timing_20261028/sim/)及[自检验证](../integration/sdram_diag_20261028/README.md)。结果见最新集成记录；均需按说明准备本地完整工程或厂商模型。
+
+
 在本目录执行vsim -c -do run_名称.do。脚本检查最终成功标志，不能仅以仿真器退出判断通过。work、modelsim.ini和波形属于本地生成物。
 
 ## 仓库内OSD模块测试

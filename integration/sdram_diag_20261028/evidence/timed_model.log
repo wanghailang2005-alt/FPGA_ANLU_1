@@ -1,0 +1,87 @@
+# Model Technology ModelSim SE-64 vmap 2020.4 Lib Mapping Utility 2020.10 Oct 13 2020
+# vmap work sim_work 
+# Modifying modelsim.ini
+# ../user_source/hdl_source
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 11:31:22 on Oct 28,2026
+# vlog "+define+DEBUG" "+incdir+../user_source/hdl_source/include" ../user_source/hdl_source/include/sdr_as_ram.enc.v ../user_source/hdl_source/include/sdr_init_ref.enc.v ../user_source/hdl_source/include/sdr_wrrd.enc.v 
+# -- Compiling module sdr_as_ram
+# -- Compiling module sdr_init_ref
+# ** Warning: ../user_source/hdl_source/include/sdr_init_ref.enc.v(207): (vlog-2121) Illegal concatenation of an unsized constant. Will treat it as a 32-bit value.
+# ** Warning: ../user_source/hdl_source/include/sdr_wrrd.enc.v(77): (vlog-2121) Illegal concatenation of an unsized constant. Will treat it as a 32-bit value.
+# 
+# Top level modules:
+# 	sdr_as_ram
+# End time: 11:31:23 on Oct 28,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 2
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 11:31:23 on Oct 28,2026
+# vlog E:/Anlogic/TD_6.2.1_Engineer_6.2.168.116/sim_release/eg4/eg_phy_sdram_2m_32.v 
+# -- Compiling module EG_PHY_SDRAM_2M_32
+# 
+# Top level modules:
+# 	EG_PHY_SDRAM_2M_32
+# End time: 11:31:23 on Oct 28,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 11:31:23 on Oct 28,2026
+# vlog "+define+SIMULATION" ../user_source/hdl_source/sdram.v 
+# -- Compiling module sdram
+# 
+# Top level modules:
+# 	sdram
+# End time: 11:31:23 on Oct 28,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 11:31:23 on Oct 28,2026
+# vlog ../user_source/hdl_source/sdram_diag_core.v ../../sim/IS42s32200.v 
+# -- Compiling module sdram_diag_core
+# -- Compiling module IS42s32200
+# 
+# Top level modules:
+# 	sdram_diag_core
+# 	IS42s32200
+# End time: 11:31:23 on Oct 28,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 11:31:23 on Oct 28,2026
+# vlog -sv ../../sim/tb_sdram_diag.sv 
+# -- Compiling module tb_sdram_diag
+# 
+# Top level modules:
+# 	tb_sdram_diag
+# End time: 11:31:23 on Oct 28,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vsim -voptargs="+acc" -onfinish stop work.tb_sdram_diag -gMODEL_TIMING=1 
+# Start time: 11:31:23 on Oct 28,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.tb_sdram_diag(fast)
+# Loading work.sdram(fast)
+# Loading work.sdr_as_ram(fast)
+# Loading work.sdr_init_ref(fast)
+# Loading work.EG_PHY_SDRAM_2M_32(fast)
+# Loading work.IS42s32200(fast)
+# Loading work.sdram_diag_core(fast)
+# mismatch phase=6 n=3 got=zzzzzzzz expected=9abcdefb time=1137380.0 ns
+# mismatch phase=6 n=7 got=zzzzzzzz expected=abcdef82 time=1137412.0 ns
+# TIMED MODEL RESULT: errors=512 timeout=0 wr=2048 rd=2048 responses=2048 refresh=30; no hardware timing pass claimed
+# ** Note: $finish    : ../../sim/tb_sdram_diag.sv(60)
+#    Time: 1160236 ns  Iteration: 2  Instance: /tb_sdram_diag
+# Break in Module tb_sdram_diag at ../../sim/tb_sdram_diag.sv line 60
+# Stopped at ../../sim/tb_sdram_diag.sv line 60
+# End time: 11:31:25 on Oct 28,2026, Elapsed time: 0:00:02
+# Errors: 0, Warnings: 0

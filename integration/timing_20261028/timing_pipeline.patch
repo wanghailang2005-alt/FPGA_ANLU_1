@@ -1,0 +1,58 @@
+diff --git a/src/user_source/hdl_source/SD/bmp_read.v b/src/user_source/hdl_source/SD/bmp_read.v
+index b5dfee5..f97ea9c 100644
+--- a/src/user_source/hdl_source/SD/bmp_read.v
++++ b/src/user_source/hdl_source/SD/bmp_read.v
+@@ -69,7 +69,7 @@ reg [1:0]  bmp_byte_idx;
+ 
+ wire header_match;
+ wire bmp_data_valid;
+-wire [31:0] file_sector_count;
++reg [31:0] file_sector_count;
+ wire [31:0] next_scan_sector_if_match;
+ wire [31:0] next_scan_sector_if_miss;
+ 
+@@ -83,7 +83,16 @@ assign header_match = (header_0 == "B") &&
+ assign bmp_data_valid = (sd_sec_read_data_valid == 1'b1) &&
+                         (bmp_len_cnt >= pixel_offset) &&
+                         (bmp_len_cnt <  file_len);
+-assign file_sector_count = (file_len == 32'd0) ? 32'd1 : ((file_len + 32'd511) >> 9);
++// Header bytes 2..5 set file_len; scan decisions occur after the full
++// 512-byte sector. Precompute one cycle later to break the length ->
++// rounding -> sector address -> end-of-scan comparison timing path.
++// Keep the original 32-bit addition (including its overflow semantics).
++always @(posedge clk or posedge rst) begin
++    if (rst)
++        file_sector_count <= 32'd1;
++    else
++        file_sector_count <= (file_len == 32'd0) ? 32'd1 : ((file_len + 32'd511) >> 9);
++end
+ assign next_scan_sector_if_match = scan_sector + file_sector_count;
+ assign next_scan_sector_if_miss  = scan_sector + 32'd1;
+ 
+diff --git a/src/user_source/hdl_source/SD/frame_fifo_write.v b/src/user_source/hdl_source/SD/frame_fifo_write.v
+index 51316d2..64df2d5 100644
+--- a/src/user_source/hdl_source/SD/frame_fifo_write.v
++++ b/src/user_source/hdl_source/SD/frame_fifo_write.v
+@@ -85,7 +85,21 @@ assign diag_write_count = write_cnt;
+ assign diag_write_state = state;
+ assign diag_burst_count = burst_cnt;
+ wire into_burst;
+-assign into_burst = (((write_len_latch <= (rdusedw + write_cnt))||rdusedw > BURST_SIZE) && ~App_rd_busy);//当rd在突发时不会进入burst
++reg fifo_data_ready;
++// No FIFO words are consumed in S_CHECK_FIFO. Its occupancy can only grow
++// while waiting, so a one-cycle-old positive result remains safe. Clear
++// eligibility outside that state to avoid reusing it after a burst/clear.
++always @(posedge mem_clk or posedge rst) begin
++    if (rst)
++        fifo_data_ready <= 1'b0;
++    else if (state == S_CHECK_FIFO && !write_req_d2)
++        fifo_data_ready <= (write_len_latch <= (rdusedw + write_cnt)) ||
++                           (rdusedw > BURST_SIZE);
++    else
++        fifo_data_ready <= 1'b0;
++end
++// Arbitration must use the current read-busy level, not a delayed copy.
++assign into_burst = fifo_data_ready && ~App_rd_busy;
+ 
+ assign App_wr_addr = {App_wr_addr_r[ADDR_BITS - 1:0]};
+ //assign O_wr_busy = (state != S_IDLE || (S_IDLE && write_req_d2));

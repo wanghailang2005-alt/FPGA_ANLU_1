@@ -1,0 +1,107 @@
+Created by          : Tang Dynasty v6.2.168116
+                    : Copyright (c) 2012-2025 Anlogic Inc.
+Generated           : Wed Oct 28 11:52:49 2026
+
+Top Model           : top
+Device              : EG4S20BG256
+Speed               : NA
+STA coverage        : 95.07%
+Constraint File     : D:/2026FPGA_1/HX4S20_Contest_202606/7_lab_ex_2026_nosoft/hdmi_async_exp_20261028/evidence/timing.before.sdc;
+Confidence          : Routed
+Check Corner        : Both (Slow and Fast)
+CRPR Enabled        : Yes
+Report Scheme       : 10 end point(s) per path group, 1 path(s) per end point
+
+
+Check Status
+-------------
+
+Corner   | Max      Min     
+------------------------------------
+Slow     | yes      yes     
+Fast     | yes      yes     
+
+
+Timing Status
+--------------------
+	SWNS: -6.699ns, STNS: -313.986ns
+	HWNS: 0.003ns, HTNS: 0.000ns
+	Period Check WNS: 0.000ns
+
+
+Clock Summary
+--------------------
+
+       Clock-Id:       C-Freq       Fanout   Clock-Name
+--------------------------------------------------------------------------------
+           clk0:       25.000         1415   video_clk
+           clk1:      100.000          751   sd_card_clk
+           clk2:      125.000          548   ext_mem_clk
+           clk3:       50.000           74   clk
+           clk4:       12.295           47   audio_mclk
+           clk5:      125.000           32   hdmi_5x_clk
+           clk6:      125.000            1   sys_pll_m0/pll_inst.clkc[2]
+           clk7:       75.002            0   u_audio_pll/pll_inst.clkc[0]
+--------------------------------------------------------------------------------
+
+       Name            Type         Rise(ns)   Fall(ns)          C-Period(ns)     C-Freq(MHz)          R-Period(ns)     R-Freq(MHz)         SWNS(ns)   STNS(ns)         HWNS(ns)   HTNS(ns)         Skew(ns)           Fanout        Max-Level        CC-From    CC-To
+       clk0           local            0.000     20.000                40.000          25.000                28.932          34.564            4.302      0.000            0.003      0.000            0.326             1415               26             no       no
+       clk1           local            0.000      5.000                10.000         100.000                 9.637         103.767            0.363      0.000            0.021      0.000            0.326              751                8             no       no
+       clk2           local            0.000      4.000                 8.000         125.000                21.398          46.733           -6.699   -214.368            0.003      0.000            0.480              548                7             no       no
+       clk3           local            0.000     10.000                20.000          50.000                19.796          50.515            0.102      0.000            0.381      0.000            0.480               74                9             no       no
+       clk4           local            0.000     40.667                81.334          12.295                 5.429         184.196           75.905      0.000            0.212      0.000            0.066               47                5             no       no
+       clk5           local            0.000      4.000                 8.000         125.000                 4.151         240.906            3.849      0.000            0.329      0.000            0.480               32                1             no       no
+       clk6           local            4.000      0.000                 8.000         125.000                17.266          57.917           -4.633    -99.618            3.740      0.000            0.000                1                1             no       no
+       clk7           local            0.000      6.666                13.333          75.002                13.333          75.002            0.000      0.000            0.000      0.000            0.000                0                0             no       no
+
+Notes
+----------
+C-Period  :  constraint period
+C-Freq    :  constraint freq
+R-Period  :  report min period
+R-Freq    :  report fmax
+CC-From   :  has path(s) from cross-domain clock
+CC-To     :  has path(s) to cross-domain clock
+
+
+*   Clock R-Period data only takes intra-clock timing. SWNS/STNS/HWNS/HTNS take both intra-clock and inter-clock timing.
+*   If there is mismatch between R-Period and SWNS, check inter-clock timing of this clock as capture clock.
+*   SWNS/STNS/HWNS/HTNS of timing exception (SMCP/SMD) only counted in global Timing Status, not counted in Clock Summary.
+
+
+Path Group     :     video_clk -> video_clk
+Max            : SWNS     11.068ns, STNS      0.000ns,         0 Viol Endpoints,      3532 Total Endpoints,     11467 Paths Analyzed
+Path Group     :     sd_card_clk -> sd_card_clk
+Max            : SWNS      0.363ns, STNS      0.000ns,         0 Viol Endpoints,      1806 Total Endpoints,      5254 Paths Analyzed
+Path Group     :     ext_mem_clk -> ext_mem_clk
+Max            : SWNS      0.138ns, STNS      0.000ns,         0 Viol Endpoints,      1016 Total Endpoints,      1961 Paths Analyzed
+Path Group     :     audio_mclk -> audio_mclk
+Max            : SWNS     75.905ns, STNS      0.000ns,         0 Viol Endpoints,       124 Total Endpoints,       579 Paths Analyzed
+Path Group     :     clk -> clk
+Max            : SWNS     12.226ns, STNS      0.000ns,         0 Viol Endpoints,       119 Total Endpoints,       241 Paths Analyzed
+Path Group     :     ext_mem_clk -> sd_card_clk
+Max            : SWNS      0.509ns, STNS      0.000ns,         0 Viol Endpoints,        68 Total Endpoints,        68 Paths Analyzed
+Path Group     :     hdmi_5x_clk -> hdmi_5x_clk
+Max            : SWNS      3.849ns, STNS      0.000ns,         0 Viol Endpoints,        49 Total Endpoints,        80 Paths Analyzed
+Path Group     :     sd_card_clk -> ext_mem_clk
+Max            : SWNS      0.692ns, STNS      0.000ns,         0 Viol Endpoints,        12 Total Endpoints,        12 Paths Analyzed
+Path Group     :     ext_mem_clk -> video_clk
+Max            : SWNS      4.302ns, STNS      0.000ns,         0 Viol Endpoints,         8 Total Endpoints,         8 Paths Analyzed
+Path Group     :     sd_card_clk -> clk
+Max            : SWNS      0.102ns, STNS      0.000ns,         0 Viol Endpoints,         7 Total Endpoints,       310 Paths Analyzed
+Path Group     :     clk -> video_clk
+Max            : SWNS     17.019ns, STNS      0.000ns,         0 Viol Endpoints,         4 Total Endpoints,         4 Paths Analyzed
+Path Group     :     video_clk -> ext_mem_clk
+Max            : SWNS      5.723ns, STNS      0.000ns,         0 Viol Endpoints,         2 Total Endpoints,         2 Paths Analyzed
+Path Group     :     video_clk -> sd_card_clk
+Max            : SWNS      7.789ns, STNS      0.000ns,         0 Viol Endpoints,         2 Total Endpoints,         2 Paths Analyzed
+Path Group     :     sd_card_clk -> video_clk
+Max            : SWNS      5.883ns, STNS      0.000ns,         0 Viol Endpoints,         1 Total Endpoints,         1 Paths Analyzed
+Path Group     :     ext_mem_clk -> sys_pll_m0/pll_inst.clkc[2]
+Max            : SWNS     -4.633ns, STNS    -99.618ns,        32 Viol Endpoints,        48 Total Endpoints,        48 Paths Analyzed
+Path Group     :     sys_pll_m0/pll_inst.clkc[2] -> ext_mem_clk
+Max            : SWNS     -6.699ns, STNS   -214.368ns,        32 Viol Endpoints,        32 Total Endpoints,        32 Paths Analyzed
+Path Group     :     
+Max            : SWNS      6.530ns, STNS      0.000ns,         0 Viol Endpoints,        18 Total Endpoints,        18 Paths Analyzed
+Path Group     :     
+Max            : SWNS      6.076ns, STNS      0.000ns,         0 Viol Endpoints,        18 Total Endpoints,        18 Paths Analyzed
