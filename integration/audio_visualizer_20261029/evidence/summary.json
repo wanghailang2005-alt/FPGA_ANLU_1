@@ -1,0 +1,78 @@
+{
+  "status": "BOARD PASS (user confirmed 2026-10-29); IMPLEMENTED/TIMING PASS under inherited constraints",
+  "bit": "AUDIO_VIS_FFT512_1001_20261029.bit",
+  "bit_sha256": "6e83f38fb7697fd0586e5de0bffc35ebe837eabcb0acbb958cfed953538c4aa0",
+  "switch": "1001",
+  "audio_source": "Existing internal I2S square-wave scale, stereo PCM copied into analysis",
+  "nominal_sample_rate_hz": 48000,
+  "actual_audio_mclk_mhz": 12.295,
+  "fft_size": 512,
+  "fft_scaling": "Periodic Q1.15 Hann; radix-2 DIT; 1/2 per stage; saturating signed 16-bit",
+  "dsp_added": 1,
+  "bram9k_added": 7,
+  "setup_wns_ns": 0.101,
+  "hold_wns_ns": 0.012,
+  "setup_tns_ns": 0.0,
+  "hold_tns_ns": 0.0,
+  "sta_coverage_percent": 95.18,
+  "resources": {
+    "lut": 14460,
+    "reg": 9449,
+    "bram9k": 48,
+    "dsp": 23,
+    "pll": 3
+  },
+  "original_user_source_changed": [
+    "user_source/hdl_source/top_tf_hdmi_audio.v",
+    "user_source/hdl_source/SD/zoom_source_cache.v"
+  ],
+  "cache_diagnostic_latency_added_mem_clocks": 1,
+  "physical_settings": "# This File is Created by Tang Dynasty.\nset ADCList {\"../../../user_source/constraints_source/pin.adc\"}\nset IpSDCList { rfifo_32_32_512 ../../../user_source/hdl_source/ip/afifo_32_16_256.tcl wfifo_32_32_512 ../../../user_source/hdl_source/ip/afifo_16_32_256.tcl }\nset SDCList {\"../../../user_source/constraints_source/timing.sdc\"}\nset area_option -packarea\nset arr_filter false\nset device_name eagle_s20.db\nset drHoldFix on\nset end_step bitgen\nset package_name EG4S20BG256\nset parent ../syn_1\nset prj_name {HDMI1.4b_Transmitter_v1.0}\nset run_type phy\nset start_step opt_place\nset top_model_name {top}\n\nset phyWildParams {place seed 2 place hold_fix high place effort high place opt_timing high route effort high}\n\n\n\n\n\n\n",
+  "verification": {
+    "fft_reference": {
+      "status": "PASS",
+      "frames": 8,
+      "complex_bins": 2048,
+      "bit_exact": true,
+      "max_complex_error_lsb": 9.0,
+      "allowed_complex_error_lsb": 12,
+      "peak_bins": [
+        1,
+        1,
+        1,
+        16,
+        5,
+        8,
+        129,
+        255
+      ]
+    },
+    "video_frames": 8,
+    "video_pixels": 2457600,
+    "axis_sof": 8,
+    "axis_eol": 3840,
+    "latency_added_clocks": 3,
+    "continuous_sample_fifo_peak": 76,
+    "analysis_target_frames": 10,
+    "checks": [
+      "signed stereo/downmix, DC filter, band mapping and target reference",
+      "peak hold/silence decay, reset during collect/FFT, overflow sticky/reset",
+      "frame-stable display data, switch changes in active video, bypass pixels",
+      "real I2S test tone -> PCM -> FFT/waveform -> raster -> AXIS"
+    ]
+  },
+  "limitations": [
+    "No new external music input; existing internal source is preserved",
+    "Existing related SDRAM clock timing exception retained; not full interface timing closure",
+    "Supplied baseline image/animation behavior was not repaired by this audio change",
+    "Approximate magnitude/log display; frequency labels nominal, not calibrated dB/SPL"
+  ],
+  "board": "BOARD PASS: user reports successful display on hardware and no problems in board testing",
+  "board_feedback": {
+    "date": "2026-10-29",
+    "user_statement": "这个上板成功显示，板子测试无问题",
+    "associated_release": "AUDIO_VIS_FFT512_1001_20261029.bit",
+    "association": "Latest linked release in this chat; downloaded bit hash not independently measured on device",
+    "scope": "User-confirmed functional board acceptance; no new external music input or measured long-duration/electrical timing claim"
+  }
+}

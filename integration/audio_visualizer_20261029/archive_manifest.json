@@ -1,0 +1,177 @@
+[
+  {
+    "path": ".gitattributes",
+    "sha256": "3235cdf5055d65c9e5e18da1a5a5a04db396827feef79270a0e3484ba0b5538e",
+    "bytes": 96
+  },
+  {
+    "path": ".gitignore",
+    "sha256": "78faa3c946095a8893d26a5b233f7f690ded5899763692bf8c9906f0c7582690",
+    "bytes": 270
+  },
+  {
+    "path": "build_td.tcl",
+    "sha256": "340e9ad6ab0e289859dc9465eac279fdc0836f415e25d86f1b482ce248074db2",
+    "bytes": 410
+  },
+  {
+    "path": "evidence/analysis.log",
+    "sha256": "e7acf52de3c744e4d92093a811c722f923ef57c30ce0ce8e174a397dd720c515",
+    "bytes": 2216
+  },
+  {
+    "path": "evidence/cache.log",
+    "sha256": "a73a56085b0f3eea722d57cdf2ee0ec182d0b2c155cf9dfc5ee539ee1476b521",
+    "bytes": 5214
+  },
+  {
+    "path": "evidence/checksum.log",
+    "sha256": "1e1a74afa75504d005bc3d7f85982c0f6eac4eb8530e8de0d21fc62a88c0cfb1",
+    "bytes": 6122
+  },
+  {
+    "path": "evidence/fft.log",
+    "sha256": "8d81434554c0a998f62df9cfa29ebd58385daa2b4b1a4ad7e4209513439ce9c8",
+    "bytes": 1919
+  },
+  {
+    "path": "evidence/fft_reference_result.json",
+    "sha256": "f98f8705d70d532360c1cf886f83de2a2886a926c38348fcb17c49acda521523",
+    "bytes": 248
+  },
+  {
+    "path": "evidence/phy_1_settings.cfg",
+    "sha256": "a0778e753a76f2e8e0293aa10575a77e625b6885e2fd2f3c5733133dfa8b8961",
+    "bytes": 742
+  },
+  {
+    "path": "evidence/source_manifest.json",
+    "sha256": "cc599d71281027a2b5c1ccf2cd74422ce71e1cef96edefeafb48b0d80c641b42",
+    "bytes": 13678
+  },
+  {
+    "path": "evidence/summary.json",
+    "sha256": "c5b62f71a40b4a9d04a7aa1eddfb68b5416eebe9e8678015093b6f8e83d2b1a9",
+    "bytes": 3644
+  },
+  {
+    "path": "evidence/timing_overview.txt",
+    "sha256": "0daf3011d8c720449566daa2e69dee87235d7afcf07e3bfd5722cda4d359f4be",
+    "bytes": 4571
+  },
+  {
+    "path": "evidence/utilization.txt",
+    "sha256": "2c2888f9ae3d5bceba0b81bc1357449c053b4254c5a67684399ff854a03982b1",
+    "bytes": 1053
+  },
+  {
+    "path": "evidence/visualizer.log",
+    "sha256": "8db565de19b6ebd0fab7ecf15b9a7018a2ee0af546afd3cc0470d5b06f98e7fb",
+    "bytes": 3152
+  },
+  {
+    "path": "preview.png",
+    "sha256": "83496657d8839a4e67b07393df1e340f1cdab015e82b77cf0f624eb376943a94",
+    "bytes": 33656
+  },
+  {
+    "path": "README.md",
+    "sha256": "4252cd17db1f6f5245f0ea29c30f3ad2a2082c46c9a515d9a882e3b49cc59e3c",
+    "bytes": 4926
+  },
+  {
+    "path": "sim/analysis.do",
+    "sha256": "50588356fb03c6c68c3a71746bd9012f8cfb231bef393a1c632ecf0d7615cfec",
+    "bytes": 434
+  },
+  {
+    "path": "sim/cache.do",
+    "sha256": "79414513d2e58d395db152d3cf474be3b66522f60204c40e6e07216472cf2142",
+    "bytes": 438
+  },
+  {
+    "path": "sim/check_fft.py",
+    "sha256": "0969780c51de3f74146640949fbd011fbef2ff47ed5beeb4e9c95e6121ccf9c0",
+    "bytes": 3614
+  },
+  {
+    "path": "sim/checksum.do",
+    "sha256": "319ace22849dafa787db320092cca401eee82031bbb233fb6e424fe2bb0241a6",
+    "bytes": 448
+  },
+  {
+    "path": "sim/fft.do",
+    "sha256": "ab3ffd602356082dde2016d3bb526f84075cba913612c5125db7c40e9169dc32",
+    "bytes": 342
+  },
+  {
+    "path": "sim/tables.json",
+    "sha256": "43830fcec059723d80af32a7e42c521748792bda7d2badc271bd5c058c18eb68",
+    "bytes": 7190
+  },
+  {
+    "path": "sim/tb_analysis.sv",
+    "sha256": "152d1c9720dc1939582b0ef5e231bf404ce0fe2d18d9040a0cb77ad9836cd56c",
+    "bytes": 4204
+  },
+  {
+    "path": "sim/tb_cache.sv",
+    "sha256": "b997d8a6fda78e27cd06e00deb6573df0794d9c2afbca50c2a7ef1379a6f6ddb",
+    "bytes": 4398
+  },
+  {
+    "path": "sim/tb_checksum.sv",
+    "sha256": "a5b51ff6c089967de14b4cf19a8051999ed3b0713af641450fe0780a05f62810",
+    "bytes": 2447
+  },
+  {
+    "path": "sim/tb_fft.sv",
+    "sha256": "eeb6b7e8026d3cc7140c14aaa0ed845df26bf6fd0d5dd74e4dd436f1a35022eb",
+    "bytes": 2957
+  },
+  {
+    "path": "sim/tb_visualizer.sv",
+    "sha256": "9d58830e7081d71330f75616f0bb5a31ec289dc5010e7ee1c3023da21e47ea9e",
+    "bytes": 6751
+  },
+  {
+    "path": "sim/visualizer.do",
+    "sha256": "30dcb9059ed4e16a52f2707ab52d949a8046ac653d78921a21281059ba954cc0",
+    "bytes": 581
+  },
+  {
+    "path": "user_source/hdl_source/AUDIO_VIS/audio_fft512.v",
+    "sha256": "272c499814da3fab84bd79172fdccedbf4476ecdd7edbd93ebc8cba3fb3f07a8",
+    "bytes": 39444
+  },
+  {
+    "path": "user_source/hdl_source/AUDIO_VIS/audio_fft_luts.vh",
+    "sha256": "e371ba42fea6491e8cbc7dabfed416753c513ddecf42f21ae419e621bc944c65",
+    "bytes": 32908
+  },
+  {
+    "path": "user_source/hdl_source/AUDIO_VIS/audio_visualizer.v",
+    "sha256": "7ea8bb5a52160306708f90c8db954781662259206b480870b6cce7082212fc2b",
+    "bytes": 8995
+  },
+  {
+    "path": "user_source/hdl_source/AUDIO_VIS/audio_visualizer_overlay.v",
+    "sha256": "4e897c19ad4c0993fc95053d0d7074f90c42e8aaafa2fbfce4f0d5de36a9136b",
+    "bytes": 5364
+  },
+  {
+    "path": "user_source/hdl_source/SD/zoom_source_cache.v",
+    "sha256": "4ca8c64444978c279b8373aebf648baded1e7d39188baea1b077eda52aeaeb31",
+    "bytes": 14213
+  },
+  {
+    "path": "user_source/hdl_source/top_tf_hdmi_audio.v",
+    "sha256": "653032be67e068cd9429e98397406dd54060bf6cb067752bd11b9b688c5e263c",
+    "bytes": 28708
+  },
+  {
+    "path": "versions.json",
+    "sha256": "e01fedc5d0a3079619f994ac51075174fa5eb0cd9b7274a9498e4549d75d2553",
+    "bytes": 947
+  }
+]

@@ -2,6 +2,7 @@
 
 | 入口 | 用途与状态 |
 |---|---|
+| [audio_visualizer_20261029](audio_visualizer_20261029/README.md) | 音频可视化，1001 入口；用户确认功能 BOARD PASS |
 | [timing_20261028](timing_20261028/README.md) | 最新板测、两批优化、异步分组实验、版本哈希 |
 | [sdram_diag_20261028](sdram_diag_20261028/README.md) | 独立自检源码；未上板，默认时序模型未通过 |
 | [transition_20261027](transition_20261027/README.md) | 转场原始集成补丁；用户后续确认功能正常 |

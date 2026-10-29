@@ -1,0 +1,89 @@
+# do checksum.do
+# ../user_source/hdl_source
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 14:55:12 on Oct 29,2026
+# vlog -work checksum_work ../user_source/hdl_source/ip/afifo_16_32_256.v ../user_source/hdl_source/ip/afifo_32_16_256.v ../user_source/hdl_source/SD/zoom_source_cache.v 
+# -- Compiling module wfifo_32_32_512
+# -- Compiling module fifo_cross_domain_addr_process_al_wfifo_32_32_512
+# -- Compiling module ram_infer_wfifo_32_32_512
+# -- Compiling module rfifo_32_32_512
+# -- Compiling module fifo_cross_domain_addr_process_al_rfifo_32_32_512
+# -- Compiling module ram_infer_rfifo_32_32_512
+# -- Compiling module zoom_source_cache
+# -- Compiling module zoom_memory_probe
+# 
+# Top level modules:
+# 	zoom_source_cache
+# 	zoom_memory_probe
+# End time: 14:55:12 on Oct 29,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 14:55:12 on Oct 29,2026
+# vlog -work checksum_work -sv tb_checksum.sv 
+# -- Compiling module tb_checksum
+# 
+# Top level modules:
+# 	tb_checksum
+# End time: 14:55:12 on Oct 29,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vsim -voptargs="+acc" -onfinish stop checksum_work.tb_checksum 
+# Start time: 14:55:12 on Oct 29,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# ** Warning: ../user_source/hdl_source/SD/zoom_source_cache.v(40): (vopt-2685) [TFMPC] - Too few port connections for 'u_upload'.  Expected 14, found 11.
+# ** Warning: ../user_source/hdl_source/SD/zoom_source_cache.v(40): (vopt-2718) [TFMPC] - Missing connection for port 'aempty'.
+# ** Warning: ../user_source/hdl_source/SD/zoom_source_cache.v(40): (vopt-2718) [TFMPC] - Missing connection for port 'afull'.
+# ** Warning: ../user_source/hdl_source/SD/zoom_source_cache.v(40): (vopt-2718) [TFMPC] - Missing connection for port 'valid'.
+# ** Warning: ../user_source/hdl_source/SD/zoom_source_cache.v(71): (vopt-2685) [TFMPC] - Too few port connections for 'u_row'.  Expected 14, found 11.
+# ** Warning: ../user_source/hdl_source/SD/zoom_source_cache.v(71): (vopt-2718) [TFMPC] - Missing connection for port 'aempty'.
+# ** Warning: ../user_source/hdl_source/SD/zoom_source_cache.v(71): (vopt-2718) [TFMPC] - Missing connection for port 'afull'.
+# ** Warning: ../user_source/hdl_source/SD/zoom_source_cache.v(71): (vopt-2718) [TFMPC] - Missing connection for port 'valid'.
+# ** Note: (vopt-143) Recognized 1 FSM in module "zoom_source_cache(fast)".
+# ** Warning: ../user_source/hdl_source/ip/afifo_16_32_256.v(231): (vopt-2685) [TFMPC] - Too few port connections for 'ram_inst'.  Expected 16, found 14.
+# ** Warning: ../user_source/hdl_source/ip/afifo_16_32_256.v(231): (vopt-2718) [TFMPC] - Missing connection for port 'dib'.
+# ** Warning: ../user_source/hdl_source/ip/afifo_16_32_256.v(231): (vopt-2718) [TFMPC] - Missing connection for port 'doa'.
+# ** Warning: ../user_source/hdl_source/ip/afifo_32_16_256.v(231): (vopt-2685) [TFMPC] - Too few port connections for 'ram_inst'.  Expected 16, found 14.
+# ** Warning: ../user_source/hdl_source/ip/afifo_32_16_256.v(231): (vopt-2718) [TFMPC] - Missing connection for port 'dib'.
+# ** Warning: ../user_source/hdl_source/ip/afifo_32_16_256.v(231): (vopt-2718) [TFMPC] - Missing connection for port 'doa'.
+# ** Warning: tb_checksum.sv(13): (vopt-2685) [TFMPC] - Too few port connections for 'dut'.  Expected 30, found 18.
+# ** Warning: tb_checksum.sv(13): (vopt-2718) [TFMPC] - Missing connection for port 'cache_error'.
+# ** Warning: tb_checksum.sv(13): (vopt-2718) [TFMPC] - Missing connection for port 'aux_data'.
+# ** Warning: tb_checksum.sv(13): (vopt-2718) [TFMPC] - Missing connection for port 'aux_addr'.
+# ** Warning: tb_checksum.sv(13): (vopt-2718) [TFMPC] - Missing connection for port 'aux_write'.
+# ** Warning: tb_checksum.sv(13): (vopt-2718) [TFMPC] - Missing connection for port 'aux_read'.
+# ** Warning: tb_checksum.sv(13): (vopt-2718) [TFMPC] - Missing connection for port 'aux_active'.
+# ** Warning: tb_checksum.sv(13): (vopt-2718) [TFMPC] - Missing connection for port 'legacy_hold'.
+# ** Warning: tb_checksum.sv(13): (vopt-2718) [TFMPC] - Missing connection for port 'row_pixel'.
+# ** Warning: tb_checksum.sv(13): (vopt-2718) [TFMPC] - Missing connection for port 'row_valid'.
+# ** Warning: tb_checksum.sv(13): (vopt-2718) [TFMPC] - Missing connection for port 'row_ack'.
+# ** Warning: tb_checksum.sv(13): (vopt-2718) [TFMPC] - Missing connection for port 'cache_valid'.
+# ** Warning: tb_checksum.sv(13): (vopt-2718) [TFMPC] - Missing connection for port 'upload_ready'.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=27.
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.tb_checksum(fast)
+# Loading work.zoom_source_cache(fast)
+# Loading work.wfifo_32_32_512(fast)
+# Loading work.fifo_cross_domain_addr_process_al_wfifo_32_32_512(fast)
+# Loading work.ram_infer_wfifo_32_32_512(fast)
+# Loading work.rfifo_32_32_512(fast)
+# Loading work.fifo_cross_domain_addr_process_al_rfifo_32_32_512(fast)
+# Loading work.ram_infer_rfifo_32_32_512(fast)
+# RESULT PASS checksum clean mismatch first_bad_sticky count_saturation pending_cancel reset
+# ** Note: $finish    : tb_checksum.sv(58)
+#    Time: 23416 ns  Iteration: 1  Instance: /tb_checksum
+# Break in Module tb_checksum at tb_checksum.sv line 58
+# Stopped at tb_checksum.sv line 58
+# End time: 14:55:13 on Oct 29,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 27

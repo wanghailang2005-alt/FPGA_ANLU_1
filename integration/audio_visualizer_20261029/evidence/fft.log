@@ -1,0 +1,46 @@
+# do fft.do
+# ../user_source/hdl_source
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 14:30:16 on Oct 29,2026
+# vlog -work work ../user_source/hdl_source/AUDIO_VIS/audio_fft512.v 
+# -- Compiling module audio_fft512
+# 
+# Top level modules:
+# 	audio_fft512
+# End time: 14:30:16 on Oct 29,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 14:30:16 on Oct 29,2026
+# vlog -work work -sv tb_fft.sv 
+# -- Compiling module tb_fft
+# 
+# Top level modules:
+# 	tb_fft
+# End time: 14:30:16 on Oct 29,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vsim -voptargs="+acc" -onfinish stop work.tb_fft 
+# Start time: 14:30:16 on Oct 29,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.tb_fft(fast)
+# Loading work.audio_fft512(fast)
+# RESULT PASS fft frames=8 bin_count=2048 samples=4096 max_fifo=76 reset_collect/reset_compute overflow_detection
+# ** Note: $finish    : tb_fft.sv(58)
+#    Time: 109946080 ns  Iteration: 1  Instance: /tb_fft
+# Break in Module tb_fft at tb_fft.sv line 58
+# Stopped at tb_fft.sv line 58
+# End time: 14:30:18 on Oct 29,2026, Elapsed time: 0:00:02
+# Errors: 0, Warnings: 0

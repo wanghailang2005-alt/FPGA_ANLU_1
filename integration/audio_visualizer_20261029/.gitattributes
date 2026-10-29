@@ -1,0 +1,2 @@
+# Preserve verified source/evidence bytes, including original whitespace.
+* -text -whitespace
