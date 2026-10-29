@@ -1,0 +1,15 @@
+{
+  "bit": "ZOOM_CACHE_CHECK_20261029.bit",
+  "sha256": "da74acbd3af8562dda6edd2f543da5e8bf524d128f9a8c1942c5a97c75ff8176",
+  "setup_wns_ns": 0.133,
+  "hold_wns_ns": 0.019,
+  "sta_coverage_percent": 95.01,
+  "board": "UNVERIFIED",
+  "tests": {
+    "checksum_checksum.log": "RESULT PASS checksum clean=PASS injected_bit=DETECTED",
+    "checksum_cache.log": "RESULT PASS cache uploads=4 rows=10",
+    "checksum_system.log": "RESULT PASS system frames=27",
+    "checksum_odd.log": "PASS animation checksum status=800ff"
+  },
+  "limitations": "Row signatures can collide; official physical SDRAM model does not validate read data; inherited SDRAM timing exception remains."
+}

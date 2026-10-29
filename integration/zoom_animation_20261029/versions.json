@@ -1,0 +1,14 @@
+{
+  "board_test_bit": "ZOOM_CACHE_CHECK_20261029.bit",
+  "sha256": "da74acbd3af8562dda6edd2f543da5e8bf524d128f9a8c1942c5a97c75ff8176",
+  "rebuild_sha256": "990bde25c97536d754976aee7d0c35fd68dfaf3d52bd5c2af26f5ce083d5306c",
+  "board_feedback": "用户反馈烧录该 bit 后所测缩放全部正常；未明确奇数宽图片是否复测",
+  "timing_setup_ns": 0.133,
+  "timing_hold_ns": 0.019,
+  "sta_coverage_percent": 95.01,
+  "caveats": [
+    "相关 SDRAM 时钟例外仍保留",
+    "厂商 SDRAM 物理仿真模型为空壳",
+    "源码与工程依赖厂商 IP 与本地完整工程"
+  ]
+}

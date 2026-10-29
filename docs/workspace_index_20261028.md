@@ -24,3 +24,7 @@
 ## 后续更新：当前使用zoom_black2
 
 zoom_dev为首次失败候选，zoom_fix为诊断版，zoom_black2为用户全部板测通过的最近邻版。旧目录和bit保留；本地归档archives/20261028_ZOOM_BLACK2_BOARD_PASS。见[版本记录](../integration/zoom_20261028/README.md)。
+
+## 2026-10-29 更新
+
+当前连续缩放工程与用户反馈的板测版本见 [动画归档](../integration/zoom_animation_20261029/README.md)；旧的 10 月 28 日条目保留为历史。

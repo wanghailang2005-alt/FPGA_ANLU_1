@@ -1,0 +1,175 @@
+# do system.do
+# ../src/user_source/hdl_source
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 11:35:01 on Oct 29,2026
+# vlog -work system_work "+incdir+../src/user_source/hdl_source/SD" ../src/user_source/hdl_source/ip/afifo_16_32_256.v ../src/user_source/hdl_source/ip/afifo_32_16_256.v ../src/user_source/hdl_source/OSD/osd_status_cdc.v ../src/user_source/hdl_source/SD/color_bar.v ../src/user_source/hdl_source/SD/video_timing_data.v ../src/user_source/hdl_source/SD/video_delay.v ../src/user_source/hdl_source/SD/image_transition.v 
+# -- Compiling module wfifo_32_32_512
+# -- Compiling module fifo_cross_domain_addr_process_al_wfifo_32_32_512
+# -- Compiling module ram_infer_wfifo_32_32_512
+# -- Compiling module rfifo_32_32_512
+# -- Compiling module fifo_cross_domain_addr_process_al_rfifo_32_32_512
+# -- Compiling module ram_infer_rfifo_32_32_512
+# -- Compiling module osd_status_cdc
+# -- Compiling module color_bar
+# -- Compiling module video_timing_data
+# -- Compiling module video_delay
+# -- Compiling module image_transition
+# 
+# Top level modules:
+# 	wfifo_32_32_512
+# 	rfifo_32_32_512
+# 	osd_status_cdc
+# 	video_timing_data
+# 	video_delay
+# 	image_transition
+# End time: 11:35:01 on Oct 29,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 11:35:01 on Oct 29,2026
+# vlog -work system_work -sv ../src/user_source/hdl_source/SD/scale_on_load.v ../src/user_source/hdl_source/SD/zoom_cached_scaler.v ../src/user_source/hdl_source/SD/zoom_source_cache.v ../src/user_source/hdl_source/SD/zoom_animation.v ../src/user_source/hdl_source/SD/bmp_read.v ../src/user_source/hdl_source/SD/sd_card_bmp.v ../src/user_source/hdl_source/SD/frame_fifo_write.v ../src/user_source/hdl_source/SD/frame_fifo_read.v ../src/user_source/hdl_source/SD/frame_read_write.v tb_system.sv sd_model.sv 
+# -- Compiling module scale_on_load
+# -- Compiling module zoom_udiv32
+# -- Compiling module zoom_cached_scaler
+# -- Compiling module zoom_source_cache
+# -- Compiling module zoom_memory_probe
+# -- Compiling module zoom_animation
+# -- Compiling module zoom_mode_geometry
+# -- Compiling module bmp_read
+# -- Compiling module sd_card_bmp
+# -- Compiling module key_press_debounce
+# -- Compiling module frame_fifo_write
+# -- Compiling module frame_fifo_read
+# -- Compiling module frame_read_write
+# -- Compiling module tb_system
+# -- Compiling module sd_card_top
+# 
+# Top level modules:
+# 	zoom_memory_probe
+# 	tb_system
+# End time: 11:35:02 on Oct 29,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0
+# vsim -voptargs="+acc=r+/tb_system" -onfinish stop system_work.tb_system 
+# Start time: 11:35:02 on Oct 29,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: ../src/user_source/hdl_source/SD/zoom_source_cache.v(40): (vopt-2685) [TFMPC] - Too few port connections for 'u_upload'.  Expected 14, found 11.
+# ** Warning: ../src/user_source/hdl_source/SD/zoom_source_cache.v(40): (vopt-2718) [TFMPC] - Missing connection for port 'aempty'.
+# ** Warning: ../src/user_source/hdl_source/SD/zoom_source_cache.v(40): (vopt-2718) [TFMPC] - Missing connection for port 'afull'.
+# ** Warning: ../src/user_source/hdl_source/SD/zoom_source_cache.v(40): (vopt-2718) [TFMPC] - Missing connection for port 'valid'.
+# ** Warning: ../src/user_source/hdl_source/SD/zoom_source_cache.v(71): (vopt-2685) [TFMPC] - Too few port connections for 'u_row'.  Expected 14, found 11.
+# ** Warning: ../src/user_source/hdl_source/SD/zoom_source_cache.v(71): (vopt-2718) [TFMPC] - Missing connection for port 'aempty'.
+# ** Warning: ../src/user_source/hdl_source/SD/zoom_source_cache.v(71): (vopt-2718) [TFMPC] - Missing connection for port 'afull'.
+# ** Warning: ../src/user_source/hdl_source/SD/zoom_source_cache.v(71): (vopt-2718) [TFMPC] - Missing connection for port 'valid'.
+# ** Warning: ../src/user_source/hdl_source/SD/frame_read_write.v(168): (vopt-2685) [TFMPC] - Too few port connections for 'write_buf'.  Expected 14, found 11.
+# ** Warning: ../src/user_source/hdl_source/SD/frame_read_write.v(168): (vopt-2718) [TFMPC] - Missing connection for port 'aempty'.
+# ** Warning: ../src/user_source/hdl_source/SD/frame_read_write.v(168): (vopt-2718) [TFMPC] - Missing connection for port 'afull'.
+# ** Warning: ../src/user_source/hdl_source/SD/frame_read_write.v(168): (vopt-2718) [TFMPC] - Missing connection for port 'valid'.
+# ** Warning: ../src/user_source/hdl_source/SD/frame_read_write.v(237): (vopt-2685) [TFMPC] - Too few port connections for 'read_buf'.  Expected 14, found 11.
+# ** Warning: ../src/user_source/hdl_source/SD/frame_read_write.v(237): (vopt-2718) [TFMPC] - Missing connection for port 'aempty'.
+# ** Warning: ../src/user_source/hdl_source/SD/frame_read_write.v(237): (vopt-2718) [TFMPC] - Missing connection for port 'afull'.
+# ** Warning: ../src/user_source/hdl_source/SD/frame_read_write.v(237): (vopt-2718) [TFMPC] - Missing connection for port 'valid'.
+# ** Warning: tb_system.sv(68): (vopt-2685) [TFMPC] - Too few port connections for 'cache'.  Expected 30, found 29.
+# ** Warning: tb_system.sv(68): (vopt-2718) [TFMPC] - Missing connection for port 'checksum_status'.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=18.
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.tb_system(fast)
+# Loading work.wfifo_32_32_512(fast)
+# Loading work.rfifo_32_32_512(fast)
+# Loading work.frame_fifo_write(fast)
+# Loading work.rfifo_32_32_512(fast__1)
+# Loading work.osd_status_cdc(fast)
+# Loading work.osd_status_cdc(fast__1)
+# Loading work.video_timing_data(fast)
+# Loading work.video_delay(fast)
+# Loading work.image_transition(fast)
+# PROGRESS cycle=0 sdstate=0 bmp=0 scale=0 source=0,0 bridge=0 uploaded=0 legacy=0/0 pixels=0 hold=0 busy=0/0 used=xxx dataready=0 req=0 ack=0 len=000000 cnt=000000 portcount=Xxx
+# PASS system commit=1 anim=0 step=0 scale=240x320 cycles=1356579
+# PROGRESS cycle=2000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=0 uploaded=76800 legacy=2/2 pixels=53621 hold=0 busy=0/0 used=11c dataready=0 req=0 ack=0 len=04b000 cnt=00d100 portcount=074
+# PROGRESS cycle=4000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=6 uploaded=76800 legacy=2/2 pixels=256724 hold=0 busy=0/0 used=11c dataready=0 req=0 ack=0 len=04b000 cnt=03ea00 portcount=0d4
+# PASS system commit=2 anim=1 step=1 scale=245x326 cycles=2544380
+# PROGRESS cycle=6000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=0 uploaded=76800 legacy=2/2 pixels=118261 hold=0 busy=0/0 used=11c dataready=0 req=0 ack=0 len=04b000 cnt=01cd00 portcount=0f4
+# PASS system commit=3 anim=1 step=2 scale=250x333 cycles=2540840
+# PROGRESS cycle=8000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=6 uploaded=76800 legacy=0/2 pixels=307200 hold=0 busy=0/0 used=11c dataready=0 req=0 ack=0 len=04b000 cnt=04b000 portcount=000
+# PROGRESS cycle=10000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=7 uploaded=76800 legacy=2/2 pixels=183969 hold=0 busy=0/0 used=11c dataready=0 req=0 ack=0 len=04b000 cnt=02ce00 portcount=0a1
+# PASS system commit=4 anim=1 step=3 scale=255x340 cycles=2537617
+# PROGRESS cycle=12000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=6 uploaded=76800 legacy=3/2 pixels=42059 hold=0 busy=1/0 used=19c dataready=0 req=0 ack=0 len=04b000 cnt=00a300 portcount=06b
+# PROGRESS cycle=14000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=3 uploaded=76800 legacy=2/2 pixels=252800 hold=1 busy=0/0 used=19c dataready=0 req=0 ack=0 len=04b000 cnt=03db00 portcount=080
+# PASS system commit=5 anim=1 step=4 scale=260x346 cycles=2534374
+# PROGRESS cycle=16000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=0 uploaded=76800 legacy=2/2 pixels=109285 hold=0 busy=0/0 used=19c dataready=0 req=0 ack=0 len=04b000 cnt=01aa00 portcount=0e4
+# PASS system commit=6 anim=1 step=5 scale=265x353 cycles=2530617
+# PROGRESS cycle=18000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=7 uploaded=76800 legacy=0/2 pixels=307200 hold=0 busy=0/0 used=19c dataready=0 req=0 ack=0 len=04b000 cnt=04b000 portcount=000
+# PROGRESS cycle=20000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=3 uploaded=76800 legacy=2/2 pixels=177280 hold=1 busy=0/0 used=19c dataready=0 req=0 ack=0 len=04b000 cnt=02b400 portcount=080
+# PASS system commit=7 anim=1 step=6 scale=270x360 cycles=2526372
+# PROGRESS cycle=22000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=0 uploaded=76800 legacy=3/2 pixels=26114 hold=0 busy=1/0 used=11c dataready=0 req=0 ack=0 len=04b000 cnt=006500 portcount=0ff
+# PROGRESS cycle=24000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=2 uploaded=76800 legacy=2/2 pixels=247680 hold=1 busy=0/0 used=11c dataready=0 req=0 ack=0 len=04b000 cnt=03c700 portcount=080
+# PASS system commit=8 anim=1 step=7 scale=275x366 cycles=2523094
+# PROGRESS cycle=26000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=6 uploaded=76800 legacy=2/2 pixels=99684 hold=0 busy=0/0 used=11c dataready=0 req=0 ack=0 len=04b000 cnt=018500 portcount=063
+# PASS system commit=9 anim=1 step=8 scale=280x373 cycles=2518905
+# PROGRESS cycle=28000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=6 uploaded=76800 legacy=0/2 pixels=307200 hold=0 busy=0/0 used=11c dataready=0 req=0 ack=0 len=04b000 cnt=04b000 portcount=000
+# PROGRESS cycle=30000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=7 uploaded=76800 legacy=3/2 pixels=169249 hold=0 busy=1/0 used=11c dataready=0 req=0 ack=0 len=04b000 cnt=029400 portcount=05a
+# PASS system commit=10 anim=1 step=9 scale=285x380 cycles=2519972
+# PROGRESS cycle=32000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=0 uploaded=76800 legacy=2/2 pixels=10169 hold=0 busy=0/0 used=100 dataready=0 req=0 ack=0 len=04b000 cnt=002700 portcount=0b9
+# PROGRESS cycle=34000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=3 uploaded=76800 legacy=2/2 pixels=241280 hold=1 busy=0/0 used=19c dataready=0 req=0 ack=0 len=04b000 cnt=03ae00 portcount=080
+# PASS system commit=11 anim=1 step=10 scale=290x386 cycles=2522303
+# PROGRESS cycle=36000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=7 uploaded=76800 legacy=3/2 pixels=89352 hold=0 busy=1/0 used=19c dataready=0 req=0 ack=0 len=04b000 cnt=015c00 portcount=0e0
+# PASS system commit=12 anim=1 step=11 scale=295x393 cycles=2518622
+# PROGRESS cycle=38000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=6 uploaded=76800 legacy=0/2 pixels=307200 hold=0 busy=0/0 used=19c dataready=0 req=0 ack=0 len=04b000 cnt=04b000 portcount=000
+# PROGRESS cycle=40000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=6 uploaded=76800 legacy=2/2 pixels=161191 hold=0 busy=0/0 used=19c dataready=0 req=0 ack=0 len=04b000 cnt=027500 portcount=0a7
+# PASS system commit=13 anim=1 step=12 scale=300x400 cycles=2517052
+# PROGRESS cycle=42000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=7 uploaded=76800 legacy=0/0 pixels=307200 hold=0 busy=0/0 used=000 dataready=0 req=0 ack=0 len=04b000 cnt=04b000 portcount=000
+# PROGRESS cycle=44000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=0 uploaded=76800 legacy=2/2 pixels=234741 hold=0 busy=0/0 used=11c dataready=0 req=0 ack=0 len=04b000 cnt=039400 portcount=0f4
+# PASS system commit=14 anim=1 step=13 scale=305x406 cycles=2515955
+# PROGRESS cycle=46000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=7 uploaded=76800 legacy=2/2 pixels=78906 hold=0 busy=0/0 used=11c dataready=0 req=0 ack=0 len=04b000 cnt=013400 portcount=039
+# PASS system commit=15 anim=1 step=14 scale=310x413 cycles=2518771
+# PROGRESS cycle=48000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=6 uploaded=76800 legacy=0/2 pixels=307200 hold=0 busy=0/0 used=11c dataready=0 req=0 ack=0 len=04b000 cnt=04b000 portcount=000
+# PROGRESS cycle=50000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=2 uploaded=76800 legacy=2/2 pixels=151680 hold=1 busy=0/0 used=11c dataready=0 req=0 ack=0 len=04b000 cnt=025000 portcount=080
+# PASS system commit=16 anim=1 step=15 scale=315x420 cycles=2520996
+# PROGRESS cycle=52000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=7 uploaded=76800 legacy=0/2 pixels=307200 hold=0 busy=0/0 used=11c dataready=0 req=0 ack=0 len=04b000 cnt=04b000 portcount=000
+# PROGRESS cycle=54000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=0 uploaded=76800 legacy=2/2 pixels=226560 hold=0 busy=0/0 used=19c dataready=0 req=0 ack=0 len=04b000 cnt=037400 portcount=100
+# PASS system commit=17 anim=1 step=16 scale=320x426 cycles=2522245
+# PROGRESS cycle=56000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=6 uploaded=76800 legacy=2/2 pixels=67940 hold=0 busy=0/0 used=19c dataready=0 req=0 ack=0 len=04b000 cnt=010900 portcount=064
+# PASS system commit=18 anim=1 step=17 scale=325x433 cycles=2522978
+# PROGRESS cycle=58000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=6 uploaded=76800 legacy=0/2 pixels=307200 hold=0 busy=0/0 used=19c dataready=0 req=0 ack=0 len=04b000 cnt=04b000 portcount=000
+# PROGRESS cycle=60000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=6 uploaded=76800 legacy=3/2 pixels=142400 hold=0 busy=1/0 used=19c dataready=0 req=0 ack=0 len=04b000 cnt=022b00 portcount=05f
+# PASS system commit=19 anim=1 step=18 scale=330x440 cycles=2523684
+# PROGRESS cycle=62000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=7 uploaded=76800 legacy=0/2 pixels=307200 hold=0 busy=0/0 used=19c dataready=0 req=0 ack=0 len=04b000 cnt=04b000 portcount=000
+# PROGRESS cycle=64000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=2 uploaded=76800 legacy=2/2 pixels=218240 hold=1 busy=0/0 used=11c dataready=0 req=0 ack=0 len=04b000 cnt=035400 portcount=080
+# PASS system commit=20 anim=1 step=19 scale=335x446 cycles=2526659
+# PROGRESS cycle=66000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=7 uploaded=76800 legacy=2/2 pixels=57267 hold=0 busy=0/0 used=11c dataready=0 req=0 ack=0 len=04b000 cnt=00df00 portcount=0b2
+# PROGRESS cycle=68000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=6 uploaded=76800 legacy=3/2 pixels=294933 hold=0 busy=1/0 used=11c dataready=0 req=0 ack=0 len=04b000 cnt=047f00 portcount=099
+# PASS system commit=21 anim=1 step=20 scale=340x453 cycles=2525383
+# PROGRESS cycle=70000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=6 uploaded=76800 legacy=4/2 pixels=132651 hold=0 busy=0/0 used=11c dataready=0 req=0 ack=0 len=04b000 cnt=020600 portcount=02a
+# PASS system commit=22 anim=1 step=21 scale=345x460 cycles=2525949
+# PROGRESS cycle=72000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=6 uploaded=76800 legacy=0/2 pixels=307200 hold=0 busy=0/0 used=11c dataready=0 req=0 ack=0 len=04b000 cnt=04b000 portcount=000
+# PROGRESS cycle=74000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=0 uploaded=76800 legacy=2/2 pixels=209591 hold=0 busy=0/0 used=100 dataready=0 req=0 ack=0 len=04b000 cnt=033200 portcount=0b6
+# PASS system commit=23 anim=1 step=22 scale=350x466 cycles=2526372
+# PROGRESS cycle=76000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=8 uploaded=76800 legacy=2/2 pixels=46005 hold=0 busy=0/0 used=19c dataready=0 req=0 ack=0 len=04b000 cnt=00b300 portcount=0b4
+# PROGRESS cycle=78000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=6 uploaded=76800 legacy=2/2 pixels=287376 hold=0 busy=0/0 used=19c dataready=0 req=0 ack=0 len=04b000 cnt=046200 portcount=090
+# PASS system commit=24 anim=1 step=23 scale=355x473 cycles=2527108
+# PROGRESS cycle=80000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=3 uploaded=76800 legacy=2/2 pixels=122880 hold=1 busy=0/0 used=19c dataready=0 req=0 ack=0 len=04b000 cnt=01df00 portcount=100
+# PASS system commit=25 anim=1 step=24 scale=360x480 cycles=2526897
+# PROGRESS cycle=82000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=7 uploaded=76800 legacy=0/2 pixels=307200 hold=0 busy=0/0 used=19c dataready=0 req=0 ack=0 len=04b000 cnt=04b000 portcount=000
+# PROGRESS cycle=84000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=6 uploaded=76800 legacy=0/0 pixels=307200 hold=0 busy=0/0 used=000 dataready=0 req=0 ack=0 len=04b000 cnt=04b000 portcount=000
+# PASS system commit=26 anim=0 step=24 scale=360x480 cycles=1685756
+# PROGRESS cycle=86000000 sdstate=4 bmp=4 scale=10 source=222,63 bridge=4 uploaded=15312 legacy=2/2 pixels=60160 hold=1 busy=0/0 used=11c dataready=0 req=0 ack=0 len=04b000 cnt=00ea00 portcount=100
+# PASS system commit=27 anim=0 step=24 scale=360x480 cycles=1665754
+# PROGRESS cycle=88000000 sdstate=1 bmp=0 scale=0 source=0,320 bridge=8 uploaded=76800 legacy=0/2 pixels=307200 hold=0 busy=0/0 used=11c dataready=0 req=0 ack=0 len=04b000 cnt=04b000 portcount=000
+# RESULT PASS system frames=27 pixels=8294400 animated=24 video_pixels=15974400 max_render_cycles=2544380 no_SD_reread=PASS
+# ** Note: $finish    : tb_system.sv(260)
+#    Time: 890690260 ns  Iteration: 1  Instance: /tb_system
+# Break at tb_system.sv line 260
+# Stopped at tb_system.sv line 260
+# End time: 11:39:43 on Oct 29,2026, Elapsed time: 0:04:41
+# Errors: 0, Warnings: 18
