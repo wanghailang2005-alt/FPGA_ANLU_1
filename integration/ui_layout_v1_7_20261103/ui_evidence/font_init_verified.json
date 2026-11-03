@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "fonts": {
+    "u_osd_overlay/zh_row": {
+      "bram_instances": 4,
+      "matched_rows": 2048,
+      "matched_bits": 32768,
+      "sha256": "07bb92195ac972733109eb3a0ef1939f967949f0797e10bff48b9472e1d89fc4"
+    },
+    "u_osd_overlay/sidebar/bits": {
+      "bram_instances": 4,
+      "matched_rows": 2048,
+      "matched_bits": 32768,
+      "sha256": "bc163898703771b6e5113d6aab1f35e5ed8b9942043a0de47995f86dd20ff7c6"
+    }
+  }
+}

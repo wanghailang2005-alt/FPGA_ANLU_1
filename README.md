@@ -1,8 +1,10 @@
 # FPGA_ANLU_1
 
-当前图片播放集成版：[V1.5 逐图双语字幕 / 2026-11-03](integration/per_image_captions_v1_5_20261103/README.md)。用户确认全部功能板测通过，含逐图中英字幕、八种转场、亮度/对比度和缩放动画。[功能使用表](integration/per_image_captions_v1_5_20261103/docs/USAGE.md) · [实现与板测记录](integration/per_image_captions_v1_5_20261103/docs/BOARD_TEST_20261103.md)。最新 routed setup WNS -1.458 ns，尚未时序闭合。
+当前板测基线：[V1.7 四区域UI / 2026-11-03](integration/ui_layout_v1_7_20261103/README.md)。用户确认板上测试通过；480×360主图、右栏、常驻频谱及独立双语字幕。约束内setup +0.107ns、hold +0.003ns，SDRAM接口约束边界保留。
 
-下文保留各分支历史状态；FFT 音频可视化为独立分支，本版没有合入。
+历史V1.5图片播放集成版：[V1.5 逐图双语字幕 / 2026-11-03](integration/per_image_captions_v1_5_20261103/README.md)。用户确认全部功能板测通过，含逐图中英字幕、八种转场、亮度/对比度和缩放动画。[功能使用表](integration/per_image_captions_v1_5_20261103/docs/USAGE.md) · [实现与板测记录](integration/per_image_captions_v1_5_20261103/docs/BOARD_TEST_20261103.md)。最新 routed setup WNS -1.458 ns，尚未时序闭合。
+
+下文保留历史状态；当前V1.7已合入PCM频谱，历史V1.5未合入。
 
 2026-10-29：**音频可视化已获用户确认板测通过**，入口 SW=`1001`，含 512 点 FFT、32 柱频谱、峰值保持、波形和左右电平。见 [音频可视化源码与验证](integration/audio_visualizer_20261029/README.md)。
 

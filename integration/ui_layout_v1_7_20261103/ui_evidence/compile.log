@@ -1,0 +1,27 @@
+# do compile.do
+# ../src/user_source/hdl_source
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 16:11:05 on Nov 03,2026
+# vlog ../src/user_source/hdl_source/OSD/osd_overlay.v ../src/user_source/hdl_source/OSD/osd_font_rom.v ../src/user_source/hdl_source/OSD/osd_glyph_pixel.v ../src/user_source/hdl_source/AUDIO_VIS/audio_fft512.v ../src/user_source/hdl_source/AUDIO_VIS/audio_visualizer.v ../src/user_source/hdl_source/AUDIO_VIS/audio_spectrum_overlay.v ../src/user_source/hdl_source/SD/scale_on_load.v ../src/user_source/hdl_source/SD/zoom_animation.v ../src/user_source/hdl_source/SD/zoom_cached_scaler.v ../src/user_source/hdl_source/SD/image_transition.v 
+# -- Compiling module osd_overlay
+# -- Compiling module ui_sidebar
+# -- Compiling module osd_font_rom
+# -- Compiling module osd_glyph_pixel
+# -- Compiling module audio_fft512
+# -- Compiling module audio_visualizer
+# -- Compiling module audio_spectrum_overlay
+# -- Compiling module scale_on_load
+# -- Compiling module zoom_udiv32
+# -- Compiling module zoom_animation
+# -- Compiling module zoom_mode_geometry
+# -- Compiling module zoom_cached_scaler
+# -- Compiling module image_transition
+# 
+# Top level modules:
+# 	osd_overlay
+# 	audio_spectrum_overlay
+# 	scale_on_load
+# 	zoom_animation
+# 	image_transition
+# End time: 16:11:05 on Nov 03,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0

@@ -1,0 +1,86 @@
+{
+  "status": "BOARD PASS (user reported); IMPLEMENTED/TIMING PASS under inherited constraints",
+  "bit": "UI_LAYOUT_480x360_20261103.bit",
+  "sha256": "2ea197d6293374900cd112d303f762a1ab8aa8876dd8b0be208f15e33701bbb3",
+  "font_initialization": {
+    "status": "PASS",
+    "fonts": {
+      "u_osd_overlay/zh_row": {
+        "bram_instances": 4,
+        "matched_rows": 2048,
+        "matched_bits": 32768,
+        "sha256": "07bb92195ac972733109eb3a0ef1939f967949f0797e10bff48b9472e1d89fc4"
+      },
+      "u_osd_overlay/sidebar/bits": {
+        "bram_instances": 4,
+        "matched_rows": 2048,
+        "matched_bits": 32768,
+        "sha256": "bc163898703771b6e5113d6aab1f35e5ed8b9942043a0de47995f86dd20ff7c6"
+      }
+    }
+  },
+  "setup_wns_ns": 0.107,
+  "setup_tns_ns": 0,
+  "hold_wns_ns": 0.003,
+  "hold_tns_ns": 0,
+  "sta_coverage_percent": 95.22,
+  "resources": {
+    "lut": {
+      "used": 14836,
+      "available": 19600
+    },
+    "reg": {
+      "used": 9600,
+      "available": 19600
+    },
+    "bram": {
+      "used": 55,
+      "available": 64
+    },
+    "dsp": {
+      "used": 29,
+      "available": 29
+    }
+  },
+  "changed_sources": [
+    "src/user_source/hdl_source/top_tf_hdmi_audio.v",
+    "src/user_source/hdl_source/AUDIO_VIS/audio_spectrum_overlay.v",
+    "src/user_source/hdl_source/OSD/osd_overlay.v",
+    "src/user_source/hdl_source/SD/image_transition.v",
+    "src/user_source/hdl_source/SD/scale_on_load.v",
+    "src/user_source/hdl_source/SD/sd_card_bmp.v",
+    "src/user_source/hdl_source/SD/zoom_animation.v",
+    "src/user_source/hdl_source/SD/zoom_cached_scaler.v"
+  ],
+  "simulations": {
+    "cached": "# RESULT PASS cached frames=4 pixels=1228800",
+    "load": "# RESULT PASS cases=12 checked_target_pixels=3686400 rejected=4",
+    "transition": "# RESULT PASS transitions=8 viewport=480x360",
+    "captions": "# RESULT PASS captions 4 images x 4 languages, opaque background, pause, left/right scrolling, short stationary",
+    "clock": "# RESULT PASS runtime clock minute/hour rollover, reset, frame-constant display",
+    "scene": "# RESULT PASS ui frames=5 pixels=1536000 SOF=5 EOL=2400 zh=1529 en=882 bars=6930 sidebar=2442"
+  },
+  "constraints_unchanged": true,
+  "latency": {
+    "position": 1,
+    "osd": 4,
+    "spectrum": 7,
+    "axis": 8
+  },
+  "notes": [
+    "Runtime clock only; no RTC/date input",
+    "Existing SDRAM clock exceptions remain; constrained timing is not full interface electrical validation",
+    "PCM test tone unchanged",
+    "Logo is typographic placeholder",
+    "ui_preview.png is RTL output with procedural background"
+  ],
+  "board_feedback": {
+    "date": "2026-11-03",
+    "status": "BOARD PASS (user reported)",
+    "user_statement": "板上测试通过，github归档",
+    "associated_release": "UI_LAYOUT_480x360_20261103.bit",
+    "bit_sha256": "2ea197d6293374900cd112d303f762a1ab8aa8876dd8b0be208f15e33701bbb3",
+    "association": "Acceptance follows the named UI release linked in this chat; no independent device-side checksum was provided.",
+    "scope": "User-reported functional acceptance. No new per-feature measurement or long-duration/electrical timing test was supplied."
+  }
+}

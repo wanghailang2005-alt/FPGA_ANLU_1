@@ -1,0 +1,10 @@
+# Licensed vendor baseline and generated outputs remain local.
+*.bit
+*.db
+*.wlf
+*.logw
+*_Runs/
+ui_evidence/work/
+ui_evidence/modelsim.ini
+ui_evidence/transcript
+ui_evidence/rom_init_probe/

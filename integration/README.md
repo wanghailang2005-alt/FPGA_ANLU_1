@@ -1,6 +1,8 @@
 # 集成入口
 
-当前图片播放集成基线：[V1.5 逐图双语字幕](per_image_captions_v1_5_20261103/README.md)，2026-11-03 用户确认全部功能板测通过；[功能表](per_image_captions_v1_5_20261103/docs/USAGE.md)。setup WNS -1.458 ns，尚未时序闭合。
+当前板测基线：[V1.7 四区域UI](ui_layout_v1_7_20261103/README.md)，用户于2026-11-03反馈板上测试通过。主图、右栏、常驻音频频谱与独立字幕分区，约束内setup/hold通过。
+
+历史V1.5图片播放集成基线：[V1.5 逐图双语字幕](per_image_captions_v1_5_20261103/README.md)，2026-11-03 用户确认全部功能板测通过；[功能表](per_image_captions_v1_5_20261103/docs/USAGE.md)。setup WNS -1.458 ns，尚未时序闭合。
 
 | 入口 | 用途与状态 |
 |---|---|

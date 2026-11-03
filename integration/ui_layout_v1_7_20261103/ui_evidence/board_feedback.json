@@ -1,0 +1,9 @@
+{
+  "date": "2026-11-03",
+  "status": "BOARD PASS (user reported)",
+  "user_statement": "板上测试通过，github归档",
+  "associated_release": "UI_LAYOUT_480x360_20261103.bit",
+  "bit_sha256": "2ea197d6293374900cd112d303f762a1ab8aa8876dd8b0be208f15e33701bbb3",
+  "association": "Acceptance follows the named UI release linked in this chat; no independent device-side checksum was provided.",
+  "scope": "User-reported functional acceptance. No new per-feature measurement or long-duration/electrical timing test was supplied."
+}
