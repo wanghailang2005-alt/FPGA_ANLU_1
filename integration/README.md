@@ -1,5 +1,7 @@
 # 集成入口
 
+当前图片播放集成基线：[V1.5 逐图双语字幕](per_image_captions_v1_5_20261103/README.md)，2026-11-03 用户确认全部功能板测通过；[功能表](per_image_captions_v1_5_20261103/docs/USAGE.md)。setup WNS -1.458 ns，尚未时序闭合。
+
 | 入口 | 用途与状态 |
 |---|---|
 | [audio_visualizer_20261029](audio_visualizer_20261029/README.md) | 音频可视化，1001 入口；用户确认功能 BOARD PASS |
@@ -15,4 +17,4 @@
 
 [FIXED_OSD_GUIDE.md](FIXED_OSD_GUIDE.md)、STATUS_OSD.md、STALL_DIAGNOSTICS.md及旧补丁/构建脚本保留原路径，供追溯。最新版本以日期、哈希和验证阶段选择。
 
-最新：[最近邻缩放BOARD PASS归档](zoom_20261028/README.md)。当前基线zoom_black2；上表时序实验版为历史基线。
+历史：[最近邻缩放BOARD PASS归档](zoom_20261028/README.md)。当时基线zoom_black2；上表时序实验版为历史基线。

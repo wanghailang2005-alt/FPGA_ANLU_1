@@ -1,0 +1,33 @@
+{
+  "version": "1.5",
+  "date": "2026-11-03",
+  "board_status": "BOARD PASS (user reported)",
+  "user_statement": "已经上板测试了，全部测试通过",
+  "rtl_modified_by_publication": false,
+  "bit": {
+    "local_path": "src/td_project/HDMI1.4b_Transmitter_v1.0_Runs/best_result/HDMI1.4b_Transmitter_v1.0.bit",
+    "bytes": 629624,
+    "sha256": "3e1b2be49e50acfe9164158886e4064d787f1f98c4db5c9a1ce874fb979dfc20",
+    "route_bit_sha256": "3e1b2be49e50acfe9164158886e4064d787f1f98c4db5c9a1ce874fb979dfc20",
+    "association": "Directory build artifact; user did not identify the downloaded bit by SHA256"
+  },
+  "timing": {
+    "source": "phy_1/final_timing.rpt",
+    "setup_wns_ns": -1.458,
+    "setup_tns_ns": -18.741,
+    "hold_wns_ns": 0.003,
+    "sta_coverage_percent": 95.64,
+    "timing_closed": false
+  },
+  "resources": {
+    "lut": 13816,
+    "lut_total": 19600,
+    "reg": 8709,
+    "bram9k": 41,
+    "dsp": 28,
+    "dsp_total": 29
+  },
+  "local_archive": "archives/20261103_CAPTIONS_V1_5_BOARD_PASS",
+  "github_package": "integration/per_image_captions_v1_5_20261103",
+  "independent_fft_branch_integrated": false
+}

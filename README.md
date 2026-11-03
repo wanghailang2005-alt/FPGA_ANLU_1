@@ -1,16 +1,20 @@
 # FPGA_ANLU_1
 
+当前图片播放集成版：[V1.5 逐图双语字幕 / 2026-11-03](integration/per_image_captions_v1_5_20261103/README.md)。用户确认全部功能板测通过，含逐图中英字幕、八种转场、亮度/对比度和缩放动画。[功能使用表](integration/per_image_captions_v1_5_20261103/docs/USAGE.md) · [实现与板测记录](integration/per_image_captions_v1_5_20261103/docs/BOARD_TEST_20261103.md)。最新 routed setup WNS -1.458 ns，尚未时序闭合。
+
+下文保留各分支历史状态；FFT 音频可视化为独立分支，本版没有合入。
+
 2026-10-29：**音频可视化已获用户确认板测通过**，入口 SW=`1001`，含 512 点 FFT、32 柱频谱、峰值保持、波形和左右电平。见 [音频可视化源码与验证](integration/audio_visualizer_20261029/README.md)。
 
 2026-10-29：连续缩放和缓存诊断的源码、仿真及板测记录已归档，见 [动画工程记录](integration/zoom_animation_20261029/README.md)。用户反馈缓存校验版所测缩放正常；此前奇数宽噪点仍作为待确认历史问题。
 
 ## 历史基线：最近邻缩放板测通过
 
-当前功能开发基线改为zoom_black2。多尺寸BMP三模式适配、黑边修复及用户最终全部测试通过，见[缩放归档](integration/zoom_20261028/README.md)。下文时序实验版等为保留的历史基线。
+当时功能开发基线为zoom_black2。多尺寸BMP三模式适配、黑边修复及用户最终全部测试通过，见[缩放归档](integration/zoom_20261028/README.md)。下文时序实验版等为保留的历史基线。
 
 安路EG4S20 / HX4S20 HDMI多媒体项目：图片切换、自动轮播、IMG/AUTO、WELCOME滚动字幕、淡出淡入和滑动揭幕。
 
-## 当前版本
+## 历史版本
 
 | 版本 | 功能板测 | 时序边界 |
 |---|---|---|

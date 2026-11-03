@@ -1,0 +1,4 @@
+*.bit
+*.db
+*_Runs/
+__pycache__/
