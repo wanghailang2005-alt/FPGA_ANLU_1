@@ -1,0 +1,56 @@
+{
+  "timing": {
+    "SWNS": 0.105,
+    "STNS": 0.0,
+    "HWNS": 0.021,
+    "HTNS": 0.0
+  },
+  "resources": {
+    "lut": 15464,
+    "reg": 9886,
+    "bram": 59,
+    "dsp": 29
+  },
+  "timing_pass": true,
+  "board": "UNVERIFIED",
+  "sources": {
+    "src/user_source/hdl_source/top_tf_hdmi_audio.v": "07b39794b5be2172cb0880106ab36b5d480cb5350708f768fa5dcf55ad8ffba2",
+    "src/user_source/hdl_source/user_control.v": "9fbd6ad5539c36c46743c11f995a054afc6fbcea9c1ad0ac47a6e00fd1e4fa5d",
+    "src/user_source/hdl_source/SD/sd_card_bmp.v": "3dbcd082b475b4c82296b49b3b0d78c58a5538cd383dc6d0f0359f767dca47f0",
+    "src/user_source/hdl_source/AUDIO_MUSIC/tf_music_player.v": "6d3ef108538396be6740ed785def2ec5cddcd9622c98654204e6e4d08ac28b70",
+    "src/user_source/hdl_source/AUDIO_MUSIC/sd_music_arbiter.v": "13c40437cb2a73802e2230b42e5cddfeb70b69c18e04a42d2ff07e350e3506a7",
+    "src/user_source/hdl_source/OSD/osd_status_cdc.v": "c2141c75cd3e3ce5089eabf6d84188937cb6585a881e571d0552510bfe88b78d",
+    "src/user_source/hdl_source/SD/image_transition.v": "2313d9f46f8be49be3be82a3f4b5907ef669a389aa994b2edd262bf5c6057aee",
+    "src/user_source/hdl_source/SD/frame_fifo_read.v": "b7e6dbeeb3d264038ffa67825e9597622952ecd96a4ac28c1e836a3258e87575",
+    "src/user_source/hdl_source/SD/frame_fifo_write.v": "dbfb01d73d22a6c98c0aff64dbc1997cb6f54d4acd9c69fa79fc24e567ed8cd3",
+    "src/user_source/hdl_source/SD/video_timing_data.v": "76e9f1b6a3012ef20c60fe4865c76c122fa258faa92f2f5e9cc99c94125d19ec",
+    "src/user_source/hdl_source/SD/zoom_source_cache.v": "0e683dad59b06aef089edceb3869f7c6fbab20111c8088b6d93d609f7b9d0fca",
+    "src/user_source/constraints_source/timing.sdc": "84e4ac26806113a91f77a48197a47a5369bc79f5390aedff5baccde9bccb7861",
+    "src/td_project/HDMI1.4b_Transmitter_v1.0.al": "d323caf5dc05b41d5b897226f1b5a3e39a289ebcd0676b21f9cac3f4753fd6bf"
+  },
+  "simulations": {
+    "music.log": "PASS",
+    "real_music.log": "PASS",
+    "keys.log": "PASS",
+    "cdc.log": "PASS"
+  },
+  "media_manifest_sha256": "ab8eb40a8526caad1edc915337465fb1d78c0338313394956cd3a56a7257f2a9",
+  "card_image": "HONGCUN_5_IMAGES_2_MUSIC_TF.img",
+  "card_image_sha256": "8f42b254841554ff1fc14c02be6021cf6c591e0e6f752ba5773c1aebba4b04fc",
+  "post_route_hold_log": "post_route_hold.log",
+  "bitstream": "HONGCUN_2_MUSIC_K3_20261103.bit",
+  "bitstream_sha256": "ff40f46b91fdeb68c8f685bdb968ef764bee5152404f622671b89cecbae41279",
+  "gui_sync": {
+    "status": "STATIC PASS",
+    "project": "D:\\2026FPGA_1\\HX4S20_Contest_202606\\7_lab_ex_2026_nosoft\\zoom_animation_per_image_captions\\src\\td_project\\HDMI1.4b_Transmitter_v1.0.al",
+    "top": "top",
+    "gui_file_count": 64,
+    "batch_file_count": 64,
+    "source_sets_equal": true,
+    "all_references_exist": true,
+    "rtl_and_sdc_unchanged": true,
+    "release_bit_unchanged": true,
+    "project_sha256": "9a8de0b0f69452bc8228563b0e9c70baba60a3e22466cbffcc3d3c041d68c01c",
+    "note": "GUI route effort normal; exact verified flow uses run_music.ps1 with batch overrides and explicit post-route hold repair."
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "status": "SIM PASS; SYNTH PASS; TIMING FAIL; BOARD UNVERIFIED",
+  "timing": {
+    "SWNS": -0.508,
+    "STNS": -9.946,
+    "HWNS": 0.024,
+    "HTNS": 0.0
+  },
+  "resources": {
+    "lut": 16184,
+    "reg": 9997,
+    "bram": 59,
+    "dsp": 29,
+    "pll": 3
+  },
+  "bit": null,
+  "implementation": "logic lookup, no extra BRAM or DSP",
+  "latency_cycles": 3,
+  "white_plate": [
+    524,
+    0,
+    72,
+    47
+  ],
+  "changed_production_rtl": "src/user_source/hdl_source/OSD/osd_overlay.v",
+  "rtl_sha256": "9220047feeb02c7af11fa7d108954275e4874d52bcbdda143f73ee9c65c7be7f",
+  "note": "No release bit published unless timing passes. Earlier ROM/seed results are historical candidates."
+}

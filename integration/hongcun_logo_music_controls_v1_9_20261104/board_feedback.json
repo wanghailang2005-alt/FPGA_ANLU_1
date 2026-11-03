@@ -1,0 +1,20 @@
+{
+  "date": "2026-11-04",
+  "status": "BOARD PASS (user reported)",
+  "user_quote": "板测通过，上传github",
+  "scope": "Current zoom_animation_per_image_captions project: white-background logo and music playback controls",
+  "tested_device_bit_hash": "UNCONFIRMED: user did not supply an independent device-side hash",
+  "latest_local_bit": {
+    "path": "D:\\2026FPGA_1\\HX4S20_Contest_202606\\7_lab_ex_2026_nosoft\\zoom_animation_per_image_captions\\src\\td_project\\HDMI1.4b_Transmitter_v1.0_Runs\\phy_1\\HDMI1.4b_Transmitter_v1.0.bit",
+    "sha256": "7dde6d867f6ed820fb6d5ef35587e58bc050010b5f9cf78ff279bff6d649eb2d",
+    "bytes": 638936
+  },
+  "latest_local_timing": {
+    "SWNS": -4.533,
+    "STNS": -117.89,
+    "HWNS": -0.02,
+    "HTNS": -0.047
+  },
+  "timing_status": "FAIL",
+  "note": "User board acceptance does not override timing failures. Historical evidence keeps its original status. This archival operation does not change RTL or rebuild a bit."
+}

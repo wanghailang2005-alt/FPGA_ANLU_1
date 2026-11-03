@@ -1,0 +1,50 @@
+Reading pref.tcl
+
+# 2020.4
+
+# do sidebar.do
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 21:41:23 on Nov 03,2026
+# vlog ../src/user_source/hdl_source/OSD/osd_overlay.v 
+# -- Compiling module osd_overlay
+# -- Compiling module ui_sidebar
+# 
+# Top level modules:
+# 	osd_overlay
+# End time: 21:41:23 on Nov 03,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 21:41:23 on Nov 03,2026
+# vlog -sv tb_music_sidebar.sv 
+# -- Compiling module tb_music_sidebar
+# 
+# Top level modules:
+# 	tb_music_sidebar
+# End time: 21:41:23 on Nov 03,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vsim -voptargs="+acc" -onfinish stop work.tb_music_sidebar 
+# Start time: 21:41:23 on Nov 03,2026
+# ** Note: (vsim-3812) Design is being optimized...
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.tb_music_sidebar(fast)
+# Loading work.ui_sidebar(fast)
+# PASS sidebar: 40 music states, 10 volume levels, pause/play/track glyphs, two-stage exact pixels and colors
+# ** Note: $finish    : tb_music_sidebar.sv(72)
+#    Time: 11062582 ns  Iteration: 0  Instance: /tb_music_sidebar
+# Break in Module tb_music_sidebar at tb_music_sidebar.sv line 72
+# Stopped at tb_music_sidebar.sv line 72
+# End time: 21:41:24 on Nov 03,2026, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 0

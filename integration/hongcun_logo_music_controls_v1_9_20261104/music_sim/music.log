@@ -1,0 +1,55 @@
+# do music.do
+# ../src/user_source/hdl_source
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 20:08:00 on Nov 03,2026
+# vlog ../src/user_source/hdl_source/AUDIO_MUSIC/tf_music_player.v ../src/user_source/hdl_source/AUDIO_MUSIC/sd_music_arbiter.v ../src/user_source/hdl_source/I2S_receiver.v ../src/user_source/hdl_source/user_control.v 
+# -- Compiling module tf_music_player
+# -- Compiling module sd_music_arbiter
+# -- Compiling module I2S_receiver
+# -- Compiling module user_control
+# 
+# Top level modules:
+# 	tf_music_player
+# 	sd_music_arbiter
+# 	I2S_receiver
+# 	user_control
+# End time: 20:08:00 on Nov 03,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 20:08:00 on Nov 03,2026
+# vlog -sv tb_music.sv 
+# -- Compiling module tb_music
+# 
+# Top level modules:
+# 	tb_music
+# End time: 20:08:00 on Nov 03,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vsim -voptargs="+acc" -onfinish stop work.tb_music 
+# Start time: 20:08:00 on Nov 03,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Note: (vopt-143) Recognized 1 FSM in module "tf_music_player(fast)".
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.tb_music(fast)
+# Loading work.tf_music_player(fast)
+# Loading work.sd_music_arbiter(fast)
+# Loading work.I2S_receiver(fast)
+# PASS music: PCM bit exact L/R, switches, wrap, mute, competing image reads=33 audio=35
+# ** Note: $finish    : tb_music.sv(93)
+#    Time: 90250960 ns  Iteration: 1  Instance: /tb_music
+# Break in Module tb_music at tb_music.sv line 93
+# Stopped at tb_music.sv line 93
+# End time: 20:08:07 on Nov 03,2026, Elapsed time: 0:00:07
+# Errors: 0, Warnings: 0

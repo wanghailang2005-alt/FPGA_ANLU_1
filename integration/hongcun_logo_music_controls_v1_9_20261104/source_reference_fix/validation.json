@@ -1,0 +1,20 @@
+[
+  {
+    "project": "D:\\2026FPGA_1\\HX4S20_Contest_202606\\7_lab_ex_2026_nosoft\\zoom_animation_per_image_captions\\src\\td_project\\HDMI1.4b_Transmitter_v1.0.al",
+    "added": 2,
+    "paths_valid": true,
+    "used_in_synthesis": true
+  },
+  {
+    "project": "D:\\2026FPGA_1\\HX4S20_Contest_202606\\7_lab_ex_2026_nosoft\\zoom_animation_per_image_captions\\src\\td_project\\HDMI1.4b_Transmitter_v1.0_Runs\\syn_1\\HDMI1.4b_Transmitter_v1.0.prj",
+    "added": 2,
+    "paths_valid": true,
+    "used_in_synthesis": true
+  },
+  {
+    "project": "D:\\2026FPGA_1\\HX4S20_Contest_202606\\7_lab_ex_2026_nosoft\\zoom_animation_per_image_captions\\src\\td_project\\HDMI1.4b_Transmitter_v1.0_Runs\\phy_1\\HDMI1.4b_Transmitter_v1.0.prj",
+    "added": 2,
+    "paths_valid": true,
+    "used_in_synthesis": true
+  }
+]

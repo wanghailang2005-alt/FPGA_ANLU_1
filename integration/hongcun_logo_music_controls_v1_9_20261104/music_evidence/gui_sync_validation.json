@@ -1,0 +1,13 @@
+{
+  "status": "STATIC PASS",
+  "project": "D:\\2026FPGA_1\\HX4S20_Contest_202606\\7_lab_ex_2026_nosoft\\zoom_animation_per_image_captions\\src\\td_project\\HDMI1.4b_Transmitter_v1.0.al",
+  "top": "top",
+  "gui_file_count": 64,
+  "batch_file_count": 64,
+  "source_sets_equal": true,
+  "all_references_exist": true,
+  "rtl_and_sdc_unchanged": true,
+  "release_bit_unchanged": true,
+  "project_sha256": "9a8de0b0f69452bc8228563b0e9c70baba60a3e22466cbffcc3d3c041d68c01c",
+  "note": "GUI route effort normal; exact verified flow uses run_music.ps1 with batch overrides and explicit post-route hold repair."
+}

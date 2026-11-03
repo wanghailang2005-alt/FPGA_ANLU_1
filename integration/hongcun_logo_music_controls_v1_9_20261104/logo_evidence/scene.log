@@ -1,0 +1,73 @@
+# do scene.do
+# ../src/user_source/hdl_source
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 22:36:23 on Nov 03,2026
+# vlog ../src/user_source/hdl_source/OSD/osd_overlay.v ../src/user_source/hdl_source/OSD/osd_font_rom.v ../src/user_source/hdl_source/OSD/osd_glyph_pixel.v ../src/user_source/hdl_source/AUDIO_VIS/audio_fft512.v ../src/user_source/hdl_source/AUDIO_VIS/audio_visualizer.v ../src/user_source/hdl_source/AUDIO_VIS/audio_spectrum_overlay.v ../src/user_source/hdl_source/hdmi_audio_tone_i2s_64fs.v ../src/user_source/hdl_source/I2S_receiver.v ../src/user_source/hdl_source/video_rgb_to_axis_640x480.v 
+# -- Compiling module osd_overlay
+# -- Compiling module ui_sidebar
+# -- Compiling module osd_font_rom
+# -- Compiling module osd_glyph_pixel
+# -- Compiling module audio_fft512
+# -- Compiling module audio_visualizer
+# -- Compiling module audio_spectrum_overlay
+# -- Compiling module hdmi_audio_tone_i2s_64fs
+# -- Compiling module I2S_receiver
+# -- Compiling module video_rgb_to_axis_640x480
+# 
+# Top level modules:
+# 	osd_overlay
+# 	audio_spectrum_overlay
+# 	hdmi_audio_tone_i2s_64fs
+# 	I2S_receiver
+# 	video_rgb_to_axis_640x480
+# End time: 22:36:23 on Nov 03,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim SE-64 vlog 2020.4 Compiler 2020.10 Oct 13 2020
+# Start time: 22:36:23 on Nov 03,2026
+# vlog -sv tb_scene.sv 
+# -- Compiling module tb_scene
+# 
+# Top level modules:
+# 	tb_scene
+# End time: 22:36:23 on Nov 03,2026, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# vsim -voptargs="+acc" -onfinish stop work.tb_scene 
+# Start time: 22:36:23 on Nov 03,2026
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# ** Warning: tb_scene.sv(32): (vopt-2685) [TFMPC] - Too few port connections for 'osd'.  Expected 33, found 30.
+# ** Warning: tb_scene.sv(32): (vopt-2718) [TFMPC] - Missing connection for port 'music_volume'.
+# ** Warning: tb_scene.sv(32): (vopt-2718) [TFMPC] - Missing connection for port 'music_paused'.
+# ** Warning: tb_scene.sv(32): (vopt-2718) [TFMPC] - Missing connection for port 'music_track'.
+# ** Note: (vsim-12126) Error and warning message counts have been restored: Errors=0, Warnings=4.
+# //  ModelSim SE-64 2020.4 Oct 13 2020
+# //
+# //  Copyright 1991-2020 Mentor Graphics Corporation
+# //  All Rights Reserved.
+# //
+# //  ModelSim SE-64 and its associated documentation contain trade
+# //  secrets and commercial or financial information that are the property of
+# //  Mentor Graphics Corporation and are privileged, confidential,
+# //  and exempt from disclosure under the Freedom of Information Act,
+# //  5 U.S.C. Section 552. Furthermore, this information
+# //  is prohibited from disclosure under the Trade Secrets Act,
+# //  18 U.S.C. Section 1905.
+# //
+# Loading sv_std.std
+# Loading work.tb_scene(fast)
+# Loading work.hdmi_audio_tone_i2s_64fs(fast)
+# Loading work.I2S_receiver(fast)
+# Loading work.osd_overlay(fast)
+# Loading work.ui_sidebar(fast)
+# Loading work.osd_glyph_pixel(fast)
+# Loading work.osd_font_rom(fast)
+# Loading work.audio_spectrum_overlay(fast)
+# Loading work.audio_visualizer(fast)
+# Loading work.audio_fft512(fast)
+# Loading work.video_rgb_to_axis_640x480(fast)
+# RESULT PASS ui frames=5 pixels=1536000 SOF=5 EOL=2400 zh=2040 en=3544 bars=6930 sidebar=2156
+# ** Note: $finish    : tb_scene.sv(78)
+#    Time: 84000760 ns  Iteration: 1  Instance: /tb_scene
+# Break in Module tb_scene at tb_scene.sv line 78
+# Stopped at tb_scene.sv line 78
+# End time: 22:36:32 on Nov 03,2026, Elapsed time: 0:00:09
+# Errors: 0, Warnings: 4

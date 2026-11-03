@@ -1,0 +1,23 @@
+﻿五图中英文字幕录入稿
+状态：已录入RTL并生成 HONGCUN_5_BILINGUAL_SCROLL_20261103.bit；仿真及当前约束下时序通过；2026-11-03用户反馈板上测试通过。
+字幕顺序依据用户截图；实际硬件仍按TF卡物理扇区扫描，文件名前缀本身不决定顺序。
+
+01 01_宏村文化导览_480x360.bmp
+中文：宏村文化导览，循着月沼、木雕、旧影与马头墙，感受古村山水、传统工艺和徽派建筑之美
+English: Explore Hongcun through Moon Pond, woodcarvings, historic photographs and horse-head gable walls, and discover the beauty of its scenery, traditional crafts and Huizhou architecture.
+
+02 02_古村落全景_宏村月沼_480x360.bmp
+中文：宏村，世界文化遗产地，始建于南宋绍兴年间，被誉为“画里乡村”
+English: Hongcun, a UNESCO World Heritage Site founded during the Shaoxing era of the Southern Song dynasty, is known as a village in a Chinese painting.
+
+03 03_木雕构件特写_宏村承志堂_400x300.bmp
+中文：承志堂徽派木雕，刀工精湛、细节繁复，被誉为“民间故宫”，是本地民间工艺的杰出代表
+English: Chengzhi Hall, known as the Folk Forbidden City, showcases intricate Huizhou-style woodcarvings and masterful craftsmanship, making it an outstanding example of local traditional artistry.
+
+04 04_历史老照片_宏村黑白_320x240.bmp
+中文：宏村历史老照片，见证古村落百年间的样貌变迁
+English: These historic photographs of Hongcun bear witness to a century of changes in the ancient village.
+
+05 05_徽派建筑_马头墙_640x480.bmp
+中文：徽派建筑马头墙与天井结构，青砖黛瓦，既防火又聚气，是江南民居的典型特征
+English: With grey bricks and dark roof tiles, the horse-head gable walls and skywells of Huizhou architecture help prevent the spread of fire and gather auspicious qi. They are distinctive features of traditional homes south of the Yangtze River.

@@ -1,0 +1,32 @@
+{
+  "source": "D:\\Temp\\Temp\\codex-clipboard-efbaaccd-4ac5-40e4-9441-7c2faf630a3f.png",
+  "source_sha256": "1e3d93e8688a80f478c19fc4fe612e8a7c2b50c2762b7e07f3d4d92bd6551791",
+  "bounds": [
+    17,
+    12,
+    89,
+    58
+  ],
+  "width": 64,
+  "height": 41,
+  "x": 528,
+  "y": 3,
+  "palette": [
+    "transparent",
+    "#ff172b",
+    "#1c2e52"
+  ],
+  "latency_before": 3,
+  "latency_after": 3,
+  "clock_hz": 25000000,
+  "approval": "User 开始 after reviewed logo plan",
+  "scope": "OSD/osd_overlay.v only; current music integration retained",
+  "white_plate": {
+    "x": 524,
+    "y": 0,
+    "width": 72,
+    "height": 47,
+    "rgb": "ffffff"
+  },
+  "approval_update": "User: 叠加一个白底吧，那一小部分"
+}

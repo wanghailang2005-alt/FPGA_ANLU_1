@@ -1,5 +1,7 @@
 # FPGA_ANLU_1
 
+最新板测归档：[V1.9 白底Logo与TF音乐控制 / 2026-11-04](integration/hongcun_logo_music_controls_v1_9_20261104/README.md)。用户反馈板测通过；保留最新本地时序FAIL及设备端bit哈希未独立核对的边界。
+
 最新开发归档：[V1.8 五图完整中英文滚动字幕](integration/hongcun_bilingual_scroll_v1_8_20261103/README.md)。用户于2026-11-03确认**板测通过**；继承约束内实现时序通过，旧V1.7归档保留。
 
 上一版板测基线：[V1.7 四区域UI / 2026-11-03](integration/ui_layout_v1_7_20261103/README.md)。用户确认板上测试通过；480×360主图、右栏、常驻频谱及独立双语字幕。约束内setup +0.107ns、hold +0.003ns，SDRAM接口约束边界保留。
