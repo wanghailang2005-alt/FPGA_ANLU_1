@@ -9,7 +9,7 @@
 | [sdram_diag_20261028](sdram_diag_20261028/README.md) | 独立自检源码；未上板，默认时序模型未通过 |
 | [transition_20261027](transition_20261027/README.md) | 转场原始集成补丁；用户后续确认功能正常 |
 | [current_baseline](current_baseline/README.md) | 10月25日OSD历史成功基线 |
-| [统一按键规划](../docs/按键与拨码规划.md) | 已实现操作与预留功能 |
+| [按键与拨码规划](../docs/按键与拨码规划.md) | V1.5 当前操作、默认值与引脚 |
 
 按顺序恢复指定基线，先git apply --check再应用，不能强行覆盖队友修改。厂商工程/IP需本地准备。异步分组实验保留功能板测反馈，但屏蔽检查不代表时序闭合。
 

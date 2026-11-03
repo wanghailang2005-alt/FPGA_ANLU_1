@@ -27,7 +27,7 @@
 
 - [10月28日优化、补丁与板测](integration/timing_20261028/README.md)
 - [版本哈希及本地bit路径](integration/timing_20261028/versions.json)
-- [统一按键与拨码规划](docs/按键与拨码规划.md)
+- [V1.5 按键与拨码规划](docs/按键与拨码规划.md)
 - [当天记录](docs/2026-10-28.md) · [本地工作区索引](docs/workspace_index_20261028.md)
 - [转场原始集成包](integration/transition_20261027/README.md) · [10月25日OSD历史基线](integration/current_baseline/README.md)
 - [独立SDRAM自检](integration/sdram_diag_20261028/README.md)

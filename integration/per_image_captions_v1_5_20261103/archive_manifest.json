@@ -51,8 +51,8 @@
   },
   {
     "path": "docs/CHANGELOG.md",
-    "bytes": 733,
-    "sha256": "07b3fb77504cf57b43e2f18065f85a64ab8f1bbf22512ba9531a4e0467cb94fe"
+    "bytes": 977,
+    "sha256": "4ce5d1bf4ea351f12ab5add4cd259fb54b8eca1921401dcf656e7397868f9755"
   },
   {
     "path": "docs/README.md",
@@ -76,8 +76,8 @@
   },
   {
     "path": "docs/USAGE.md",
-    "bytes": 2485,
-    "sha256": "2a1a3d1b0dc56a936851b3c648a83a6d33ff04d6954f475ec4238dedbc9fa377"
+    "bytes": 2610,
+    "sha256": "9715950deddcd007f39a36f111e6fd9200944ed659430a5ce1b4c7b4ce0c5e50"
   },
   {
     "path": "evidence/timing_summary.txt",
@@ -91,8 +91,8 @@
   },
   {
     "path": "README.md",
-    "bytes": 2138,
-    "sha256": "d10136dcdfd2df3a19ddf7307955816e9158915403e2a31077e4fc731bc3a050"
+    "bytes": 2171,
+    "sha256": "df538505fcf525c2550cde2b735635532780512a0c49c923d8d523123b764e43"
   },
   {
     "path": "source_manifest.json",
