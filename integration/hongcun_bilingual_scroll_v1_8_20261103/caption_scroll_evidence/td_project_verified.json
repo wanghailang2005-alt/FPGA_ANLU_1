@@ -1,0 +1,35 @@
+{
+  "status": "PASS",
+  "project": "D:\\2026FPGA_1\\HX4S20_Contest_202606\\7_lab_ex_2026_nosoft\\zoom_animation_per_image_captions\\src\\td_project\\HDMI1.4b_Transmitter_v1.0.al",
+  "project_modified": false,
+  "reason": "Project already references updated in-place RTL and verified implementation bit",
+  "sources": [
+    {
+      "source": "D:\\2026FPGA_1\\HX4S20_Contest_202606\\7_lab_ex_2026_nosoft\\zoom_animation_per_image_captions\\src\\user_source\\hdl_source\\OSD\\osd_overlay.v",
+      "synthesis": true,
+      "implementation": true,
+      "sha256": "6a5b45034ada9f1f535b8bd5b6bb9cc77438ebcaf8f55a52f249dbfbc3d3a0fe"
+    },
+    {
+      "source": "D:\\2026FPGA_1\\HX4S20_Contest_202606\\7_lab_ex_2026_nosoft\\zoom_animation_per_image_captions\\src\\user_source\\hdl_source\\OSD\\osd_font_rom.v",
+      "synthesis": true,
+      "implementation": true,
+      "sha256": "97ed0c13e192eb9bb795ae1c4d0d2ff0f85c4b754737206264c3c27b6a2b6d2f"
+    },
+    {
+      "source": "D:\\2026FPGA_1\\HX4S20_Contest_202606\\7_lab_ex_2026_nosoft\\zoom_animation_per_image_captions\\src\\user_source\\hdl_source\\SD\\sd_card_bmp.v",
+      "synthesis": true,
+      "implementation": true,
+      "sha256": "c43be48e3a2d392e217bcf36f41a1421578a03f6e4212b1afb6e9584a7896060"
+    },
+    {
+      "source": "D:\\2026FPGA_1\\HX4S20_Contest_202606\\7_lab_ex_2026_nosoft\\zoom_animation_per_image_captions\\src\\user_source\\hdl_source\\top_tf_hdmi_audio.v",
+      "synthesis": true,
+      "implementation": true,
+      "sha256": "17631ee6c8045bf45dbc5631a6ad5c448056c9f05b0e709608a49c2a3e1df17a"
+    }
+  ],
+  "implementation_bit": "D:\\2026FPGA_1\\HX4S20_Contest_202606\\7_lab_ex_2026_nosoft\\zoom_animation_per_image_captions\\src\\td_project\\HDMI1.4b_Transmitter_v1.0_Runs\\phy_1\\HDMI1.4b_Transmitter_v1.0.bit",
+  "sha256": "728f960e4054e46cea244d7ba5907edbc7d7c0ff35f3ec7ecef21fbbf2aa789d",
+  "all_recorded_source_hashes_match": true
+}

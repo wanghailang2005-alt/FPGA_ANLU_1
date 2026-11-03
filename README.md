@@ -1,6 +1,8 @@
 # FPGA_ANLU_1
 
-当前板测基线：[V1.7 四区域UI / 2026-11-03](integration/ui_layout_v1_7_20261103/README.md)。用户确认板上测试通过；480×360主图、右栏、常驻频谱及独立双语字幕。约束内setup +0.107ns、hold +0.003ns，SDRAM接口约束边界保留。
+最新开发归档：[V1.8 五图完整中英文滚动字幕](integration/hongcun_bilingual_scroll_v1_8_20261103/README.md)。用户于2026-11-03确认**板测通过**；继承约束内实现时序通过，旧V1.7归档保留。
+
+上一版板测基线：[V1.7 四区域UI / 2026-11-03](integration/ui_layout_v1_7_20261103/README.md)。用户确认板上测试通过；480×360主图、右栏、常驻频谱及独立双语字幕。约束内setup +0.107ns、hold +0.003ns，SDRAM接口约束边界保留。
 
 历史V1.5图片播放集成版：[V1.5 逐图双语字幕 / 2026-11-03](integration/per_image_captions_v1_5_20261103/README.md)。用户确认全部功能板测通过，含逐图中英字幕、八种转场、亮度/对比度和缩放动画。[功能使用表](integration/per_image_captions_v1_5_20261103/docs/USAGE.md) · [实现与板测记录](integration/per_image_captions_v1_5_20261103/docs/BOARD_TEST_20261103.md)。最新 routed setup WNS -1.458 ns，尚未时序闭合。
 

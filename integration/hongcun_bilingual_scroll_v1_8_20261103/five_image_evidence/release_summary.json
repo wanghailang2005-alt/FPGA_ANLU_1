@@ -1,0 +1,27 @@
+{
+  "status": "IMPLEMENTED/TIMING PASS; BOARD UNVERIFIED",
+  "bit": "FIVE_IMAGES_UI_20261103.bit",
+  "sha256": "2d8a27d6cb06f4fceae200002f0591df4be08ea0161b4035ee8c9639fd07d9e6",
+  "setup_wns_ns": 0.116,
+  "hold_wns_ns": 0.003,
+  "setup_tns_ns": 0,
+  "hold_tns_ns": 0,
+  "lut": 14942,
+  "lut_capacity": 19600,
+  "bram9k": 55,
+  "bram9k_capacity": 64,
+  "dsp": 29,
+  "dsp_capacity": 29,
+  "simulation": [
+    "five BMP sectors and fifth image pixel read",
+    "next-index function extracted from RTL: counts 0..5",
+    "five images x four subtitle modes pixel regression",
+    "frame metadata: image 5 in either bank and wrap to image 1"
+  ],
+  "limitations": [
+    "existing SDRAM timing exceptions retained",
+    "no board observation",
+    "five-image test uses synthetic BMP sectors; real TF card layout not verified",
+    "legacy diagnostic flags retain low two bits of load index"
+  ]
+}

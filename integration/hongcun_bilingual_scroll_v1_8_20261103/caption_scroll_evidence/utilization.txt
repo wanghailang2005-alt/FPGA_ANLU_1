@@ -1,0 +1,29 @@
+standard
+***Report Model: top Device: EG4S20BG256***
+
+IO Statistics
+#IO                        33   out of    188   17.55%
+  #input                   10
+  #output                  22
+  #inout                    1
+
+Utilization Statistics
+#lut                    15394   out of  19600   78.54%
+#reg                     9676   out of  19600   49.37%
+#le                     17130
+  #lut only              7454   out of  17130   43.51%
+  #reg only              1736   out of  17130   10.13%
+  #lut&reg               7940   out of  17130   46.35%
+#bram                      55   out of     64   85.94%
+  #bram9k                  55
+  #fifo9k                   0
+#bram32k                    0   out of     16    0.00%
+#dsp                       29   out of     29  100.00%
+#pad                       37   out of    188   19.68%
+  #ireg                     7
+  #oreg                    22
+  #treg                     1
+#pll                        3   out of      4   75.00%
+#gclk                       3   out of     16   18.75%
+
+

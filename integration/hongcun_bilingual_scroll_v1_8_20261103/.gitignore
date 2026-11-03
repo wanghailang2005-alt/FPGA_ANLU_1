@@ -1,0 +1,10 @@
+# Vendor dependencies, real-photo assets and generated outputs remain in the local snapshot.
+*.bit
+*.db
+*.wlf
+*.logw
+*_Runs/
+**/work/
+**/modelsim.ini
+**/transcript
+**/__pycache__/

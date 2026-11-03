@@ -1,0 +1,77 @@
+{
+  "status": "BOARD PASS (user reported); IMPLEMENTED/TIMING PASS under inherited constraints",
+  "approval": "User 开始 after five-caption review plan",
+  "bit": "HONGCUN_5_BILINGUAL_SCROLL_20261103.bit",
+  "sha256": "728f960e4054e46cea244d7ba5907edbc7d7c0ff35f3ec7ecef21fbbf2aa789d",
+  "bytes": 638936,
+  "timing": {
+    "SWNS": 0.119,
+    "STNS": 0.0,
+    "HWNS": 0.004,
+    "HTNS": 0.0
+  },
+  "sta_coverage_percent": 95.38,
+  "resources": {
+    "lut": 15394,
+    "reg": 9676,
+    "bram9k": 55,
+    "dsp": 29,
+    "pll": 3
+  },
+  "changed_sources": [
+    "tools/gen_captions.py",
+    "src/user_source/hdl_source/OSD/osd_font_rom.v",
+    "src/user_source/hdl_source/OSD/osd_overlay.v"
+  ],
+  "caption_order": [
+    "01 guide",
+    "02 Moon Pond",
+    "03 Chengzhi woodcarving",
+    "04 historic photograph",
+    "05 horse-head gable walls"
+  ],
+  "text": {
+    "zh_chars": [
+      40,
+      30,
+      40,
+      21,
+      35
+    ],
+    "en_chars": [
+      182,
+      144,
+      188,
+      98,
+      238
+    ],
+    "zh_unique_glyphs": 110,
+    "english_display": "uppercase, full text with comma punctuation"
+  },
+  "simulations": {
+    "captions": "PASS: all characters, 5 images x 4 languages, both directions, 3 speeds, independent wraps, reset, 5-to-1; 48 renders / 1966080 exact-reference pixels",
+    "scene": "PASS: actual guide pixels + I2S/FFT/spectrum/AXIS; 5 frames / 1536000 pixels / 5 SOF / 2400 EOL"
+  },
+  "font_initialization": "PASS: all 2048 rows / 32768 bits in synthesized BRAM",
+  "latency_cycles": {
+    "glyph": 2,
+    "overlay_RGB_DE_HS_VS_XY": 3,
+    "overlay_plus_spectrum": 6
+  },
+  "limitations": [
+    "Real TF scan order is physical-sector order, not filename sort; screenshot order unverified on the card",
+    "Existing automatic playback dwell is 1 second while idle; it can interrupt long captions. Default auto-play is OFF; use manual K2 for full reading",
+    "Inherited SDRAM clock exceptions/interface constraint coverage unchanged; routed timing is not complete electrical interface validation",
+    "Board functional acceptance is user reported; no independently observed device-side bit hash or detailed per-feature measurements."
+  ],
+  "rollback": "caption_scroll_evidence/before plus previous named bit retained",
+  "board_feedback": {
+    "date": "2026-11-03",
+    "status": "BOARD PASS (user reported)",
+    "user_statement": "已经板上测试通过了",
+    "associated_release": "HONGCUN_5_BILINGUAL_SCROLL_20261103.bit",
+    "bit_sha256": "728f960e4054e46cea244d7ba5907edbc7d7c0ff35f3ec7ecef21fbbf2aa789d",
+    "association": "User report follows the named five-image bilingual scrolling release delivered in this chat; no independent device-side hash was supplied.",
+    "scope": "User-reported functional acceptance of current release. No new per-feature measurements or complete SDRAM electrical interface validation was supplied."
+  }
+}

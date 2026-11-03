@@ -1,0 +1,77 @@
+{
+  "status": "PASS",
+  "device": "EG4S20BG256",
+  "tool": "Tang Dynasty 6.2.168116",
+  "verification": "Read-only import of the completed synthesis gate database; export Verilog; decode each INIT_00..INIT_1F as consecutive low-nibble-first words, reconstruct 16-bit rows from all four BRAM output slices, compare all 2048 rows against the source glyph function.",
+  "font_bram_instances": 4,
+  "glyphs": 110,
+  "matched_rows": 2048,
+  "matched_bits": 32768,
+  "unused_glyph_rows_zero": 288,
+  "word_hash_format": "2048 unsigned 16-bit words in little-endian address order",
+  "expected_rows_sha256": "452be063032b0089373979e3e113f45d2080d46b13126e98926fec0cfb052347",
+  "netlist_rows_sha256": "452be063032b0089373979e3e113f45d2080d46b13126e98926fec0cfb052347",
+  "font_rtl_path": "src/user_source/hdl_source/OSD/osd_overlay.v",
+  "font_rtl_sha256": "6a5b45034ada9f1f535b8bd5b6bb9cc77438ebcaf8f55a52f249dbfbc3d3a0fe",
+  "netlist_source": "src/td_project/HDMI1.4b_Transmitter_v1.0_Runs/syn_1/HDMI1.4b_Transmitter_v1.0_gate.db",
+  "netlist_source_sha256": "eec5d663e25a0868f13776277a0cc24a215fdbec7a25d553a7fe4b94d7889d84",
+  "export_command": "import_device eagle_s20.db -package EG4S20BG256; import_db <gate.db>; write_verilog font_gate_probe.v -nolf -constnet",
+  "exported_netlist_sha256": "a27cccc296a7b11b9e46ba0a4dcf20c51cafcfab4c525fa2d72b5a8de53a4639",
+  "exported_netlist_bytes": 11379089,
+  "exported_netlist_retained": false,
+  "instances": [
+    {
+      "instance": "u_osd_overlay/ramread0_syn_10",
+      "primitive": "EG_PHY_BRAM",
+      "mode": "SP8K",
+      "data_width": 4,
+      "output_bits": [
+        7,
+        4
+      ],
+      "init_parameters": 32,
+      "nonzero_init_parameters": 28,
+      "matched_rows": 2048
+    },
+    {
+      "instance": "u_osd_overlay/ramread0_syn_15",
+      "primitive": "EG_PHY_BRAM",
+      "mode": "SP8K",
+      "data_width": 4,
+      "output_bits": [
+        11,
+        8
+      ],
+      "init_parameters": 32,
+      "nonzero_init_parameters": 28,
+      "matched_rows": 2048
+    },
+    {
+      "instance": "u_osd_overlay/ramread0_syn_20",
+      "primitive": "EG_PHY_BRAM",
+      "mode": "SP8K",
+      "data_width": 4,
+      "output_bits": [
+        15,
+        12
+      ],
+      "init_parameters": 32,
+      "nonzero_init_parameters": 28,
+      "matched_rows": 2048
+    },
+    {
+      "instance": "u_osd_overlay/ramread0_syn_5",
+      "primitive": "EG_PHY_BRAM",
+      "mode": "SP8K",
+      "data_width": 4,
+      "output_bits": [
+        3,
+        0
+      ],
+      "init_parameters": 32,
+      "nonzero_init_parameters": 28,
+      "matched_rows": 2048
+    }
+  ],
+  "scope": "Confirms initialized font data in synthesized EG_PHY_BRAM primitives. Does not claim a new board test."
+}

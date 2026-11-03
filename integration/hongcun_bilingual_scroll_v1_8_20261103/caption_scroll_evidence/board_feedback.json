@@ -1,0 +1,9 @@
+{
+  "date": "2026-11-03",
+  "status": "BOARD PASS (user reported)",
+  "user_statement": "已经板上测试通过了",
+  "associated_release": "HONGCUN_5_BILINGUAL_SCROLL_20261103.bit",
+  "bit_sha256": "728f960e4054e46cea244d7ba5907edbc7d7c0ff35f3ec7ecef21fbbf2aa789d",
+  "association": "User report follows the named five-image bilingual scrolling release delivered in this chat; no independent device-side hash was supplied.",
+  "scope": "User-reported functional acceptance of current release. No new per-feature measurements or complete SDRAM electrical interface validation was supplied."
+}

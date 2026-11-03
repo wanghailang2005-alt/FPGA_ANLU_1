@@ -1,0 +1,44 @@
+{
+  "approval": "User: 开始; five captions ordered as screenshot, both full languages scroll",
+  "confirmed": {
+    "order": [
+      "guide",
+      "Moon Pond",
+      "woodcarving",
+      "historic photo",
+      "horse-head wall"
+    ],
+    "target": "EG4S20, TD6.2",
+    "pixel_clock_MHz": 25,
+    "other_clocks_MHz": [
+      50,
+      100,
+      125
+    ],
+    "reset": "existing rst; no new clock or CDC",
+    "overlay_latency_cycles": 3,
+    "glyph_latency_cycles": 2,
+    "scope": [
+      "tools/gen_captions.py",
+      "src/user_source/hdl_source/OSD/osd_overlay.v",
+      "src/user_source/hdl_source/OSD/osd_font_rom.v",
+      "caption_scroll_evidence tests",
+      "docs caption records"
+    ],
+    "acceptance": [
+      "five texts exact and untruncated",
+      "both rows scroll at 1/2/4 pixels per frame in either direction",
+      "frame-stable positions, reset on image commit, independent wrap",
+      "output RGB/control alignment",
+      "synthesis and implementation timing"
+    ]
+  },
+  "unknown": [
+    "real TF physical sector order",
+    "board results"
+  ],
+  "inferred": {
+    "English_display": "uppercase using existing ASCII font",
+    "looping": "both rows share pause/speed/direction and reset, wrap at their own lengths"
+  }
+}
