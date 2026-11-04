@@ -1,24 +1,35 @@
-# 集成入口
+# 集成版本索引
 
-最新开发归档：[V1.8 五图宏村主题与完整双语滚动字幕](hongcun_bilingual_scroll_v1_8_20261103/README.md)。导览图→月沼→木雕→旧影→马头墙，setup +0.119ns、hold +0.004ns；用户于2026-11-03反馈板测通过。
+[返回首页](../README.md) · [使用与复现](../docs/GETTING_STARTED.md)
 
-上一版板测基线：[V1.7 四区域UI](ui_layout_v1_7_20261103/README.md)，用户于2026-11-03反馈板上测试通过。主图、右栏、常驻音频频谱与独立字幕分区，约束内setup/hold通过。
+## 当前交付
 
-历史V1.5图片播放集成基线：[V1.5 逐图双语字幕](per_image_captions_v1_5_20261103/README.md)，2026-11-03 用户确认全部功能板测通过；[功能表](per_image_captions_v1_5_20261103/docs/USAGE.md)。setup WNS -1.458 ns，尚未时序闭合。
+| 版本 | 日期 | 内容 | 验证状态 |
+|---|---|---|---|
+| [V1.9](hongcun_logo_music_controls_v1_9_20261104/README.md) | 2026-11-04 | 白底 Logo、两首 TF 音乐、暂停／切歌／十档音量，保留图片与字幕功能 | 用户反馈 BOARD PASS；最新本地 setup -4.533 ns、hold -0.020 ns，TIMING FAIL |
 
-| 入口 | 用途与状态 |
+V1.9 的操作与板测状态以其 README 和 board_feedback.json 为准。包内专题文档与日志保留各自开发阶段结论。
+
+## 历史功能版本
+
+| 版本 | 日期 | 主要内容 | 状态与用途 |
+|---|---|---|---|
+| [V1.8](hongcun_bilingual_scroll_v1_8_20261103/README.md) | 2026-11-03 | 五张宏村图片、完整双语滚动字幕 | 用户反馈 BOARD PASS；继承约束内 setup +0.119 ns、hold +0.004 ns |
+| [V1.7](ui_layout_v1_7_20261103/README.md) | 2026-11-03 | 四区域 UI、480×360 主图与常驻频谱 | 用户反馈 BOARD PASS；约束内 setup +0.107 ns、hold +0.003 ns |
+| [V1.5](per_image_captions_v1_5_20261103/README.md) | 2026-11-03 | 逐图双语字幕、八种转场、缩放及亮度／对比度 | 用户反馈功能全部板测通过；归档 setup -1.458 ns |
+| [音频可视化](audio_visualizer_20261029/README.md) | 2026-10-29 | 512 点 FFT、32 柱频谱、峰值、波形和电平 | 用户反馈 BOARD PASS；独立阶段归档 |
+| [连续缩放与缓存诊断](zoom_animation_20261029/README.md) | 2026-10-29 | 缩放动画、缓存验证和诊断 | 用户反馈所测缩放正常；奇数宽图片历史问题见包内记录 |
+| [最近邻缩放](zoom_20261028/README.md) | 2026-10-28 | 多尺寸 BMP、三模式适配与黑边修复 | 用户反馈全部板测通过；历史回退 |
+
+## 早期基线与诊断
+
+| 归档 | 内容与边界 |
 |---|---|
-| [audio_visualizer_20261029](audio_visualizer_20261029/README.md) | 音频可视化，1001 入口；用户确认功能 BOARD PASS |
-| [timing_20261028](timing_20261028/README.md) | 最新板测、两批优化、异步分组实验、版本哈希 |
-| [sdram_diag_20261028](sdram_diag_20261028/README.md) | 独立自检源码；未上板，默认时序模型未通过 |
-| [transition_20261027](transition_20261027/README.md) | 转场原始集成补丁；用户后续确认功能正常 |
-| [current_baseline](current_baseline/README.md) | 10月25日OSD历史成功基线 |
-| [按键与拨码规划](../docs/按键与拨码规划.md) | V1.5 当前操作、默认值与引脚 |
+| [时序优化与异步实验](timing_20261028/README.md) | 分阶段补丁、版本哈希、板测及 SDRAM 时序边界 |
+| [SDRAM 独立自检](sdram_diag_20261028/README.md) | 诊断源码与模型验证；未上板，参考模型未通过 |
+| [转场集成](transition_20261027/README.md) | 早期转场控制、集成与本地候选记录 |
+| [固定 OSD 基线](current_baseline/README.md) | 早期 OSD 板测基线及接入说明 |
+| [固定 OSD 指南](FIXED_OSD_GUIDE.md) | 固定 OSD 使用说明 |
+| [OSD 状态记录](STATUS_OSD.md) / [停顿诊断](STALL_DIAGNOSTICS.md) | 早期问题定位与当时结论 |
 
-按顺序恢复指定基线，先git apply --check再应用，不能强行覆盖队友修改。厂商工程/IP需本地准备。异步分组实验保留功能板测反馈，但屏蔽检查不代表时序闭合。
-
-## 历史工具
-
-[FIXED_OSD_GUIDE.md](FIXED_OSD_GUIDE.md)、STATUS_OSD.md、STALL_DIAGNOSTICS.md及旧补丁/构建脚本保留原路径，供追溯。最新版本以日期、哈希和验证阶段选择。
-
-历史：[最近邻缩放BOARD PASS归档](zoom_20261028/README.md)。当时基线zoom_black2；上表时序实验版为历史基线。
+上述时序通过均受各归档所列时钟例外和 SDRAM 接口约束边界限制。历史目录保留原路径，便于复核补丁、脚本和清单。

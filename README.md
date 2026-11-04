@@ -1,47 +1,49 @@
-# FPGA_ANLU_1
+# HX4S20 / EG4S20 HDMI 多媒体播放器
 
-最新板测归档：[V1.9 白底Logo与TF音乐控制 / 2026-11-04](integration/hongcun_logo_music_controls_v1_9_20261104/README.md)。用户反馈板测通过；保留最新本地时序FAIL及设备端bit哈希未独立核对的边界。
+基于安路 HX4S20 开发板的图片、字幕与音频演示项目。GitHub 保存自研 RTL、分阶段集成源码、测试及验证记录。
 
-最新开发归档：[V1.8 五图完整中英文滚动字幕](integration/hongcun_bilingual_scroll_v1_8_20261103/README.md)。用户于2026-11-03确认**板测通过**；继承约束内实现时序通过，旧V1.7归档保留。
+**当前交付：V1.9 白底 Logo 与 TF 音乐控制（2026-11-04，用户反馈板测通过）。**
 
-上一版板测基线：[V1.7 四区域UI / 2026-11-03](integration/ui_layout_v1_7_20261103/README.md)。用户确认板上测试通过；480×360主图、右栏、常驻频谱及独立双语字幕。约束内setup +0.107ns、hold +0.003ns，SDRAM接口约束边界保留。
+## 从这里开始
 
-历史V1.5图片播放集成版：[V1.5 逐图双语字幕 / 2026-11-03](integration/per_image_captions_v1_5_20261103/README.md)。用户确认全部功能板测通过，含逐图中英字幕、八种转场、亮度/对比度和缩放动画。[功能使用表](integration/per_image_captions_v1_5_20261103/docs/USAGE.md) · [实现与板测记录](integration/per_image_captions_v1_5_20261103/docs/BOARD_TEST_20261103.md)。最新 routed setup WNS -1.458 ns，尚未时序闭合。
+| 需要 | 入口 |
+|---|---|
+| 查看最终版本、操作与交付状态 | [V1.9 交付说明](integration/hongcun_logo_music_controls_v1_9_20261104/README.md) |
+| 查按键、TF 素材及复现步骤 | [使用与复现导航](docs/GETTING_STARTED.md) |
+| 查各阶段功能、验证与回退版本 | [版本索引](integration/README.md) |
+| 查源码、测试和证据放在哪里 | [仓库结构](docs/REPOSITORY_GUIDE.md) |
+| 查开发记录和专题文档 | [文档目录](docs/README.md) |
 
-下文保留历史状态；当前V1.7已合入PCM频谱，历史V1.5未合入。
+## 已完成功能
 
-2026-10-29：**音频可视化已获用户确认板测通过**，入口 SW=`1001`，含 512 点 FFT、32 柱频谱、峰值保持、波形和左右电平。见 [音频可视化源码与验证](integration/audio_visualizer_20261029/README.md)。
+- 五张宏村主题图片、图片切换与自动轮播。
+- 480×360 主图、右侧信息栏、常驻音频频谱与双语字幕区域。
+- 逐图完整中英文滚动字幕，支持语言、速度和方向设置。
+- 八种转场、缩放动画、亮度及对比度调节。
+- 右上角红蓝 Logo 及局部白底。
+- TF 卡两首音乐，支持暂停／继续、切歌和十档音量控制。
 
-2026-10-29：连续缩放和缓存诊断的源码、仿真及板测记录已归档，见 [动画工程记录](integration/zoom_animation_20261029/README.md)。用户反馈缓存校验版所测缩放正常；此前奇数宽噪点仍作为待确认历史问题。
+SW=`1001` 时，K2 暂停／继续，K3 切换古琴／竹笛，K4 循环调整音量，默认 5 档。其他操作见[使用导航](docs/GETTING_STARTED.md)。
 
-## 历史基线：最近邻缩放板测通过
+## 交付与验证
 
-当时功能开发基线为zoom_black2。多尺寸BMP三模式适配、黑边修复及用户最终全部测试通过，见[缩放归档](integration/zoom_20261028/README.md)。下文时序实验版等为保留的历史基线。
+V1.9 的 **BOARD PASS 来自用户反馈**；最新本地实现报告仍为 **TIMING FAIL**：setup WNS -4.533 ns、hold WNS -0.020 ns。设备端 bit 哈希未独立核对。详见[板测反馈](integration/hongcun_logo_music_controls_v1_9_20261104/board_feedback.json)和[时序状态](integration/hongcun_logo_music_controls_v1_9_20261104/timing_status.txt)。
 
-安路EG4S20 / HX4S20 HDMI多媒体项目：图片切换、自动轮播、IMG/AUTO、WELCOME滚动字幕、淡出淡入和滑动揭幕。
+历史版本各自的时序通过、未上板或故障记录仅适用于对应版本；按[版本索引](integration/README.md)选择需要的基线。
 
-## 历史版本
+## 仓库布局
 
-| 版本 | 功能板测 | 时序边界 |
-|---|---|---|
-| 10月28日异步分组GUI实验版 | 用户确认完整通过，作为后续功能开发候选基线 | 屏蔽SDRAM时钟对后setup +0.102ns、hold +0.003ns；不是完整时序闭合 |
-| 第二批未屏蔽版本 | 用户确认通过，保留回退 | SD域及内存域内部通过，SDRAM接口仍-6.699ns |
-| 独立SDRAM自检 | 未上板 | 默认参考时序模型未通过；逻辑验证需看模型边界 |
-| 最近邻缩放 | 用户确认全部板测通过 | zoom_black2，详见最新缩放归档 |
+| 目录 | 内容 |
+|---|---|
+| [integration/](integration/README.md) | V1.9 交付及各阶段集成归档，包含版本对应的源码、测试和证据 |
+| [rtl/](rtl/README.md) | 早期独立 OSD 模块；整机当前源码见 V1.9 的 src/ |
+| [sim/](sim/README.md) | 独立 OSD 仿真与历史集成测试入口 |
+| [docs/](docs/README.md) | 使用导航、版本说明与历史研发记录 |
+| [evidence/](evidence/README.md) | 早期诊断与验证记录；后续证据随各集成版本保存 |
+| tools/ | 仓库文档相对链接检查工具 |
 
-## 入口
+## 获取与复现
 
-- [10月28日优化、补丁与板测](integration/timing_20261028/README.md)
-- [版本哈希及本地bit路径](integration/timing_20261028/versions.json)
-- [V1.5 按键与拨码规划](docs/按键与拨码规划.md)
-- [当天记录](docs/2026-10-28.md) · [本地工作区索引](docs/workspace_index_20261028.md)
-- [转场原始集成包](integration/transition_20261027/README.md) · [10月25日OSD历史基线](integration/current_baseline/README.md)
-- [独立SDRAM自检](integration/sdram_diag_20261028/README.md)
+完整厂商 TD 工程、加密 IP、bit、数据库及图片／音乐素材保留本地，**仅克隆本仓库不能独立生成整机 bit**。需合法持有原工程，再按[复现导航](docs/GETTING_STARTED.md)恢复相应版本的源码与依赖。
 
-## 仓库内容
-
-rtl与sim保留OSD模块和测试；integration保存分阶段补丁、控制模块、自检源码与证据；docs记录按键、版本和工作区导航；evidence保存历史诊断。旧记录中的白屏/未上板结论为当时状态，后续以对应日期、bit哈希和板测反馈为准。
-
-本仓库上传自研RTL、补丁、测试与摘要。完整厂商工程、加密IP、bit、TD缓存和数据库保留本地；只克隆仓库不能独立生成整机bit。字库来源见[第三方声明](THIRD_PARTY_NOTICES.md)。
-
-历史首页见[10月28日时序更新前快照](docs/history/README_before_timing_20261028.md)。
+第三方来源与许可见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) 和 [LICENSE.FPGA-text-overlay](LICENSE.FPGA-text-overlay)。该许可对应所引用的字库来源。
